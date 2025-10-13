@@ -59,17 +59,22 @@ const initialState: State = {
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'SET_TASK':
+    case 'SET_TASK': {
       const isRegression = action.payload === 'regression';
-      const newTarget = isRegression ? 'MedHouseVal' : 'HouseAge'; // Simplified logic
-      const newFeatures = isRegression ? initialState.selectedFeatures : ['MedInc', 'AveRooms', 'Population'];
+      const newTarget = isRegression ? 'MedHouseVal' : 'HouseAge';
+      const allHeaders = Object.keys(defaultDataset[0] ?? {});
+      const newFeatures = allHeaders.filter(h => h !== newTarget);
       return { ...state, task: action.payload, targetColumn: newTarget, selectedFeatures: newFeatures };
+    }
     case 'SET_HYPERPARAMETERS':
       return { ...state, hyperparameters: { ...state.hyperparameters, ...action.payload } };
     case 'SET_SELECTED_FEATURES':
       return { ...state, selectedFeatures: action.payload };
-    case 'SET_TARGET_COLUMN':
-      return { ...state, targetColumn: action.payload };
+    case 'SET_TARGET_COLUMN': {
+      const allHeaders = Object.keys(defaultDataset[0] ?? {});
+      const newFeatures = allHeaders.filter(h => h !== action.payload);
+      return { ...state, targetColumn: action.payload, selectedFeatures: newFeatures };
+    }
     default:
       return state;
   }

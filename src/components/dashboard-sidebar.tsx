@@ -66,17 +66,9 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
                         </SelectContent>
                     </Select>
                 </div>
-                <div>
-                    <Label>Feature Columns</Label>
-                     <Select value={state.selectedFeatures.join(',')} onValueChange={(value) => actions.setSelectedFeatures(value.split(','))}>
-                        <SelectTrigger><SelectValue placeholder="Select features..." /></SelectTrigger>
-                        <SelectContent>
-                           <p className="px-2 py-1.5 text-xs text-muted-foreground">Multiple feature selection is not yet supported.</p>
-                           {datasetHeaders.filter(h => h !== state.targetColumn).map(header => (
-                            <SelectItem key={header} value={header}>{header}</SelectItem>
-                        ))}
-                        </SelectContent>
-                    </Select>
+                 <div>
+                  <Label>Feature Columns</Label>
+                  <p className="text-sm text-muted-foreground">All columns except the target are used as features.</p>
                 </div>
             </SidebarGroupContent>
           </SidebarGroup>
