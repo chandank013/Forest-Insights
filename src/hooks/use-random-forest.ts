@@ -123,30 +123,47 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-const generateMockTree = (features: string[], depth: number = 0, maxDepth: number = 2): DecisionTree => {
-    if (depth === maxDepth || Math.random() < 0.4) {
-        const value = Math.random() > 0.5 ? 'Class 1' : 'Class 0';
+// Simple pseudo-random number generator for deterministic results
+const pseudoRandom = (seed: number) => {
+    let x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+};
+
+const generateMockTree = (features: string[], depth: number = 0, maxDepth: number = 2, seed = 1): DecisionTree => {
+    if (depth === maxDepth || pseudoRandom(seed) < 0.4) {
+        const value = pseudoRandom(seed * 2) > 0.5 ? 'Class 1' : 'Class 0';
         return {
             type: 'leaf',
             value,
-            samples: Math.floor(Math.random() * 50 + 10)
+            samples: Math.floor(pseudoRandom(seed * 3) * 50 + 10)
         };
     }
 
-    const feature = features[Math.floor(Math.random() * features.length)];
-    const threshold = (Math.random() * 10 + 5).toFixed(2);
+    const feature = features[Math.floor(pseudoRandom(seed * 4) * features.length)];
+    const threshold = (pseudoRandom(seed * 5) * 10 + 5).toFixed(2);
     
     return {
         type: 'node',
         feature,
         threshold: parseFloat(threshold),
-        samples: Math.floor(Math.random() * 200 + 50),
+        samples: Math.floor(pseudoRandom(seed * 6) * 200 + 50),
         children: [
-            generateMockTree(features, depth + 1, maxDepth),
-            generateMockTree(features, depth + 1, maxDepth)
+            generateMockTree(features, depth + 1, maxDepth, seed + 1),
+            generateMockTree(features, depth + 1, maxDepth, seed + 2)
         ]
     };
 };
+
+// Function to create a deterministic seed from hyperparameters
+const createSeed = (hyperparameters: Hyperparameters) => {
+    let seed = 0;
+    seed += hyperparameters.n_estimators;
+    seed += hyperparameters.max_depth * 100;
+    seed += hyperparameters.min_samples_split * 1000;
+    seed += hyperparameters.min_samples_leaf * 10000;
+    return seed;
+};
+
 
 const mockTrainModel = async (
   state: State,
@@ -158,44 +175,48 @@ const mockTrainModel = async (
   const { task, selectedFeatures, targetColumn } = state;
   const hyperparameters = isBaseline ? BASELINE_HYPERPARAMETERS : state.hyperparameters;
 
-  if (Math.random() < 0.1 && !isBaseline) {
-    throw new Error('Model training failed. Please try adjusting parameters.');
-  }
+  const seed = createSeed(hyperparameters);
 
   let metrics: Data['metrics'];
   if (task === 'regression') {
+     const baseR2 = 0.65 + (hyperparameters.max_depth / 100) + (hyperparameters.n_estimators / 5000);
+    const baseRmse = 0.5 - (hyperparameters.max_depth / 150) - (hyperparameters.n_estimators / 7000);
     metrics = {
-      r2: Math.random() * 0.2 + 0.75,
-      rmse: Math.random() * 0.2 + 0.3,
-      mae: Math.random() * 0.2 + 0.2,
+      r2: baseR2 + pseudoRandom(seed) * 0.05,
+      rmse: baseRmse - pseudoRandom(seed * 2) * 0.05,
+      mae: baseRmse * 0.8 - pseudoRandom(seed * 3) * 0.05,
     };
   } else {
+    const baseAccuracy = 0.85 + (hyperparameters.n_estimators / 10000) - (hyperparameters.min_samples_split / 100);
     metrics = {
-      accuracy: Math.random() * 0.1 + 0.88,
-      precision: Math.random() * 0.1 + 0.87,
-      recall: Math.random() * 0.1 + 0.89,
+      accuracy: baseAccuracy + pseudoRandom(seed) * 0.02,
+      precision: baseAccuracy - 0.01 + pseudoRandom(seed * 2) * 0.03,
+      recall: baseAccuracy + 0.01 + pseudoRandom(seed * 3) * 0.02,
       confusionMatrix: [
-        [Math.floor(Math.random() * 10 + 85), Math.floor(Math.random() * 5 + 1)],
-        [Math.floor(Math.random() * 5 + 2), Math.floor(Math.random() * 10 + 90)],
+        [Math.floor(85 + pseudoRandom(seed * 4) * 10), Math.floor(1 + pseudoRandom(seed * 5) * 5)],
+        [Math.floor(2 + pseudoRandom(seed * 6) * 5), Math.floor(90 + pseudoRandom(seed * 7) * 10)],
       ],
     };
   }
 
   const featureImportance = selectedFeatures
-    .map((feature) => ({
+    .map((feature, i) => ({
       feature,
-      importance: Math.random(),
+      importance: pseudoRandom(seed + i * 10),
     }))
     .sort((a, b) => b.importance - a.importance);
 
   const history: Prediction[] = dataset.slice(0, 15).map((row, i) => {
     const actual = row[targetColumn];
     let prediction: number;
+    const predSeed = seed + i;
+
     if (task === 'regression') {
-      prediction = actual * (Math.random() * 0.4 + 0.8);
+       prediction = actual * (0.8 + pseudoRandom(predSeed) * 0.4);
     } else {
-        const threshold = 10;
-        prediction = row['alcohol'] > threshold ? (Math.random() > 0.1 ? 1 : 0) : (Math.random() > 0.9 ? 1 : 0);
+        const threshold = 10.5;
+        // Deterministic prediction based on alcohol and a pseudo-random factor
+        prediction = (row['alcohol'] + pseudoRandom(predSeed) * 2) > threshold ? 1 : 0;
     }
 
     const features = selectedFeatures.reduce((acc, feat) => {
@@ -213,7 +234,7 @@ const mockTrainModel = async (
   });
   
   const chartData = history.map(p => ({ actual: p.actual, prediction: p.prediction }));
-  const decisionTree = generateMockTree(selectedFeatures);
+  const decisionTree = generateMockTree(selectedFeatures, 0, 2, seed);
 
   return { metrics, featureImportance, history, chartData, decisionTree };
 };
@@ -257,6 +278,9 @@ export const useRandomForest = () => {
             setData(d => ({ 
                 ...d, 
                 ...trainedData,
+                metrics: trainedData.metrics, // Also set main metrics
+                featureImportance: trainedData.featureImportance, // Also set main feature importance
+                chartData: trainedData.chartData, // Also set main chart data
                 baselineMetrics: trainedData.metrics, 
                 baselineFeatureImportance: trainedData.featureImportance, 
                 baselineChartData: trainedData.chartData,
@@ -330,5 +354,3 @@ export const useRandomForest = () => {
 
   return { state, data, status, actions };
 };
-
-    
