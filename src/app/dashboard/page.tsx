@@ -98,7 +98,7 @@ export default function DashboardPage() {
   };
 
   const renderContent = () => {
-    if (status === 'idle' && !data.baselineMetrics) {
+    if (status === 'idle' && !data.metrics) {
       return (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
           <div className="flex flex-col items-center gap-2 text-center">
@@ -114,7 +114,7 @@ export default function DashboardPage() {
       );
     }
 
-    if (isLoading && !data.metrics && !data.baselineMetrics) {
+    if (isLoading && !data.metrics) {
         return (
           <div className="flex flex-1 items-center justify-center">
             <div className="grid w-full gap-4 md:gap-8">
@@ -135,7 +135,7 @@ export default function DashboardPage() {
     return (
       <Tabs defaultValue="dashboard">
         <div className="flex items-center">
-          <TabsList>
+          <TabsList className="w-full justify-start">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="explore">Explore</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
@@ -380,3 +380,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
+    

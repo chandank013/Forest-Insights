@@ -253,13 +253,14 @@ export const useRandomForest = () => {
         const trainedData = await mockTrainModel(state, currentDataset, isBaseline);
         
         if (isBaseline) {
-            setData(d => ({ ...d, baselineMetrics: trainedData.metrics, baselineFeatureImportance: trainedData.featureImportance, baselineChartData: trainedData.chartData,
-            // Also set the main view to baseline if it's the first run
-            metrics: d.metrics ? d.metrics : trainedData.metrics,
-            featureImportance: d.featureImportance.length ? d.featureImportance : trainedData.featureImportance,
-            chartData: d.chartData ? d.chartData : trainedData.chartData,
-            history: d.history.length ? d.history : trainedData.history,
-            decisionTree: d.decisionTree ? d.decisionTree : trainedData.decisionTree,
+            // When training baseline, set both baseline and tuned model data to the same values
+            setData(d => ({ 
+                ...d, 
+                ...trainedData,
+                baselineMetrics: trainedData.metrics, 
+                baselineFeatureImportance: trainedData.featureImportance, 
+                baselineChartData: trainedData.chartData,
+                insights: '' // Clear insights when training baseline
              }));
         } else {
             setData(d => ({ ...d, ...trainedData, insights: '' }));
@@ -307,10 +308,18 @@ export const useRandomForest = () => {
   useEffect(() => {
     if (status === 'idle' && !data.baselineMetrics) return;
 
+    // Do not auto-train if there is no baseline model trained yet,
+    // unless it's the very first action.
+    if (status === 'success' && !data.baselineMetrics && data.metrics) return;
+
+
     setIsDebouncing(true);
     const handler = setTimeout(() => {
         setIsDebouncing(false);
-        trainModel(false);
+        // Do not auto-train if there's no baseline. The user must click a button first.
+        if (data.baselineMetrics) {
+           trainModel(false);
+        }
     }, 1200);
 
     return () => {
@@ -321,3 +330,5 @@ export const useRandomForest = () => {
 
   return { state, data, status, actions };
 };
+
+    
