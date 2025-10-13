@@ -66,19 +66,21 @@ export function PairPlot({ dataset, targetColumn, task }: PairPlotProps) {
                 {selectedFeatures.map((yFeature, i) => (
                     selectedFeatures.map((xFeature, j) => (
                         <Card key={`${i}-${j}`} className='p-2'>
-                             <ResponsiveContainer width="100%" height={200}>
-                                <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 30 }}>
-                                    <CartesianGrid />
-                                    <XAxis type="number" dataKey={xFeature} name={xFeature} tick={{ fontSize: 10 }} >
-                                        <Label value={xFeature} position="bottom" offset={10} fontSize={12} />
-                                    </XAxis>
-                                    <YAxis type="number" dataKey={yFeature} name={yFeature} tick={{ fontSize: 10 }} >
-                                        <Label value={yFeature} angle={-90} position="left" offset={10} fontSize={12} style={{ textAnchor: 'middle' }}/>
-                                    </YAxis>
-                                    <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
-                                    <Scatter name="Data" data={plotData} fill={task === 'classification' ? (d) => d.color : 'hsl(var(--primary))'} shape="circle" />
-                                </ScatterChart>
-                             </ResponsiveContainer>
+                             <ChartContainer config={{}} className="h-[200px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 30 }}>
+                                        <CartesianGrid />
+                                        <XAxis type="number" dataKey={xFeature} name={xFeature} tick={{ fontSize: 10 }} >
+                                            <Label value={xFeature} position="bottom" offset={10} fontSize={12} />
+                                        </XAxis>
+                                        <YAxis type="number" dataKey={yFeature} name={yFeature} tick={{ fontSize: 10 }} >
+                                            <Label value={yFeature} angle={-90} position="left" offset={10} fontSize={12} style={{ textAnchor: 'middle' }}/>
+                                        </YAxis>
+                                        <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
+                                        <Scatter name="Data" data={plotData} fill={task === 'classification' ? (d) => d.color : 'hsl(var(--primary))'} shape="circle" />
+                                    </ScatterChart>
+                                </ResponsiveContainer>
+                            </ChartContainer>
                         </Card>
                     ))
                 ))}
