@@ -49,13 +49,6 @@ const prompt = ai.definePrompt({
 
   Provide a concise summary of the top 3 most important features and how they relate to the target variable. Focus on providing actionable insights that a data scientist or business user could use to understand the model and the data.
   `,
-  templateHelpers: {
-    sortObject: (obj: Record<string, number>) => {
-      const entries = Object.entries(obj);
-      entries.sort(([, a], [, b]) => b - a);
-      return Object.fromEntries(entries);
-    },
-  },
 });
 
 const generateFeatureImportanceInsightsFlow = ai.defineFlow(
@@ -65,7 +58,15 @@ const generateFeatureImportanceInsightsFlow = ai.defineFlow(
     outputSchema: GenerateFeatureImportanceInsightsOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const {output} = await prompt(input, {
+      templateHelpers: {
+        sortObject: (obj: Record<string, number>) => {
+          const entries = Object.entries(obj);
+          entries.sort(([, a], [, b]) => b - a);
+          return Object.fromEntries(entries);
+        },
+      },
+    });
     return output!;
   }
 );
