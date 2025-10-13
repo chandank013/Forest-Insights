@@ -11,7 +11,6 @@ import { KpiCard } from '@/components/kpi-card';
 import { FeatureImportanceChart } from '@/components/feature-importance-chart';
 import { PredictionPlot } from '@/components/prediction-plot';
 import { ConfusionMatrix } from '@/components/confusion-matrix';
-import { PredictionHistory } from '@/components/prediction-history';
 import { ExplainPrediction } from '@/components/explain-prediction';
 import { ThemeToggle } from '@/components/theme-toggle';
 
@@ -120,18 +119,6 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Prediction History</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isLoading && !data.history.length ? (
-              <Skeleton className="h-64" />
-            ) : (
-              <PredictionHistory history={data.history} />
-            )}
-          </CardContent>
-        </Card>
       </div>
     );
   };
