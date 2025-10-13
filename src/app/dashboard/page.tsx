@@ -19,6 +19,7 @@ import { FeatureDistributionChart } from '@/components/feature-distribution-char
 import { CorrelationHeatmap } from '@/components/correlation-heatmap';
 import { SummaryStatistics } from '@/components/summary-statistics';
 import { PairPlot } from '@/components/pair-plot';
+import { MissingValuesChart } from '@/components/missing-values-chart';
 
 export default function DashboardPage() {
   const { state, data, status, actions } = useRandomForest();
@@ -210,6 +211,14 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Missing Values</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <MissingValuesChart dataset={data.dataset} />
                     </CardContent>
                 </Card>
                 <Card>
