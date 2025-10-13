@@ -136,34 +136,34 @@ export default function DashboardPage() {
         <TabsContent value="tuned">
             <div className="grid gap-4 md:gap-8">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
-                <Card className="lg:col-span-4">
-                    <CardHeader>
-                    <CardTitle>Feature Importance</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pl-2">
-                    {isLoading && !data.featureImportance.length ? (
-                        <Skeleton className="h-[250px] md:h-[350px]" />
-                    ) : (
-                        <FeatureImportanceChart data={data.featureImportance} />
-                    )}
-                    </CardContent>
-                </Card>
-                <Card className="lg:col-span-3">
-                    <CardHeader>
-                    <CardTitle>
-                        {state.task === 'regression' ? 'Prediction vs. Actual' : 'Confusion Matrix'}
-                    </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pl-2">
-                    {isLoading && !data.chartData ? (
-                        <Skeleton className="h-[250px] md:h-[350px]" />
-                    ) : state.task === 'regression' ? (
-                        <PredictionPlot data={data.chartData} />
-                    ) : (
-                        <ConfusionMatrix data={(data.metrics as ClassificationMetric)?.confusionMatrix} />
-                    )}
-                    </CardContent>
-                </Card>
+                    <Card className="lg:col-span-4">
+                        <CardHeader>
+                        <CardTitle>Feature Importance</CardTitle>
+                        </CardHeader>
+                        <CardContent className="pl-2">
+                        {isLoading && !data.featureImportance.length ? (
+                            <Skeleton className="h-[250px] md:h-[350px]" />
+                        ) : (
+                            <FeatureImportanceChart data={data.featureImportance} />
+                        )}
+                        </CardContent>
+                    </Card>
+                    <Card className="lg:col-span-3">
+                        <CardHeader>
+                        <CardTitle>
+                            {state.task === 'regression' ? 'Prediction vs. Actual' : 'Confusion Matrix'}
+                        </CardTitle>
+                        </CardHeader>
+                        <CardContent className="pl-2">
+                        {isLoading && !data.chartData ? (
+                            <Skeleton className="h-[250px] md:h-[350px]" />
+                        ) : state.task === 'regression' ? (
+                            <PredictionPlot data={data.chartData} />
+                        ) : (
+                            <ConfusionMatrix data={(data.metrics as ClassificationMetric)?.confusionMatrix} />
+                        )}
+                        </CardContent>
+                    </Card>
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
                     <KpiCard
@@ -209,6 +209,23 @@ export default function DashboardPage() {
                         )}
                         </CardContent>
                     </Card>
+                </div>
+                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
+                    <KpiCard
+                        title="Feature Importance Insights"
+                        value={data.insights}
+                        isInsight
+                        icon={<BarChart3 className="size-4 text-muted-foreground" />}
+                        isLoading={isLoading && !data.insights}
+                        cardClassName='lg:col-span-4'
+                    />
+                     <ExplainPrediction
+                        prediction={data.history[0]}
+                        featureNames={state.selectedFeatures}
+                        taskType={state.task}
+                        isLoading={isLoading}
+                        cardClassName='lg:col-span-3'
+                    />
                 </div>
             </div>
         </TabsContent>
