@@ -19,6 +19,17 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
   const { hyperparameters, task } = state;
   const { setHyperparameters } = actions;
 
+  const HelpTooltip = ({ children }: { children: React.ReactNode }) => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+      </TooltipTrigger>
+      <TooltipContent side="right" className="max-w-xs">
+        {children}
+      </TooltipContent>
+    </Tooltip>
+  );
+
   return (
     <>
       <SidebarHeader className="border-b">
@@ -44,14 +55,9 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
                     <Label htmlFor="r2">Classification</Label>
                   </div>
                 </RadioGroup>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Regression predicts a continuous value (e.g., price).<br />Classification predicts a category (e.g., old/new).</p>
-                  </TooltipContent>
-                </Tooltip>
+                <HelpTooltip>
+                  <p><b>Regression</b> predicts a continuous value (e.g., price).<br /><b>Classification</b> predicts a category (e.g., good/bad quality).</p>
+                </HelpTooltip>
               </div>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -60,7 +66,12 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
             <SidebarGroupLabel>Data</SidebarGroupLabel>
             <SidebarGroupContent className="space-y-4">
                 <div>
+                  <div className="flex items-center gap-2 mb-1">
                     <Label>Target Column</Label>
+                    <HelpTooltip>
+                      <p>The column the model will try to predict.</p>
+                    </HelpTooltip>
+                  </div>
                     <Select value={state.targetColumn} onValueChange={actions.setTargetColumn}>
                         <SelectTrigger><SelectValue placeholder="Select target..." /></SelectTrigger>
                         <SelectContent>
@@ -71,7 +82,12 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
                     </Select>
                 </div>
                  <div>
-                  <Label>Feature Columns</Label>
+                  <div className="flex items-center gap-2">
+                    <Label>Feature Columns</Label>
+                     <HelpTooltip>
+                      <p>These columns are used as input for the model to make its prediction.</p>
+                    </HelpTooltip>
+                  </div>
                   <p className="text-sm text-muted-foreground">All columns except the target are used as features.</p>
                 </div>
             </SidebarGroupContent>
@@ -82,7 +98,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
             <SidebarGroupContent className="space-y-6">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Number of Trees</Label>
+                  <div className="flex items-center gap-2">
+                    <Label>Number of Trees</Label>
+                    <HelpTooltip>The number of decision trees in the forest. More trees can lead to a more accurate model, but will take longer to train.</HelpTooltip>
+                  </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.n_estimators}</span>
                 </div>
                 <Slider
@@ -93,7 +112,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Max Depth</Label>
+                  <div className="flex items-center gap-2">
+                    <Label>Max Depth</Label>
+                     <HelpTooltip>The maximum depth of each decision tree. A deeper tree can capture more complex patterns but may overfit.</HelpTooltip>
+                  </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.max_depth || 'None'}</span>
                 </div>
                 <Slider
@@ -104,7 +126,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Min Samples Split</Label>
+                   <div className="flex items-center gap-2">
+                    <Label>Min Samples Split</Label>
+                    <HelpTooltip>The minimum number of samples required to split an internal node.</HelpTooltip>
+                  </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.min_samples_split}</span>
                 </div>
                 <Slider
@@ -115,7 +140,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Min Samples Leaf</Label>
+                   <div className="flex items-center gap-2">
+                    <Label>Min Samples Leaf</Label>
+                    <HelpTooltip>The minimum number of samples required to be at a leaf node.</HelpTooltip>
+                  </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.min_samples_leaf}</span>
                 </div>
                 <Slider
@@ -125,10 +153,13 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
                 />
               </div>
                <div className="space-y-2">
-                <Label>Max Features</Label>
+                <div className="flex items-center gap-2 mb-1">
+                  <Label>Max Features</Label>
+                  <HelpTooltip>The number of features to consider when looking for the best split.</HelpTooltip>
+                </div>
                 <Select
-                    value={hyperparameters.max_features ?? ''}
-                    onValueChange={(value) => setHyperparameters({ max_features: value as 'sqrt' | 'log2' | null })}
+                    value={hyperparameters.max_features ?? 'null'}
+                    onValueChange={(value) => setHyperparameters({ max_features: value === 'null' ? null : (value as 'sqrt' | 'log2') })}
                 >
                     <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
                     <SelectContent>
@@ -139,7 +170,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
                 </Select>
               </div>
               <div className="flex items-center justify-between">
-                <Label>Bootstrap Samples</Label>
+                 <div className="flex items-center gap-2">
+                  <Label>Bootstrap Samples</Label>
+                   <HelpTooltip>Whether bootstrap samples are used when building trees. If False, the whole dataset is used to build each tree.</HelpTooltip>
+                </div>
                 <Switch
                   checked={hyperparameters.bootstrap}
                   onCheckedChange={(checked) => setHyperparameters({ bootstrap: checked })}
@@ -149,7 +183,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
               {task === 'regression' && (
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <Label>Min Impurity Decrease</Label>
+                     <div className="flex items-center gap-2">
+                      <Label>Min Impurity Decrease</Label>
+                       <HelpTooltip>A node will be split if this split induces a decrease of the impurity greater than or equal to this value.</HelpTooltip>
+                    </div>
                     <span className="text-sm text-muted-foreground">{hyperparameters.min_impurity_decrease.toFixed(2)}</span>
                   </div>
                   <Slider
@@ -163,7 +200,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
               {task === 'classification' && (
                 <>
                     <div className="space-y-2">
-                        <Label>Criterion</Label>
+                        <div className="flex items-center gap-2 mb-1">
+                          <Label>Criterion</Label>
+                          <HelpTooltip>The function to measure the quality of a split. "Gini" is for Gini impurity and "Entropy" for the information gain.</HelpTooltip>
+                        </div>
                         <Select
                             value={hyperparameters.criterion}
                             onValueChange={(value) => setHyperparameters({ criterion: value as 'gini' | 'entropy' })}
@@ -176,7 +216,10 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
                         </Select>
                     </div>
                     <div className="space-y-2">
+                       <div className="flex items-center gap-2 mb-1">
                         <Label>Class Weight</Label>
+                         <HelpTooltip>Adjusts weights inversely proportional to class frequencies. "Balanced" is often a good choice for imbalanced datasets.</HelpTooltip>
+                      </div>
                         <Select
                             value={hyperparameters.class_weight ?? 'null'}
                             onValueChange={(value) => setHyperparameters({ class_weight: value === 'null' ? null : value as 'balanced' | 'balanced_subsample' })}
