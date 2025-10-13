@@ -56,7 +56,6 @@ const prompt = ai.definePrompt({
       return Object.fromEntries(entries);
     },
   },
-  knownHelpersOnly: false,
 });
 
 const generateFeatureImportanceInsightsFlow = ai.defineFlow(
