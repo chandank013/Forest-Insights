@@ -42,8 +42,8 @@ const prompt = ai.definePrompt({
 
   The target variable is '{{targetColumn}}'.
 
-  Here are the feature importances:
-  {{#each (sortObject featureImportances) }}
+  Here are the feature importances, sorted from most to least important:
+  {{#each featureImportances}}
   - {{@key}}: {{this}}
   {{/each}}
 
@@ -58,14 +58,15 @@ const generateFeatureImportanceInsightsFlow = ai.defineFlow(
     outputSchema: GenerateFeatureImportanceInsightsOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input, {
-      templateHelpers: {
-        sortObject: (obj: Record<string, number>) => {
-          const entries = Object.entries(obj);
-          entries.sort(([, a], [, b]) => b - a);
-          return Object.fromEntries(entries);
-        },
-      },
+    // Sort the feature importances before passing them to the prompt.
+    const sortedEntries = Object.entries(input.featureImportances).sort(
+      ([, a], [, b]) => b - a
+    );
+    const sortedFeatureImportances = Object.fromEntries(sortedEntries);
+
+    const {output} = await prompt({
+      ...input,
+      featureImportances: sortedFeatureImportances,
     });
     return output!;
   }
