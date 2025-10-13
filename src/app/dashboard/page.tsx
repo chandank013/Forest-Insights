@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, LayoutGrid, Lightbulb } from 'lucide-react';
+import { BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, LayoutGrid, Lightbulb, GitMerge } from 'lucide-react';
 import { useRandomForest } from '@/hooks/use-random-forest';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +22,7 @@ import { PairPlot } from '@/components/pair-plot';
 import { MissingValuesChart } from '@/components/missing-values-chart';
 import { PartialDependencePlot } from '@/components/partial-dependence-plot';
 import { ChartContainer } from '@/components/ui/chart';
+import { DecisionTreeSnapshot } from '@/components/decision-tree-snapshot';
 
 export default function DashboardPage() {
   const { state, data, status, actions } = useRandomForest();
@@ -231,7 +232,7 @@ export default function DashboardPage() {
                         <CardTitle>Feature Distributions</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ChartContainer config={{}} className="h-[300px] w-full">
+                      <ChartContainer config={{}} className="h-auto w-full">
                         <FeatureDistributionChart 
                           dataset={data.dataset} 
                           features={state.selectedFeatures} 
@@ -244,7 +245,9 @@ export default function DashboardPage() {
                         <CardTitle>Correlation Heatmap</CardTitle>
                     </CardHeader>
                     <CardContent>
+                      <ChartContainer config={{}} className="h-auto w-full">
                         <CorrelationHeatmap dataset={data.dataset} />
+                      </ChartContainer>
                     </CardContent>
                 </Card>
                  <Card>
@@ -269,6 +272,14 @@ export default function DashboardPage() {
                             features={state.selectedFeatures}
                             task={state.task}
                         />
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2'><GitMerge className='w-5 h-5' />Decision Tree Snapshot</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <DecisionTreeSnapshot />
                     </CardContent>
                 </Card>
             </div>
