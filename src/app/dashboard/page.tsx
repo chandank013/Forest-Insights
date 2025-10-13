@@ -17,6 +17,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Metric, RegressionMetric, ClassificationMetric } from '@/lib/types';
 import { FeatureDistributionChart } from '@/components/feature-distribution-chart';
 import { CorrelationHeatmap } from '@/components/correlation-heatmap';
+import { SummaryStatistics } from '@/components/summary-statistics';
+import { PairPlot } from '@/components/pair-plot';
 
 export default function DashboardPage() {
   const { state, data, status, actions } = useRandomForest();
@@ -202,6 +204,14 @@ export default function DashboardPage() {
         </TabsContent>
         <TabsContent value="explore" className="py-4">
              <div className="grid grid-cols-1 gap-4 md:gap-8">
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Summary Statistics</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
+                    </CardContent>
+                </Card>
                 <Card>
                     <CardHeader>
                         <CardTitle>Feature Distributions</CardTitle>
@@ -219,6 +229,14 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <CorrelationHeatmap dataset={data.dataset} />
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Pair Plot</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <PairPlot dataset={data.dataset} targetColumn={state.targetColumn} task={state.task} />
                     </CardContent>
                 </Card>
              </div>
