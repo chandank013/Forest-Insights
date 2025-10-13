@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { Scatter, ScatterChart, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TaskType } from '@/lib/types';
 import { Card } from './ui/card';
@@ -39,16 +39,16 @@ export function PairPlot({ dataset, targetColumn, task }: PairPlotProps) {
 
     // Initialize with first 3 features if available
     useState(() => {
-        setSelectedFeatures(allNumericFeatures.slice(0, 3));
+        if (allNumericFeatures.length > 0) {
+            setSelectedFeatures(allNumericFeatures.slice(0, 3));
+        }
     });
-
-    const numFeatures = selectedFeatures.length;
 
     return (
         <div className="space-y-4">
             <div className="flex flex-wrap gap-4">
                 {Array.from({ length: 3 }).map((_, i) => (
-                     <Select key={i} value={selectedFeatures[i]} onValueChange={(val) => handleFeatureChange(i, val)}>
+                     <Select key={i} value={selectedFeatures[i] || ''} onValueChange={(val) => handleFeatureChange(i, val)}>
                         <SelectTrigger className='w-full md:w-[200px]'>
                             <SelectValue placeholder={`Feature ${i + 1}`} />
                         </SelectTrigger>
@@ -66,15 +66,17 @@ export function PairPlot({ dataset, targetColumn, task }: PairPlotProps) {
                 {selectedFeatures.map((yFeature, i) => (
                     selectedFeatures.map((xFeature, j) => (
                         <Card key={`${i}-${j}`} className='p-2'>
-                             <ResponsiveContainer width="100%" height={200}>
-                                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                                    <CartesianGrid />
-                                    <XAxis type="number" dataKey={xFeature} name={xFeature} tick={{ fontSize: 10 }} />
-                                    <YAxis type="number" dataKey={yFeature} name={yFeature} tick={{ fontSize: 10 }} />
-                                    <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
-                                    <Scatter name="Data" data={plotData} fill={task === 'classification' ? (d) => d.color : 'hsl(var(--primary))'} shape="circle" />
-                                </ScatterChart>
-                             </ResponsiveContainer>
+                            <ChartContainer config={{}} className="h-full w-full">
+                                 <ResponsiveContainer width="100%" height={200}>
+                                    <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                                        <CartesianGrid />
+                                        <XAxis type="number" dataKey={xFeature} name={xFeature} tick={{ fontSize: 10 }} />
+                                        <YAxis type="number" dataKey={yFeature} name={yFeature} tick={{ fontSize: 10 }} />
+                                        <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
+                                        <Scatter name="Data" data={plotData} fill={task === 'classification' ? (d) => d.color : 'hsl(var(--primary))'} shape="circle" />
+                                    </ScatterChart>
+                                 </ResponsiveContainer>
+                             </ChartContainer>
                         </Card>
                     ))
                 ))}
