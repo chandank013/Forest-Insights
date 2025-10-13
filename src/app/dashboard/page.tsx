@@ -21,6 +21,7 @@ import { SummaryStatistics } from '@/components/summary-statistics';
 import { PairPlot } from '@/components/pair-plot';
 import { MissingValuesChart } from '@/components/missing-values-chart';
 import { PartialDependencePlot } from '@/components/partial-dependence-plot';
+import { ChartContainer } from '@/components/ui/chart';
 
 export default function DashboardPage() {
   const { state, data, status, actions } = useRandomForest();
