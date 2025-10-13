@@ -34,8 +34,7 @@ type Action =
   | { type: 'SET_TASK'; payload: TaskType }
   | { type: 'SET_HYPERPARAMETERS'; payload: Partial<Hyperparameters> }
   | { type: 'SET_SELECTED_FEATURES'; payload: string[] }
-  | { type: 'SET_TARGET_COLUMN'; payload: string }
-  | { type: 'SET_DATASET'; payload: Record<string, any>[] };
+  | { type: 'SET_TARGET_COLUMN'; payload: string };
 
 const initialState: State = {
   task: 'regression',
@@ -171,12 +170,6 @@ export const useRandomForest = () => {
     setHyperparameters: handleStateChange('SET_HYPERPARAMETERS'),
     setSelectedFeatures: handleStateChange('SET_SELECTED_FEATURES'),
     setTargetColumn: handleStateChange('SET_TARGET_COLUMN'),
-    setDataset: (newDataset: Record<string, any>[]) => {
-        const headers = Object.keys(newDataset[0] || {});
-        setData(d => ({...d, dataset: newDataset}));
-        dispatch({type: 'SET_SELECTED_FEATURES', payload: headers.slice(0, -1)});
-        dispatch({type: 'SET_TARGET_COLUMN', payload: headers[headers.length-1]});
-    },
     trainModel: useCallback(async () => {
       setStatus('loading');
       try {

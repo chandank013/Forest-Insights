@@ -1,7 +1,6 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
-import { FileUp, HelpCircle, Loader2 } from 'lucide-react';
+import { HelpCircle, Loader2 } from 'lucide-react';
 import type { useRandomForest } from '@/hooks/use-random-forest';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -10,53 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupLabel, SidebarGroupContent } from '@/components/ui/sidebar';
-import { useToast } from '@/hooks/use-toast';
 
 type DashboardSidebarProps = ReturnType<typeof useRandomForest> & {
   datasetHeaders: string[];
 };
 
 export function DashboardSidebar({ state, actions, status, datasetHeaders }: DashboardSidebarProps) {
-  const { toast } = useToast();
-
-  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.type !== 'text/csv') {
-        toast({
-          title: 'Invalid File Type',
-          description: 'Please upload a CSV file.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target?.result as string;
-        // Basic CSV parsing
-        const lines = text.split('\n');
-        const headers = lines[0].split(',').map(h => h.trim());
-        const data = lines.slice(1).map(line => {
-          const values = line.split(',').map(v => v.trim());
-          return headers.reduce((obj, header, index) => {
-            const value = parseFloat(values[index]);
-            obj[header] = isNaN(value) ? values[index] : value;
-            return obj;
-          }, {} as Record<string, any>);
-        }).filter(row => Object.keys(row).length === headers.length); // Filter out empty or malformed rows
-
-        actions.setDataset(data);
-        toast({
-          title: 'File Uploaded',
-          description: `${file.name} has been processed.`,
-        });
-      };
-      reader.readAsText(file);
-    }
-  };
-
-
   return (
     <>
       <SidebarHeader className="border-b">
@@ -97,19 +55,6 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
           <SidebarGroup>
             <SidebarGroupLabel>Data</SidebarGroupLabel>
             <SidebarGroupContent className="space-y-4">
-                <div>
-                  <Label htmlFor="csv-upload" className="mb-2 block">Upload CSV</Label>
-                   <div className="relative">
-                    <Button asChild variant="outline" size="sm" className="w-full">
-                        <label htmlFor="csv-upload" className="cursor-pointer">
-                            <FileUp className="mr-2 h-4 w-4" />
-                            Upload a file
-                        </label>
-                    </Button>
-                     <input id="csv-upload" type="file" className="sr-only" accept=".csv" onChange={handleFileUpload} />
-                    </div>
-                </div>
-
                 <div>
                     <Label>Target Column</Label>
                     <Select value={state.targetColumn} onValueChange={actions.setTargetColumn}>
