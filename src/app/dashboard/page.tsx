@@ -195,13 +195,23 @@ export default function DashboardPage() {
                         </CardContent>
                     </Card>
                 </div>
-                <KpiCard
-                    title="Feature Importance Insights"
-                    value={data.insights}
-                    isInsight
-                    icon={<BarChart3 className="size-4 text-muted-foreground" />}
-                    isLoading={isLoading && !data.insights}
-                />
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
+                  <KpiCard
+                      cardClassName='lg:col-span-4'
+                      title="Feature Importance Insights"
+                      value={data.insights}
+                      isInsight
+                      icon={<Lightbulb className="size-4 text-muted-foreground" />}
+                      isLoading={isLoading && !data.insights}
+                  />
+                  <ExplainPrediction
+                      cardClassName='lg:col-span-3'
+                      prediction={data.history[0]}
+                      featureNames={state.selectedFeatures}
+                      taskType={state.task}
+                      isLoading={isLoading}
+                  />
+                </div>
             </div>
         </TabsContent>
         <TabsContent value="explore" className="py-4">
@@ -279,12 +289,6 @@ export default function DashboardPage() {
                         <DecisionTreeSnapshot tree={data.decisionTree} />
                     </CardContent>
                 </Card>
-                 <ExplainPrediction
-                    prediction={data.history[0]}
-                    featureNames={state.selectedFeatures}
-                    taskType={state.task}
-                    isLoading={isLoading}
-                />
             </div>
         </TabsContent>
         <TabsContent value="performance" className="py-4">
@@ -367,5 +371,3 @@ export default function DashboardPage() {
     </>
   );
 }
-
-    

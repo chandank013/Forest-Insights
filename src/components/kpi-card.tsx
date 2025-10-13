@@ -41,7 +41,7 @@ export function KpiCard({ title, value, baselineValue, icon, isInsight = false, 
         {isLoading ? (
           <Skeleton className={isInsight ? 'h-16 w-full' : 'h-8 w-24'} />
         ) : isInsight ? (
-          <p className="text-xs text-muted-foreground">{value || 'Not available'}</p>
+          <p className="text-xs text-muted-foreground h-16 overflow-y-auto">{value || 'Not available'}</p>
         ) : (
           <div>
             <div className="text-2xl font-bold">{value ?? 'N/A'}</div>
