@@ -1,19 +1,22 @@
 'use client';
 
-import { Scatter, ScatterChart, CartesianGrid, XAxis, YAxis, Tooltip, Line } from 'recharts';
+import { Scatter, ScatterChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, Legend } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import type { ChartDataPoint } from '@/lib/types';
 
 interface PredictionPlotProps {
-  data: ChartDataPoint[] | null;
+  tunedData: ChartDataPoint[] | null;
+  baselineData: ChartDataPoint[] | null;
 }
 
-export function PredictionPlot({ data }: PredictionPlotProps) {
-    if (!data) return null;
+export function PredictionPlot({ tunedData, baselineData }: PredictionPlotProps) {
+    if (!tunedData && !baselineData) return null;
+    
+    const allPoints = [...(tunedData || []), ...(baselineData || [])];
 
     const domain = [
-        Math.min(...data.map(d => d.actual), ...data.map(d => d.prediction)),
-        Math.max(...data.map(d => d.actual), ...data.map(d => d.prediction))
+        Math.min(...allPoints.map(d => d.actual), ...allPoints.map(d => d.prediction)),
+        Math.max(...allPoints.map(d => d.actual), ...allPoints.map(d => d.prediction))
     ];
     
   return (
@@ -38,8 +41,10 @@ export function PredictionPlot({ data }: PredictionPlotProps) {
             label={{ value: 'Predictions', angle: -90, position: 'insideLeft', offset: 10, fontSize: 12 }}
           />
           <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
-          <Scatter name="Predictions" data={data} fill="hsl(var(--primary))" />
+          <Legend />
           <Line type="monotone" dataKey="actual" stroke="hsl(var(--muted-foreground))" strokeWidth={2} dot={false} activeDot={false} isAnimationActive={false} name="Ideal" />
+          {baselineData && <Scatter name="Baseline" data={baselineData} fill="hsl(var(--secondary-foreground))" />}
+          {tunedData && <Scatter name="Tuned" data={tunedData} fill="hsl(var(--primary))" />}
         </ScatterChart>
       </ChartContainer>
     </div>

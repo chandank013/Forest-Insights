@@ -103,8 +103,8 @@ export default function DashboardPage() {
         return (
           <div className="flex flex-1 items-center justify-center">
             <div className="grid w-full gap-4 md:gap-8">
-                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-                  {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-32" />)}
+                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                  {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-32" />)}
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
                   <Skeleton className="lg:col-span-4 h-[300px] md:h-[400px]" />
@@ -115,122 +115,80 @@ export default function DashboardPage() {
         );
     }
 
-    const currentTabValue = (data.metrics && data.baselineMetrics) ? (data.metrics === data.baselineMetrics ? "baseline" : "tuned") : "tuned";
-
+    const hasBaseline = data.baselineMetrics !== null;
+    
     return (
-      <Tabs defaultValue={currentTabValue} className="grid w-full gap-4 md:gap-8">
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-            <div className="flex items-center md:col-span-2 lg:col-span-1">
-                { data.baselineMetrics && (
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="baseline">Baseline</TabsTrigger>
-                        <TabsTrigger value="tuned">Tuned</TabsTrigger>
-                    </TabsList>
-                )}
+        <div className="grid w-full gap-4 md:gap-8">
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                {renderKpiCards(data.metrics, data.baselineMetrics)}
             </div>
-            <div className="sm:col-span-2 md:col-span-2 lg:col-span-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-               {renderKpiCards(data.metrics, data.baselineMetrics)}
-            </div>
-        </div>
-
-        <TabsContent value="tuned">
-            <div className="grid gap-4 md:gap-8">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
-                    <Card className="lg:col-span-4">
-                        <CardHeader>
-                        <CardTitle>Feature Importance</CardTitle>
-                        </CardHeader>
-                        <CardContent className="pl-2">
-                        {isLoading && !data.featureImportance.length ? (
-                            <Skeleton className="h-[250px] md:h-[350px]" />
-                        ) : (
-                            <FeatureImportanceChart data={data.featureImportance} />
-                        )}
-                        </CardContent>
-                    </Card>
-                    <Card className="lg:col-span-3">
-                        <CardHeader>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
+                <Card className="lg:col-span-4">
+                    <CardHeader>
+                    <CardTitle>Feature Importance</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pl-2">
+                    {isLoading && !data.featureImportance.length ? (
+                        <Skeleton className="h-[250px] md:h-[350px]" />
+                    ) : (
+                        <FeatureImportanceChart 
+                            tunedData={data.featureImportance}
+                            baselineData={data.baselineFeatureImportance}
+                        />
+                    )}
+                    </CardContent>
+                </Card>
+                <Card className="lg:col-span-3">
+                     <CardHeader>
                         <CardTitle>
                             {state.task === 'regression' ? 'Prediction vs. Actual' : 'Confusion Matrix'}
                         </CardTitle>
-                        </CardHeader>
-                        <CardContent className="pl-2">
-                        {isLoading && !data.chartData ? (
-                            <Skeleton className="h-[250px] md:h-[350px]" />
-                        ) : state.task === 'regression' ? (
-                            <PredictionPlot data={data.chartData} />
-                        ) : (
-                            <ConfusionMatrix data={(data.metrics as ClassificationMetric)?.confusionMatrix} />
-                        )}
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
-                    <KpiCard
-                        title="Feature Importance Insights"
-                        value={data.insights}
-                        isInsight
-                        icon={<BarChart3 className="size-4 text-muted-foreground" />}
-                        isLoading={isLoading && !data.insights}
-                        cardClassName='lg:col-span-4'
-                    />
-                     <ExplainPrediction
-                        prediction={data.history[0]}
-                        featureNames={state.selectedFeatures}
-                        taskType={state.task}
-                        isLoading={isLoading}
-                        cardClassName='lg:col-span-3'
-                    />
-                </div>
+                    </CardHeader>
+                    <CardContent className="pl-2">
+                    {isLoading && (!data.chartData && !data.metrics) ? (
+                        <Skeleton className="h-[250px] md:h-[350px]" />
+                    ) : state.task === 'regression' ? (
+                        <PredictionPlot 
+                            tunedData={data.chartData}
+                            baselineData={data.baselineChartData}
+                         />
+                    ) : (
+                        <Tabs defaultValue="tuned" className="w-full">
+                            {hasBaseline && (
+                                <TabsList className="grid w-full grid-cols-2 mb-4">
+                                    <TabsTrigger value="tuned">Tuned</TabsTrigger>
+                                    <TabsTrigger value="baseline">Baseline</TabsTrigger>
+                                </TabsList>
+                            )}
+                            <TabsContent value="tuned">
+                                <ConfusionMatrix data={(data.metrics as ClassificationMetric)?.confusionMatrix} />
+                            </TabsContent>
+                            <TabsContent value="baseline">
+                                <ConfusionMatrix data={(data.baselineMetrics as ClassificationMetric)?.confusionMatrix} />
+                            </TabsContent>
+                        </Tabs>
+                    )}
+                    </CardContent>
+                </Card>
             </div>
-        </TabsContent>
-        <TabsContent value="baseline">
-            <div className="grid gap-4 md:gap-8">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
-                    <Card className="lg:col-span-4">
-                        <CardHeader>
-                        <CardTitle>Feature Importance (Baseline)</CardTitle>
-                        </CardHeader>
-                        <CardContent className="pl-2">
-                            <FeatureImportanceChart data={data.baselineFeatureImportance} />
-                        </CardContent>
-                    </Card>
-                    <Card className="lg:col-span-3">
-                        <CardHeader>
-                        <CardTitle>
-                            {state.task === 'regression' ? 'Prediction vs. Actual (Baseline)' : 'Confusion Matrix (Baseline)'}
-                        </CardTitle>
-                        </CardHeader>
-                        <CardContent className="pl-2">
-                        {state.task === 'regression' ? (
-                            <PredictionPlot data={data.baselineChartData} />
-                        ) : (
-                            <ConfusionMatrix data={(data.baselineMetrics as ClassificationMetric)?.confusionMatrix} />
-                        )}
-                        </CardContent>
-                    </Card>
-                </div>
-                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
-                    <KpiCard
-                        title="Feature Importance Insights"
-                        value={data.insights}
-                        isInsight
-                        icon={<BarChart3 className="size-4 text-muted-foreground" />}
-                        isLoading={isLoading && !data.insights}
-                        cardClassName='lg:col-span-4'
-                    />
-                     <ExplainPrediction
-                        prediction={data.history[0]}
-                        featureNames={state.selectedFeatures}
-                        taskType={state.task}
-                        isLoading={isLoading}
-                        cardClassName='lg:col-span-3'
-                    />
-                </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
+                <KpiCard
+                    title="Feature Importance Insights"
+                    value={data.insights}
+                    isInsight
+                    icon={<BarChart3 className="size-4 text-muted-foreground" />}
+                    isLoading={isLoading && !data.insights}
+                    cardClassName='lg:col-span-4'
+                />
+                    <ExplainPrediction
+                    prediction={data.history[0]}
+                    featureNames={state.selectedFeatures}
+                    taskType={state.task}
+                    isLoading={isLoading}
+                    cardClassName='lg:col-span-3'
+                />
             </div>
-        </TabsContent>
-
-      </Tabs>
+        </div>
     );
   };
 
