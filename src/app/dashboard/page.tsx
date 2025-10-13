@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, LayoutGrid, Lightbulb, GitMerge } from 'lucide-react';
+import { BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, LayoutGrid, Lightbulb, GitMerge, BrainCircuit, Activity } from 'lucide-react';
 import { useRandomForest } from '@/hooks/use-random-forest';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +23,12 @@ import { MissingValuesChart } from '@/components/missing-values-chart';
 import { PartialDependencePlot } from '@/components/partial-dependence-plot';
 import { ChartContainer } from '@/components/ui/chart';
 import { DecisionTreeSnapshot } from '@/components/decision-tree-snapshot';
+import { ResidualPlot } from '@/components/residual-plot';
+import { PredictionErrorHistogram } from '@/components/prediction-error-histogram';
+import { CumulativeErrorChart } from '@/components/cumulative-error-chart';
+import { RocCurveChart } from '@/components/roc-curve-chart';
+import { PrecisionRecallCurveChart } from '@/components/precision-recall-curve-chart';
+
 
 export default function DashboardPage() {
   const { state, data, status, actions } = useRandomForest();
@@ -132,6 +138,7 @@ export default function DashboardPage() {
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="explore">Explore</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
+            <TabsTrigger value="performance">Performance</TabsTrigger>
           </TabsList>
         </div>
         <TabsContent value="dashboard" className="py-4">
@@ -188,23 +195,13 @@ export default function DashboardPage() {
                         </CardContent>
                     </Card>
                 </div>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
-                    <KpiCard
-                        title="Feature Importance Insights"
-                        value={data.insights}
-                        isInsight
-                        icon={<BarChart3 className="size-4 text-muted-foreground" />}
-                        isLoading={isLoading && !data.insights}
-                        cardClassName='lg:col-span-4'
-                    />
-                        <ExplainPrediction
-                        prediction={data.history[0]}
-                        featureNames={state.selectedFeatures}
-                        taskType={state.task}
-                        isLoading={isLoading}
-                        cardClassName='lg:col-span-3'
-                    />
-                </div>
+                <KpiCard
+                    title="Feature Importance Insights"
+                    value={data.insights}
+                    isInsight
+                    icon={<BarChart3 className="size-4 text-muted-foreground" />}
+                    isLoading={isLoading && !data.insights}
+                />
             </div>
         </TabsContent>
         <TabsContent value="explore" className="py-4">
@@ -261,8 +258,8 @@ export default function DashboardPage() {
              </div>
         </TabsContent>
         <TabsContent value="insights" className="py-4">
-            <div className="grid grid-cols-1 gap-4 md:gap-8">
-                <Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+                <Card className='lg:col-span-2'>
                     <CardHeader>
                         <CardTitle className='flex items-center gap-2'><Lightbulb className='w-5 h-5' />Partial Dependence Plot</CardTitle>
                     </CardHeader>
@@ -282,7 +279,62 @@ export default function DashboardPage() {
                         <DecisionTreeSnapshot tree={data.decisionTree} />
                     </CardContent>
                 </Card>
+                 <ExplainPrediction
+                    prediction={data.history[0]}
+                    featureNames={state.selectedFeatures}
+                    taskType={state.task}
+                    isLoading={isLoading}
+                />
             </div>
+        </TabsContent>
+        <TabsContent value="performance" className="py-4">
+            {state.task === 'regression' ? (
+                <div className="grid grid-cols-1 gap-4 md:gap-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />Residual Plot</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                           <ResidualPlot data={data.chartData} />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><BarChart3 className='w-5 h-5' />Prediction Error Histogram</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <PredictionErrorHistogram data={data.chartData} />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><AreaChart className='w-5 h-5' />Cumulative Error Chart</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <CumulativeErrorChart data={data.chartData} />
+                        </CardContent>
+                    </Card>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />ROC Curve</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <RocCurveChart />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><Target className='w-5 h-5' />Precision-Recall Curve</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <PrecisionRecallCurveChart />
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
         </TabsContent>
       </Tabs>
     );
@@ -315,3 +367,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
+    
