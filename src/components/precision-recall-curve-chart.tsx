@@ -2,43 +2,42 @@
 
 import { Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Label, Legend } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import type { CurveDataPoint } from '@/lib/types';
 import { useMemo } from 'react';
 
-export function PrecisionRecallCurveChart() {
-    const prData = useMemo(() => {
-        // Mock data for a reasonably good classifier
-        const data = [
-            { recall: 0, precision: 1 },
-            { recall: 0.15, precision: 0.98 },
-            { recall: 0.4, precision: 0.95 },
-            { recall: 0.65, precision: 0.90 },
-            { recall: 0.8, precision: 0.85 },
-            { recall: 0.88, precision: 0.75 },
-            { recall: 0.92, precision: 0.65 },
-            { recall: 0.95, precision: 0.5 },
-            { recall: 0.98, precision: 0.3 },
-            { recall: 1, precision: 0.2 }
-        ];
-        return data;
-    }, []);
+interface PrecisionRecallCurveChartProps {
+  data: CurveDataPoint[] | null;
+}
 
+
+export function PrecisionRecallCurveChart({ data }: PrecisionRecallCurveChartProps) {
+    
     const areaUnderCurve = useMemo(() => {
+        if (!data) return '0.000';
         let auc = 0;
-        for (let i = 1; i < prData.length; i++) {
-            auc += (prData[i].recall - prData[i-1].recall) * (prData[i].precision + prData[i-1].precision) / 2;
+        for (let i = 1; i < data.length; i++) {
+            auc += (data[i].x - data[i-1].x) * (data[i].y + data[i-1].y) / 2;
         }
         return auc.toFixed(3);
-    }, [prData]);
+    }, [data]);
+
+    if (!data) {
+        return (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+                Train a classification model to see the Precision-Recall curve.
+            </div>
+        );
+    }
 
     return (
         <div className="h-[300px] w-full">
             <ChartContainer config={{}} className="h-full w-full">
                 <ResponsiveContainer>
-                    <LineChart data={prData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis 
                             type="number" 
-                            dataKey="recall" 
+                            dataKey="x" 
                             name="Recall" 
                             domain={[0, 1]}
                             tick={{ fontSize: 12 }}
@@ -47,7 +46,7 @@ export function PrecisionRecallCurveChart() {
                         </XAxis>
                         <YAxis 
                             type="number"
-                            dataKey="precision"
+                            dataKey="y"
                             name="Precision"
                             domain={[0, 1]}
                             tick={{ fontSize: 12 }}
@@ -56,7 +55,7 @@ export function PrecisionRecallCurveChart() {
                         </YAxis>
                         <Tooltip content={<ChartTooltipContent />} />
                         <Legend verticalAlign="top" formatter={() => `Model (AUC = ${areaUnderCurve})`} />
-                        <Line dataKey="precision" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="Model" />
+                        <Line dataKey="y" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="Model" />
                     </LineChart>
                 </ResponsiveContainer>
             </ChartContainer>

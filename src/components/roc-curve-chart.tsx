@@ -2,43 +2,42 @@
 
 import { Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Label, Legend } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import type { CurveDataPoint } from '@/lib/types';
 import { useMemo } from 'react';
 
-export function RocCurveChart() {
-    const rocData = useMemo(() => {
-        // Mock data for a reasonably good classifier
-        const data = [
-            { fpr: 0, tpr: 0 },
-            { fpr: 0.01, tpr: 0.15 },
-            { fpr: 0.05, tpr: 0.4 },
-            { fpr: 0.1, tpr: 0.65 },
-            { fpr: 0.2, tpr: 0.8 },
-            { fpr: 0.3, tpr: 0.88 },
-            { fpr: 0.4, tpr: 0.92 },
-            { fpr: 0.5, tpr: 0.95 },
-            { fpr: 0.7, tpr: 0.98 },
-            { fpr: 1, tpr: 1 }
-        ];
-        return data;
-    }, []);
+
+interface RocCurveChartProps {
+  data: CurveDataPoint[] | null;
+}
+
+export function RocCurveChart({ data }: RocCurveChartProps) {
 
     const areaUnderCurve = useMemo(() => {
+        if (!data) return '0.000';
         let auc = 0;
-        for (let i = 1; i < rocData.length; i++) {
-            auc += (rocData[i].fpr - rocData[i-1].fpr) * (rocData[i].tpr + rocData[i-1].tpr) / 2;
+        for (let i = 1; i < data.length; i++) {
+            auc += (data[i].x - data[i-1].x) * (data[i].y + data[i-1].y) / 2;
         }
         return auc.toFixed(3);
-    }, [rocData]);
+    }, [data]);
+
+    if (!data) {
+        return (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+                Train a classification model to see the ROC curve.
+            </div>
+        );
+    }
 
     return (
         <div className="h-[300px] w-full">
             <ChartContainer config={{}} className="h-full w-full">
                 <ResponsiveContainer>
-                    <LineChart data={rocData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis 
                             type="number" 
-                            dataKey="fpr" 
+                            dataKey="x" 
                             name="False Positive Rate" 
                             domain={[0, 1]}
                             tick={{ fontSize: 12 }}
@@ -47,7 +46,7 @@ export function RocCurveChart() {
                         </XAxis>
                         <YAxis 
                             type="number"
-                            dataKey="tpr"
+                            dataKey="y"
                             name="True Positive Rate"
                             domain={[0, 1]}
                             tick={{ fontSize: 12 }}
@@ -56,8 +55,8 @@ export function RocCurveChart() {
                         </YAxis>
                         <Tooltip content={<ChartTooltipContent />} />
                         <Legend verticalAlign="top" formatter={() => `Model (AUC = ${areaUnderCurve})`} />
-                        <Line dataKey="tpr" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="Model" />
-                        <Line dataKey="fpr" stroke="hsl(var(--muted-foreground))" strokeDasharray="5 5" dot={false} isAnimationActive={false} name="Random Chance" />
+                        <Line dataKey="y" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} name="Model" />
+                        <Line dataKey="x" stroke="hsl(var(--muted-foreground))" strokeDasharray="5 5" dot={false} isAnimationActive={false} name="Random Chance" />
                     </LineChart>
                 </ResponsiveContainer>
             </ChartContainer>

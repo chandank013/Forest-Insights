@@ -8,6 +8,8 @@ import type {
   Prediction,
   ChartDataPoint,
   DecisionTree,
+  CurveDataPoint,
+  PdpData,
 } from '@/lib/types';
 import housingDataset from '@/lib/data/california-housing.json';
 import wineDataset from '@/lib/data/wine-quality.json';
@@ -86,6 +88,9 @@ type Data = {
   baselineFeatureImportance: FeatureImportance[];
   baselineChartData: ChartDataPoint[] | null;
   decisionTree: DecisionTree | null;
+  rocCurveData: CurveDataPoint[] | null;
+  prCurveData: CurveDataPoint[] | null;
+  pdpData: PdpData | null;
 };
 
 type Action =
@@ -123,30 +128,30 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-// Simple pseudo-random number generator for deterministic results
 const pseudoRandom = (seed: number) => {
     let x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
 };
 
 const generateMockTree = (features: string[], depth: number = 0, maxDepth: number = 2, seed = 1): DecisionTree => {
-    if (depth === maxDepth || pseudoRandom(seed) < 0.4) {
-        const value = pseudoRandom(seed * 2) > 0.5 ? 'Class 1' : 'Class 0';
+    const nodeSeed = seed + depth * 10;
+    if (depth === maxDepth || pseudoRandom(nodeSeed) < 0.4) {
+        const value = pseudoRandom(nodeSeed * 2) > 0.5 ? 'Class 1' : 'Class 0';
         return {
             type: 'leaf',
             value,
-            samples: Math.floor(pseudoRandom(seed * 3) * 50 + 10)
+            samples: Math.floor(pseudoRandom(nodeSeed * 3) * 50 + 10)
         };
     }
 
-    const feature = features[Math.floor(pseudoRandom(seed * 4) * features.length)];
-    const threshold = (pseudoRandom(seed * 5) * 10 + 5).toFixed(2);
+    const feature = features[Math.floor(pseudoRandom(nodeSeed * 4) * features.length)];
+    const threshold = (pseudoRandom(nodeSeed * 5) * 10 + 5).toFixed(2);
     
     return {
         type: 'node',
         feature,
         threshold: parseFloat(threshold),
-        samples: Math.floor(pseudoRandom(seed * 6) * 200 + 50),
+        samples: Math.floor(pseudoRandom(nodeSeed * 6) * 200 + 50),
         children: [
             generateMockTree(features, depth + 1, maxDepth, seed + 1),
             generateMockTree(features, depth + 1, maxDepth, seed + 2)
@@ -154,14 +159,50 @@ const generateMockTree = (features: string[], depth: number = 0, maxDepth: numbe
     };
 };
 
-// Function to create a deterministic seed from hyperparameters
-const createSeed = (hyperparameters: Hyperparameters) => {
+const createSeed = (hyperparameters: Hyperparameters, salt: string = '') => {
     let seed = 0;
-    seed += hyperparameters.n_estimators;
-    seed += hyperparameters.max_depth * 100;
-    seed += hyperparameters.min_samples_split * 1000;
-    seed += hyperparameters.min_samples_leaf * 10000;
+    const str = JSON.stringify(hyperparameters) + salt;
+    for (let i = 0; i < str.length; i++) {
+        seed = (seed << 5) - seed + str.charCodeAt(i);
+        seed |= 0; 
+    }
     return seed;
+};
+
+const generateCurveData = (seed: number): CurveDataPoint[] => {
+    const data: CurveDataPoint[] = [{ x: 0, y: 0 }];
+    let lastY = 0;
+    for (let i = 1; i <= 10; i++) {
+        lastY += pseudoRandom(seed + i) * 0.1;
+        data.push({ x: i / 10, y: Math.min(lastY, 1) });
+    }
+    data.push({ x: 1, y: 1 });
+    return data.sort((a,b) => a.x - b.x);
+};
+
+const generatePdpData = (features: string[], dataset: Record<string, any>[], task: TaskType, seed: number): PdpData => {
+    const pdp: PdpData = {};
+    features.forEach((feature, i) => {
+        const featureSeed = seed + i * 100;
+        const featureData = dataset.map(row => row[feature]).filter(val => typeof val === 'number') as number[];
+        if(featureData.length === 0) return;
+
+        const sortedUniqueValues = [...new Set(featureData)].sort((a, b) => a - b);
+        const basePrediction = task === 'regression' ? 2.5 : 0.6;
+        
+        const effect = sortedUniqueValues.map((val, j) => {
+            const pointSeed = featureSeed + j;
+            const noise = (pseudoRandom(pointSeed) - 0.5) * 0.1;
+            const trend = Math.sin(j / sortedUniqueValues.length * Math.PI * 2) * (task === 'regression' ? 0.5 : 0.2);
+            return basePrediction + trend + noise;
+        });
+
+        pdp[feature] = sortedUniqueValues.map((value, index) => ({
+            featureValue: value,
+            prediction: effect[index],
+        }));
+    });
+    return pdp;
 };
 
 
@@ -175,9 +216,12 @@ const mockTrainModel = async (
   const { task, selectedFeatures, targetColumn } = state;
   const hyperparameters = isBaseline ? BASELINE_HYPERPARAMETERS : state.hyperparameters;
 
-  const seed = createSeed(hyperparameters);
+  const seed = createSeed(hyperparameters, task);
 
   let metrics: Data['metrics'];
+  let rocCurveData: CurveDataPoint[] | null = null;
+  let prCurveData: CurveDataPoint[] | null = null;
+
   if (task === 'regression') {
      const baseR2 = 0.65 + (hyperparameters.max_depth / 100) + (hyperparameters.n_estimators / 5000);
     const baseRmse = 0.5 - (hyperparameters.max_depth / 150) - (hyperparameters.n_estimators / 7000);
@@ -197,6 +241,8 @@ const mockTrainModel = async (
         [Math.floor(2 + pseudoRandom(seed * 6) * 5), Math.floor(90 + pseudoRandom(seed * 7) * 10)],
       ],
     };
+    rocCurveData = generateCurveData(seed + 1000);
+    prCurveData = generateCurveData(seed + 2000).map(p => ({x: p.x, y: 1-p.y})).sort((a,b) => a.x - b.x); // Invert for PR curve shape
   }
 
   const featureImportance = selectedFeatures
@@ -215,7 +261,6 @@ const mockTrainModel = async (
        prediction = actual * (0.8 + pseudoRandom(predSeed) * 0.4);
     } else {
         const threshold = 10.5;
-        // Deterministic prediction based on alcohol and a pseudo-random factor
         prediction = (row['alcohol'] + pseudoRandom(predSeed) * 2) > threshold ? 1 : 0;
     }
 
@@ -235,8 +280,9 @@ const mockTrainModel = async (
   
   const chartData = history.map(p => ({ actual: p.actual, prediction: p.prediction }));
   const decisionTree = generateMockTree(selectedFeatures, 0, 2, seed);
+  const pdpData = generatePdpData(selectedFeatures, dataset, task, seed);
 
-  return { metrics, featureImportance, history, chartData, decisionTree };
+  return { metrics, featureImportance, history, chartData, decisionTree, rocCurveData, prCurveData, pdpData };
 };
 
 export const useRandomForest = () => {
@@ -252,6 +298,9 @@ export const useRandomForest = () => {
     baselineFeatureImportance: [],
     baselineChartData: null,
     decisionTree: null,
+    rocCurveData: null,
+    prCurveData: null,
+    pdpData: null,
   });
   const [status, setStatus] = useState<Status>('idle');
   const { toast } = useToast();
@@ -259,7 +308,16 @@ export const useRandomForest = () => {
 
   useEffect(() => {
     const newDataset = state.task === 'regression' ? housingDataset : wineDataset;
-    setData(d => ({...d, dataset: newDataset, baselineMetrics: null, metrics: null, decisionTree: null}));
+    setData(d => ({
+        ...d,
+        dataset: newDataset,
+        metrics: null,
+        baselineMetrics: null,
+        decisionTree: null,
+        rocCurveData: null,
+        prCurveData: null,
+        pdpData: null,
+    }));
     dispatch({ type: 'SET_HYPERPARAMETERS', payload: BASELINE_HYPERPARAMETERS });
   }, [state.task]);
 
@@ -274,17 +332,16 @@ export const useRandomForest = () => {
         const trainedData = await mockTrainModel(state, currentDataset, isBaseline);
         
         if (isBaseline) {
-            // When training baseline, set both baseline and tuned model data to the same values
             setData(d => ({ 
                 ...d, 
                 ...trainedData,
-                metrics: trainedData.metrics, // Also set main metrics
-                featureImportance: trainedData.featureImportance, // Also set main feature importance
-                chartData: trainedData.chartData, // Also set main chart data
+                metrics: trainedData.metrics,
+                featureImportance: trainedData.featureImportance,
+                chartData: trainedData.chartData,
                 baselineMetrics: trainedData.metrics, 
                 baselineFeatureImportance: trainedData.featureImportance, 
                 baselineChartData: trainedData.chartData,
-                insights: '' // Clear insights when training baseline
+                insights: '',
              }));
         } else {
             setData(d => ({ ...d, ...trainedData, insights: '' }));
@@ -331,16 +388,11 @@ export const useRandomForest = () => {
 
   useEffect(() => {
     if (status === 'idle' && !data.baselineMetrics) return;
-
-    // Do not auto-train if there is no baseline model trained yet,
-    // unless it's the very first action.
-    if (status === 'success' && !data.baselineMetrics && data.metrics) return;
-
+    if (JSON.stringify(state.hyperparameters) === JSON.stringify(BASELINE_HYPERPARAMETERS)) return;
 
     setIsDebouncing(true);
     const handler = setTimeout(() => {
         setIsDebouncing(false);
-        // Do not auto-train if there's no baseline. The user must click a button first.
         if (data.baselineMetrics) {
            trainModel(false);
         }
@@ -354,3 +406,5 @@ export const useRandomForest = () => {
 
   return { state, data, status, actions };
 };
+
+    

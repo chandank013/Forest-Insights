@@ -60,3 +60,19 @@ export type DecisionNode = {
 };
 
 export type DecisionTree = DecisionNode | LeafNode;
+
+export type CurveDataPoint = {
+  x: number;
+  y: number;
+};
+
+export type PdpPoint = {
+  featureValue: number;
+  prediction: number;
+};
+
+export type PdpData = {
+  [feature: string]: PdpPoint[];
+};
+
+    

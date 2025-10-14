@@ -165,7 +165,6 @@ export default function DashboardPage() {
                             <FeatureImportanceChart 
                                 tunedData={data.featureImportance}
                                 baselineData={data.baselineFeatureImportance}
-                                showTuned={isTuned}
                             />
                         )}
                         </CardContent>
@@ -186,7 +185,7 @@ export default function DashboardPage() {
                              />
                         ) : (
                             <Tabs defaultValue="tuned" className="w-full">
-                                {hasBaseline && (
+                                {hasBaseline && isTuned && (
                                     <TabsList className="grid w-full grid-cols-2 mb-4">
                                         <TabsTrigger value="tuned">Tuned</TabsTrigger>
                                         <TabsTrigger value="baseline">Baseline</TabsTrigger>
@@ -286,6 +285,7 @@ export default function DashboardPage() {
                             dataset={data.dataset}
                             features={state.selectedFeatures}
                             task={state.task}
+                            pdpData={data.pdpData}
                         />
                     </CardContent>
                 </Card>
@@ -334,7 +334,7 @@ export default function DashboardPage() {
                             <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />ROC Curve</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <RocCurveChart />
+                            <RocCurveChart data={data.rocCurveData} />
                         </CardContent>
                     </Card>
                     <Card>
@@ -342,7 +342,7 @@ export default function DashboardPage() {
                             <CardTitle className='flex items-center gap-2'><Target className='w-5 h-5' />Precision-Recall Curve</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <PrecisionRecallCurveChart />
+                            <PrecisionRecallCurveChart data={data.prCurveData} />
                         </CardContent>
                     </Card>
                 </div>
@@ -386,3 +386,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
+    
