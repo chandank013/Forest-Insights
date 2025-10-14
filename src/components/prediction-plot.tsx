@@ -14,9 +14,14 @@ export function PredictionPlot({ tunedData, baselineData }: PredictionPlotProps)
     
     const allPoints = [...(tunedData || []), ...(baselineData || [])];
 
-    const domain = [
+    const domain: [number, number] = [
         Math.min(...allPoints.map(d => d.actual), ...allPoints.map(d => d.prediction)),
         Math.max(...allPoints.map(d => d.actual), ...allPoints.map(d => d.prediction))
+    ];
+
+    const idealLineData = [
+        { x: domain[0], y: domain[0] },
+        { x: domain[1], y: domain[1] },
     ];
     
   return (
@@ -43,7 +48,7 @@ export function PredictionPlot({ tunedData, baselineData }: PredictionPlotProps)
               />
               <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
               <Legend />
-              <Line type="monotone" dataKey="actual" stroke="hsl(var(--muted-foreground))" strokeWidth={2} dot={false} activeDot={false} isAnimationActive={false} name="Ideal" />
+              <Line data={idealLineData} dataKey="y" stroke="hsl(var(--muted-foreground))" strokeWidth={2} dot={false} activeDot={false} isAnimationActive={false} name="Ideal" />
               {baselineData && <Scatter name="Baseline" data={baselineData} fill="hsl(var(--secondary-foreground))" />}
               {tunedData && <Scatter name="Tuned" data={tunedData} fill="hsl(var(--primary))" />}
             </ScatterChart>
