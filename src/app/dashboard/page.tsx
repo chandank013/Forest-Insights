@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -104,7 +105,7 @@ export default function DashboardPage() {
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="flex items-center justify-center rounded-full bg-primary/10 p-6">
-                <Image src="/logo.png" alt="Logo" width={40} height={40} />
+                <TreePine className="w-10 h-10 text-primary" />
             </div>
             <h3 className="text-2xl font-bold tracking-tight">Welcome to Forest Insights</h3>
             <p className="text-muted-foreground">
@@ -260,7 +261,7 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={{}} className="h-auto w-full">
-                        <CorrelationHeatmap dataset={data.dataset} />
+                        <CorrelationHeatmap dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
                       </ChartContainer>
                     </CardContent>
                 </Card>

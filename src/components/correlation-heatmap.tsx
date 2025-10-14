@@ -13,14 +13,22 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useMemo } from "react";
+import type { TaskType } from "@/lib/types";
 
 interface CorrelationHeatmapProps {
     dataset: Record<string, any>[];
+    task: TaskType;
+    targetColumn: string;
 }
 
-function calculateCorrelationMatrix(dataset: Record<string, any>[]) {
+function calculateCorrelationMatrix(dataset: Record<string, any>[], task: TaskType, targetColumn: string) {
     const keys = Object.keys(dataset[0] || {});
-    const numericKeys = keys.filter(key => typeof dataset[0][key] === 'number');
+    
+    const numericKeys = keys.filter(key => {
+        const isTargetAndClassification = task === 'classification' && key === targetColumn;
+        return typeof dataset[0][key] === 'number' && !isTargetAndClassification;
+    });
+    
     const n = dataset.length;
 
     const means = numericKeys.reduce((acc, key) => {
@@ -76,8 +84,8 @@ function getColor(value: number) {
   return `rgba(${R}, ${G}, ${B}, ${alpha})`;
 }
 
-export function CorrelationHeatmap({ dataset }: CorrelationHeatmapProps) {
-    const correlationMatrix = useMemo(() => calculateCorrelationMatrix(dataset), [dataset]);
+export function CorrelationHeatmap({ dataset, task, targetColumn }: CorrelationHeatmapProps) {
+    const correlationMatrix = useMemo(() => calculateCorrelationMatrix(dataset, task, targetColumn), [dataset, task, targetColumn]);
     const headers = Object.keys(correlationMatrix);
 
     return (
