@@ -34,12 +34,14 @@ export function MissingValuesChart({ dataset }: MissingValuesChartProps) {
     const chartData = missingData.filter(d => d['Missing (%)'] > 0);
 
     if (chartData.length === 0) {
-        return <p className="text-center text-muted-foreground">No missing values found in the dataset.</p>;
+        return <div className="flex items-center justify-center h-full min-h-[100px] text-muted-foreground">
+            <p className="text-center">No missing values found in the dataset.</p>
+        </div>;
     }
     
     return (
-        <div className="h-[300px] w-full">
-            <ChartContainer config={{}} className="h-full w-full">
+        <div className="w-full">
+            <ChartContainer config={{}} className="h-[300px] w-full">
                 <BarChart
                   data={chartData}
                   layout="vertical"

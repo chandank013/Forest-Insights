@@ -36,7 +36,7 @@ export function PredictionPlot({ tunedData, baselineData }: PredictionPlotProps)
                 name="Actual" 
                 domain={domain}
                 tick={{ fontSize: 12 }} 
-                label={{ value: 'Actual Values', position: 'insideBottom', offset: -15, fontSize: 12 }} 
+                label={{ value: 'Actual Values', position: 'insideBottom', offset: -40, fontSize: 12 }} 
               />
               <YAxis 
                 type="number" 
