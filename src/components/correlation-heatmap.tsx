@@ -2,9 +2,6 @@
 'use client';
 
 import {
-  ChartContainer
-} from "@/components/ui/chart"
-import {
   Table,
   TableBody,
   TableCell,
@@ -89,13 +86,13 @@ export function CorrelationHeatmap({ dataset, task, targetColumn }: CorrelationH
     const headers = Object.keys(correlationMatrix);
 
     return (
-        <ChartContainer config={{}} className="h-auto w-full">
+        <div className="overflow-x-auto">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="min-h-[100px]"></TableHead>
+                        <TableHead className="min-w-[100px]"></TableHead>
                         {headers.map(header => (
-                            <TableHead key={header} className="text-center transform -rotate-45 min-h-[100px] h-24">
+                            <TableHead key={header} className="text-center transform -rotate-45 h-24 min-h-[100px]">
                                 {header}
                             </TableHead>
                         ))}
@@ -121,6 +118,6 @@ export function CorrelationHeatmap({ dataset, task, targetColumn }: CorrelationH
                     ))}
                 </TableBody>
             </Table>
-        </ChartContainer>
+        </div>
     );
 }
