@@ -255,14 +255,12 @@ export default function DashboardPage() {
                       </ChartContainer>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="mb-8">
                     <CardHeader>
                         <CardTitle>Correlation Heatmap</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ChartContainer config={{}} className="h-auto w-full">
                         <CorrelationHeatmap dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
-                      </ChartContainer>
                     </CardContent>
                 </Card>
                  <Card>
