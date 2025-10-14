@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -30,7 +29,7 @@ export function MissingValuesChart({ dataset }: MissingValuesChartProps) {
             };
         });
     }, [dataset]);
-
+    
     return (
         <div className="w-full h-[300px]">
             <ChartContainer config={{}} className="h-full w-full">
