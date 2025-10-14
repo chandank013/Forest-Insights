@@ -18,7 +18,7 @@ const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3
 export function PairPlot({ dataset, targetColumn, task }: PairPlotProps) {
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     
-    const allNumericFeatures = useMemo(() => Object.keys(dataset[0] || {}).filter(key => typeof dataset[0][key] === 'number'), [dataset]);
+    const allNumericFeatures = useMemo(() => Object.keys(dataset[0] || {}).filter(key => typeof dataset[0][key] === 'number' && key !== targetColumn), [dataset, targetColumn]);
 
     const handleFeatureChange = (index: number, value: string) => {
         const newFeatures = [...selectedFeatures];
@@ -29,7 +29,7 @@ export function PairPlot({ dataset, targetColumn, task }: PairPlotProps) {
     const plotData = useMemo(() => {
         if (task !== 'classification') return dataset;
         
-        const classValues = Array.from(new Set(dataset.map(d => d[targetColumn])));
+        const classValues = Array.from(new Set(dataset.map(d => d[targetColumn]))).sort();
         return dataset.map(d => ({
             ...d,
             color: COLORS[classValues.indexOf(d[targetColumn]) % COLORS.length]
