@@ -77,7 +77,7 @@ export function PairPlot({ dataset, targetColumn, task }: PairPlotProps) {
                                             <Label value={yFeature} angle={-90} position="left" offset={10} fontSize={12} style={{ textAnchor: 'middle' }}/>
                                         </YAxis>
                                         <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<ChartTooltipContent />} />
-                                        <Scatter name="Data" data={plotData} fill={task === 'classification' ? (d) => d.color : 'hsl(var(--primary))'} shape="circle" />
+                                        <Scatter name="Data" data={plotData} fill={'hsl(var(--primary))'} shape="circle" />
                                     </ScatterChart>
                                 </ResponsiveContainer>
                             </ChartContainer>
