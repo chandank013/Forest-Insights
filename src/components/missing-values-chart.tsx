@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import {
   ChartContainer,
   ChartTooltipContent,
@@ -32,22 +32,24 @@ export function MissingValuesChart({ dataset }: MissingValuesChartProps) {
     }, [dataset]);
 
     return (
-        <div className="w-full">
-            <ChartContainer config={{}} className="h-[300px] w-full">
-                <BarChart
-                  data={missingData}
-                  layout="vertical"
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                    <XAxis type="number" domain={[0, 100]} label={{ value: 'Percentage Missing', position: 'insideBottom', offset: -5 }}/>
-                    <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} width={100} />
-                    <Tooltip
-                        cursor={{fill: 'hsl(var(--accent))'}}
-                        content={<ChartTooltipContent formatter={(value) => `${(value as number).toFixed(2)}%`} />}
-                    />
-                    <Bar dataKey="Missing (%)" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
-                </BarChart>
+        <div className="w-full h-[300px]">
+            <ChartContainer config={{}} className="h-full w-full">
+                <ResponsiveContainer>
+                    <BarChart
+                      data={missingData}
+                      layout="vertical"
+                      margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                        <XAxis type="number" domain={[0, 100]} label={{ value: 'Percentage Missing', position: 'insideBottom', offset: -5 }}/>
+                        <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} />
+                        <Tooltip
+                            cursor={{fill: 'hsl(var(--accent))'}}
+                            content={<ChartTooltipContent formatter={(value) => `${(value as number).toFixed(2)}%`} />}
+                        />
+                        <Bar dataKey="Missing (%)" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+                    </BarChart>
+                </ResponsiveContainer>
             </ChartContainer>
         </div>
     );
