@@ -31,14 +31,11 @@ export function MissingValuesChart({ dataset }: MissingValuesChartProps) {
         });
     }, [dataset]);
 
-    const chartData = missingData;
-    const hasMissingValues = missingData.some(d => d['Missing (%)'] > 0);
-    
     return (
         <div className="w-full">
             <ChartContainer config={{}} className="h-[300px] w-full">
                 <BarChart
-                  data={chartData}
+                  data={missingData}
                   layout="vertical"
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
@@ -52,11 +49,6 @@ export function MissingValuesChart({ dataset }: MissingValuesChartProps) {
                     <Bar dataKey="Missing (%)" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
                 </BarChart>
             </ChartContainer>
-            {!hasMissingValues && (
-                <p className="text-center text-sm text-muted-foreground mt-2">
-                    No missing values found in the dataset.
-                </p>
-            )}
         </div>
     );
 }
