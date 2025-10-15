@@ -1,23 +1,41 @@
 'use client';
 
 import React from 'react';
-import type { DecisionTree, DecisionNode, LeafNode } from '@/lib/types';
+import type { DecisionTree, DecisionNode, LeafNode, TaskType } from '@/lib/types';
 
 interface NodeDisplayProps {
     node: DecisionNode | LeafNode;
+    taskType: TaskType;
 }
 
-const NodeDisplay: React.FC<NodeDisplayProps> = ({ node }) => {
+const NodeDisplay: React.FC<NodeDisplayProps> = ({ node, taskType }) => {
     const isLeaf = node.type === 'leaf';
-    const text = isLeaf ? `Value: ${node.value}` : `${node.feature} <= ${node.threshold}`;
-    const samples = `Samples: ${node.samples}`;
 
+    const getRegressionDisplay = (n: DecisionNode | LeafNode) => {
+        const value = `Value: ${n.value[0].toFixed(2)}`;
+        if (isLeaf) return value;
+        const criterion = `MSE: ${(n as DecisionNode).impurity.toFixed(2)}`;
+        return `${criterion}\n${value}`;
+    };
+
+    const getClassificationDisplay = (n: DecisionNode | LeafNode) => {
+        const values = `Samples: [${n.value.join(', ')}]`;
+        if (isLeaf) return `Class: ${n.value.indexOf(Math.max(...n.value))}\n${values}`;
+        const criterion = `Gini: ${(n as DecisionNode).impurity.toFixed(2)}`;
+        return `${criterion}\n${values}`;
+    };
+
+    const text = isLeaf ? '' : `${node.feature} <= ${'threshold' in node ? node.threshold.toFixed(2) : ''}`;
+    const samples = `Total Samples: ${node.samples}`;
+    const valueDisplay = taskType === 'regression' ? getRegressionDisplay(node) : getClassificationDisplay(node);
+    
     return (
         <div className={`
             border-2 border-primary rounded-lg p-3 text-center shadow-md w-48
             ${isLeaf ? 'bg-green-100 dark:bg-green-900/50 border-green-500' : 'bg-card'}
         `}>
-            <p className="text-sm font-medium truncate">{text}</p>
+            {text && <p className="text-sm font-medium">{text}</p>}
+            <p className="text-xs text-muted-foreground whitespace-pre-line">{valueDisplay}</p>
             <p className="text-xs text-muted-foreground">{samples}</p>
         </div>
     );
@@ -34,12 +52,13 @@ const Edge = ({ isLeft }: { isLeft: boolean }) => (
 
 interface TreeBranchProps {
     node: DecisionNode;
+    taskType: TaskType;
 }
 
-const TreeBranch: React.FC<TreeBranchProps> = ({ node }) => {
+const TreeBranch: React.FC<TreeBranchProps> = ({ node, taskType }) => {
     return (
         <div className="flex flex-col items-center">
-            <NodeDisplay node={node} />
+            <NodeDisplay node={node} taskType={taskType} />
             {node.children && (
                 <>
                     <div className="flex w-full">
@@ -50,8 +69,8 @@ const TreeBranch: React.FC<TreeBranchProps> = ({ node }) => {
                         {node.children.map((child, index) => (
                             <div key={index} className="flex flex-col items-center">
                                 {child.type === 'node'
-                                    ? <TreeBranch node={child as DecisionNode} />
-                                    : <NodeDisplay node={child} />
+                                    ? <TreeBranch node={child as DecisionNode} taskType={taskType} />
+                                    : <NodeDisplay node={child} taskType={taskType} />
                                 }
                             </div>
                         ))}
@@ -62,7 +81,7 @@ const TreeBranch: React.FC<TreeBranchProps> = ({ node }) => {
     );
 };
 
-export function DecisionTreeSnapshot({ tree }: { tree: DecisionTree | null }) {
+export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | null, taskType: TaskType }) {
      if (!tree) {
         return (
             <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -78,8 +97,8 @@ export function DecisionTreeSnapshot({ tree }: { tree: DecisionTree | null }) {
             </p>
             <div className="font-sans flex justify-center">
                {tree.type === 'node'
-                    ? <TreeBranch node={tree as DecisionNode} />
-                    : <NodeDisplay node={tree} />
+                    ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
+                    : <NodeDisplay node={tree} taskType={taskType} />
                 }
             </div>
         </div>

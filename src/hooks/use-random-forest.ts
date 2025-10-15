@@ -133,28 +133,48 @@ const pseudoRandom = (seed: number) => {
     return x - Math.floor(x);
 };
 
-const generateMockTree = (features: string[], depth: number = 0, maxDepth: number = 2, seed = 1): DecisionTree => {
+const generateMockTree = (features: string[], task: TaskType, depth: number = 0, maxDepth: number = 2, seed = 1): DecisionTree => {
     const nodeSeed = seed + depth * 10;
-    if (depth === maxDepth || pseudoRandom(nodeSeed) < 0.4) {
-        const value = pseudoRandom(nodeSeed * 2) > 0.5 ? 'Class 1' : 'Class 0';
+    const isLeaf = depth === maxDepth || pseudoRandom(nodeSeed) < 0.4;
+    const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
+
+    let value: number[];
+    let impurity: number;
+
+    if (task === 'regression') {
+        const baseValue = pseudoRandom(nodeSeed * 2) * 3 + 1; // e.g. 1-4
+        impurity = pseudoRandom(nodeSeed * 3); // MSE
+        value = [baseValue];
+    } else { // classification
+        const class1Samples = Math.floor(pseudoRandom(nodeSeed * 2) * samples);
+        const class0Samples = samples - class1Samples;
+        const p0 = class0Samples / samples;
+        const p1 = class1Samples / samples;
+        impurity = 1 - (p0**2 + p1**2); // Gini
+        value = [class0Samples, class1Samples];
+    }
+
+    if (isLeaf) {
         return {
             type: 'leaf',
-            value,
-            samples: Math.floor(pseudoRandom(nodeSeed * 3) * 50 + 10)
+            value: value,
+            samples: samples
         };
     }
 
     const feature = features[Math.floor(pseudoRandom(nodeSeed * 4) * features.length)];
-    const threshold = (pseudoRandom(nodeSeed * 5) * 10 + 5).toFixed(2);
+    const threshold = pseudoRandom(nodeSeed * 5) * 10 + 5;
     
     return {
         type: 'node',
         feature,
-        threshold: parseFloat(threshold),
-        samples: Math.floor(pseudoRandom(nodeSeed * 6) * 200 + 50),
+        threshold: threshold,
+        samples: samples,
+        impurity,
+        value,
         children: [
-            generateMockTree(features, depth + 1, maxDepth, seed + 1),
-            generateMockTree(features, depth + 1, maxDepth, seed + 2)
+            generateMockTree(features, task, depth + 1, maxDepth, seed + 1),
+            generateMockTree(features, task, depth + 1, maxDepth, seed + 2)
         ]
     };
 };
@@ -174,34 +194,36 @@ const generateRocCurveData = (seed: number): CurveDataPoint[] => {
     let lastY = 0;
     for (let i = 1; i <= 10; i++) {
         const x = i / 10;
-        const jump = pseudoRandom(seed + i) * (1 - lastY) * 0.5;
-        lastY = Math.min(lastY + jump, 1);
-        if (lastY < x) {
-          lastY = x + pseudoRandom(seed - i) * (1-x)*0.2;
+        // Ensure TPR (y) is always >= FPR (x) and is monotonically increasing
+        let newY = lastY + pseudoRandom(seed + i) * (1 - lastY) * 0.5;
+        if (newY < x) {
+          newY = x + pseudoRandom(seed - i) * (1-x)*0.2;
         }
-        data.push({ x: x, y: lastY });
+        lastY = Math.min(newY, 1);
+        data.push({ x, y: lastY });
     }
     data.push({ x: 1, y: 1 });
-    return data.sort((a,b) => a.x - b.x);
+    // Sort by x to be safe
+    return data.sort((a,b) => a.x - b.x).map(p => ({ x: p.x, y: Math.max(p.x, p.y)}));
 };
 
 const generatePrCurveData = (seed: number): CurveDataPoint[] => {
     const data: CurveDataPoint[] = [{ x: 0, y: 1.0 }];
     let lastY = 1.0;
+    const baselinePrecision = 0.5 + pseudoRandom(seed) * 0.2; // A baseline for a decent model
+
     for (let i = 1; i <= 10; i++) {
-        const x = i / 10;
-        // The drop in precision is not linear. It tends to drop more as recall increases.
-        const dropFactor = 1 + Math.pow(x, 2); 
-        const drop = pseudoRandom(seed + i) * lastY * 0.2 * dropFactor;
-        lastY = Math.max(0, lastY - drop);
-        data.push({ x, y: lastY });
+        const x = i / 10; // Recall
+        // Precision tends to drop as recall increases. The drop is not linear.
+        const dropFactor = Math.pow(x, 1.5);
+        const drop = pseudoRandom(seed + i) * 0.3 * dropFactor;
+        lastY = Math.max(baselinePrecision - drop, 0.1);
+        data.push({ x, y: Math.min(1, lastY + pseudoRandom(seed-i)*0.1) });
     }
-    // Make sure the curve ends at a reasonable point
-    if (data[data.length - 1].y > 0.1) {
-        data.push({ x: 1, y: data[data.length - 1].y * (0.5 + pseudoRandom(seed) * 0.4) });
-    } else {
-        data.push({x: 1, y: 0.1});
-    }
+    
+    // Ensure the curve ends at a reasonable point.
+    data.push({ x: 1, y: Math.max(0.1, data[data.length-1].y - pseudoRandom(seed+11)*0.2) });
+
     return data.sort((a,b) => a.x - b.x);
 };
 
@@ -304,7 +326,7 @@ const mockTrainModel = async (
   });
   
   const chartData = history.map(p => ({ actual: p.actual, prediction: p.prediction }));
-  const decisionTree = generateMockTree(selectedFeatures, 0, 2, seed);
+  const decisionTree = generateMockTree(selectedFeatures, task, 0, 2, seed);
   const pdpData = generatePdpData(selectedFeatures, dataset, task, seed);
 
   return { metrics, featureImportance, history, chartData, decisionTree, rocCurveData, prCurveData, pdpData };

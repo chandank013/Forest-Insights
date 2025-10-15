@@ -47,7 +47,7 @@ export type ChartDataPoint = {
 
 export type LeafNode = {
   type: 'leaf';
-  value: string | number;
+  value: number[]; // For regression: [value]. For classification: [class1_count, class2_count, ...]
   samples: number;
 };
 
@@ -56,6 +56,8 @@ export type DecisionNode = {
   feature: string;
   threshold: number;
   samples: number;
+  impurity: number;
+  value: number[]; // For regression: [value]. For classification: [class1_count, class2_count, ...]
   children: [DecisionTree, DecisionTree];
 };
 

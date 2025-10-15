@@ -302,7 +302,7 @@ export default function DashboardPage() {
                         <CardDescription>Visualizes a single decision tree from the forest to show how splits are made.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <DecisionTreeSnapshot tree={data.decisionTree} />
+                        <DecisionTreeSnapshot tree={data.decisionTree} taskType={state.task} />
                     </CardContent>
                 </Card>
             </div>
