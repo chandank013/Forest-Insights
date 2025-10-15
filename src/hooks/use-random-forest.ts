@@ -174,7 +174,6 @@ const generateRocCurveData = (seed: number): CurveDataPoint[] => {
     let lastY = 0;
     for (let i = 1; i <= 10; i++) {
         const x = i / 10;
-        // Ensure y is always >= x and non-decreasing
         const jump = pseudoRandom(seed + i) * (1 - lastY) * 0.5;
         lastY = Math.min(lastY + jump, 1);
         if (lastY < x) {
@@ -187,15 +186,22 @@ const generateRocCurveData = (seed: number): CurveDataPoint[] => {
 };
 
 const generatePrCurveData = (seed: number): CurveDataPoint[] => {
-    const data: CurveDataPoint[] = [{ x: 0, y: 1 }];
-    let lastY = 1;
+    const data: CurveDataPoint[] = [{ x: 0, y: 1.0 }];
+    let lastY = 1.0;
     for (let i = 1; i <= 10; i++) {
         const x = i / 10;
-        const drop = pseudoRandom(seed + i) * lastY * 0.2;
+        // The drop in precision is not linear. It tends to drop more as recall increases.
+        const dropFactor = 1 + Math.pow(x, 2); 
+        const drop = pseudoRandom(seed + i) * lastY * 0.2 * dropFactor;
         lastY = Math.max(0, lastY - drop);
-        data.push({ x: x, y: lastY });
+        data.push({ x, y: lastY });
     }
-    data.push({ x: 1, y: data[data.length-1].y * pseudoRandom(seed) });
+    // Make sure the curve ends at a reasonable point
+    if (data[data.length - 1].y > 0.1) {
+        data.push({ x: 1, y: data[data.length - 1].y * (0.5 + pseudoRandom(seed) * 0.4) });
+    } else {
+        data.push({x: 1, y: 0.1});
+    }
     return data.sort((a,b) => a.x - b.x);
 };
 
