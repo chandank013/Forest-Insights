@@ -9,6 +9,42 @@ interface NodeDisplayProps {
     taskType: TaskType;
 }
 
+const NodeDescription: React.FC<NodeDisplayProps> = ({ node, taskType }) => {
+    const isLeaf = node.type === 'leaf';
+
+    if (taskType === 'regression') {
+        return (
+            <div className='space-y-1 text-xs'>
+                {isLeaf ? (
+                    <p>This is a leaf node, representing a final prediction.</p>
+                ) : (
+                    <p>This node splits the data based on the feature <span className='font-semibold'>{(node as DecisionNode).feature}</span>.</p>
+                )}
+                <p>Average predicted value: <span className='font-semibold'>{node.value[0].toFixed(2)}</span></p>
+                {!isLeaf && <p>MSE (impurity): <span className='font-semibold'>{(node as DecisionNode).impurity.toFixed(2)}</span></p>}
+                <p>Samples in this node: <span className='font-semibold'>{node.samples}</span></p>
+            </div>
+        );
+    }
+
+    // Classification
+    const totalSamples = node.value.reduce((a, b) => a + b, 0);
+    const majorityClass = node.value.indexOf(Math.max(...node.value));
+    
+    return (
+        <div className='space-y-1 text-xs'>
+            {isLeaf ? (
+                <p>This leaf node predicts <span className='font-semibold'>Class {majorityClass}</span>.</p>
+            ) : (
+                <p>This node splits data on <span className='font-semibold'>{(node as DecisionNode).feature}</span> to reduce impurity.</p>
+            )}
+            <p>Class distribution: <span className='font-semibold'>[{node.value.join(', ')}]</span></p>
+            {!isLeaf && <p>{(node as DecisionNode).criterion} (impurity): <span className='font-semibold'>{(node as DecisionNode).impurity.toFixed(2)}</span></p>}
+            <p>Total samples in node: <span className='font-semibold'>{totalSamples}</span></p>
+        </div>
+    );
+};
+
 const NodeDisplay: React.FC<NodeDisplayProps> = ({ node, taskType }) => {
     const isLeaf = node.type === 'leaf';
 
@@ -31,14 +67,21 @@ const NodeDisplay: React.FC<NodeDisplayProps> = ({ node, taskType }) => {
     const valueDisplay = taskType === 'regression' ? getRegressionDisplay(node) : getClassificationDisplay(node);
     
     return (
-        <div className={`
-            border-2 border-primary rounded-lg p-3 text-center shadow-md w-48
-            ${isLeaf ? 'bg-green-100 dark:bg-green-900/50 border-green-500' : 'bg-card'}
-        `}>
-            {text && <p className="text-sm font-medium">{text}</p>}
-            <p className="text-xs text-muted-foreground whitespace-pre-line">{valueDisplay}</p>
-            <p className="text-xs text-muted-foreground">{samples}</p>
-        </div>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <div className={`
+                    border-2 border-primary rounded-lg p-3 text-center shadow-md w-48 cursor-help
+                    ${isLeaf ? 'bg-green-100 dark:bg-green-900/50 border-green-500' : 'bg-card'}
+                `}>
+                    {text && <p className="text-sm font-medium">{text}</p>}
+                    <p className="text-xs text-muted-foreground whitespace-pre-line">{valueDisplay}</p>
+                    <p className="text-xs text-muted-foreground">{samples}</p>
+                </div>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs">
+                <NodeDescription node={node} taskType={taskType} />
+            </TooltipContent>
+        </Tooltip>
     );
 };
 
@@ -93,32 +136,16 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     
     return (
         <div className="p-4 overflow-x-auto">
-            <p className="text-sm text-muted-foreground mb-4">
-                This is a simplified visualization of a single decision tree from the forest. It shows how the model splits data based on feature values to arrive at a prediction.
-            </p>
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <div className="font-sans flex justify-center cursor-help">
-                           {tree.type === 'node'
-                                ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
-                                : <NodeDisplay node={tree} taskType={taskType} />
-                            }
-                        </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-md">
-                        <p className="font-bold mb-2">Understanding the Decision Tree</p>
-                        <ul className="list-disc list-inside text-xs space-y-1">
-                            <li>Each box is a node in the tree.</li>
-                            <li>The top node is the root. Nodes at the bottom are leaves.</li>
-                            <li>Decision nodes (non-leaves) show the feature and threshold used to split the data.</li>
-                            <li>Leaf nodes show the final prediction for that branch.</li>
-                            <li>For classification, `Gini` or `Entropy` measures node impurity. For regression, `MSE` (Mean Squared Error) is used.</li>
-                            <li>`Samples` is the number of data points in that node.</li>
-                            <li>`Value` in regression nodes is the average prediction. In classification, it shows the count of samples for each class.</li>
-                        </ul>
-                    </TooltipContent>
-                </Tooltip>
+             <TooltipProvider>
+                <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1">
+                    This is a simplified visualization of a single decision tree. Hover over any node for a detailed explanation.
+                </p>
+                <div className="font-sans flex justify-center">
+                    {tree.type === 'node'
+                        ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
+                        : <NodeDisplay node={tree} taskType={taskType} />
+                    }
+                </div>
             </TooltipProvider>
         </div>
     );
