@@ -459,9 +459,6 @@ export const useRandomForest = () => {
             setData(d => ({ 
                 ...d, 
                 ...trainedData,
-                metrics: trainedData.metrics,
-                featureImportance: trainedData.featureImportance,
-                chartData: trainedData.chartData,
                 baselineMetrics: trainedData.metrics, 
                 baselineFeatureImportance: trainedData.featureImportance, 
                 baselineChartData: trainedData.chartData,
