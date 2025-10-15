@@ -421,22 +421,8 @@ export const useRandomForest = () => {
         const currentDataset = state.task === 'regression' ? housingDataset : wineDataset;
         const trainedData = await mockTrainModel(state, currentDataset, isBaseline);
         
-        if (isBaseline) {
-            setData(d => ({ 
-                ...d, 
-                ...trainedData,
-                metrics: trainedData.metrics,
-                featureImportance: trainedData.featureImportance,
-                chartData: trainedData.chartData,
-                baselineMetrics: trainedData.metrics, 
-                baselineFeatureImportance: trainedData.featureImportance, 
-                baselineChartData: trainedData.chartData,
-                insights: '',
-             }));
-        } else {
-            setData(d => ({ ...d, ...trainedData, insights: '' }));
-
-            const featureImportancesForAI = trainedData.featureImportance.reduce((acc, item) => {
+        const updateInsights = (featureImportance: FeatureImportance[]) => {
+            const featureImportancesForAI = featureImportance.reduce((acc, item) => {
                 acc[item.feature] = item.importance;
                 return acc;
             }, {} as Record<string, number>);
@@ -450,6 +436,24 @@ export const useRandomForest = () => {
                 console.error("AI insight generation failed:", err);
                 setData(d => ({ ...d, insights: 'Could not generate AI insights.' }));
             });
+        }
+        
+        if (isBaseline) {
+            setData(d => ({ 
+                ...d, 
+                ...trainedData,
+                metrics: trainedData.metrics,
+                featureImportance: trainedData.featureImportance,
+                chartData: trainedData.chartData,
+                baselineMetrics: trainedData.metrics, 
+                baselineFeatureImportance: trainedData.featureImportance, 
+                baselineChartData: trainedData.chartData,
+                insights: '',
+             }));
+             updateInsights(trainedData.featureImportance);
+        } else {
+            setData(d => ({ ...d, ...trainedData, insights: '' }));
+            updateInsights(trainedData.featureImportance);
         }
 
         setStatus('success');
