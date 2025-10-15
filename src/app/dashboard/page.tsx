@@ -312,7 +312,7 @@ export default function DashboardPage() {
                    <Card className='lg:col-span-2'>
                       <CardHeader>
                           <CardTitle className='flex items-center gap-2'><GitMerge className='w-5 h-5' />Decision Tree Snapshot</CardTitle>
-                          <CardDescription>Visualizes a single decision tree from the forest to show how splits are made.</CardDescription>
+                          <CardDescription>This visualization shows how the model makes predictions by splitting data based on feature values. Hover over any node for a detailed explanation.</CardDescription>
                       </CardHeader>
                       <CardContent>
                           <DecisionTreeSnapshot tree={data.decisionTree} taskType={state.task} />
@@ -414,7 +414,3 @@ export default function DashboardPage() {
     </>
   );
 }
-
-    
-
-    
