@@ -287,7 +287,7 @@ export default function DashboardPage() {
                 <Card className='lg:col-span-2'>
                     <CardHeader>
                         <CardTitle className='flex items-center gap-2'><Lightbulb className='w-5 h-5' />Partial Dependence Plot</CardTitle>
-                        <CardDescription>Shows the marginal effect of a feature on the predicted outcome of a machine learning model. Select a feature to see its effect on the prediction.</CardDescription>
+                        <CardDescription>Shows the marginal effect of a feature on the predicted outcome of a machine learning model.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <PartialDependencePlot
