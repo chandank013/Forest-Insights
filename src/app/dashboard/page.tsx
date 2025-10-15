@@ -1,11 +1,12 @@
 
+
 'use client';
 
 import Image from 'next/image';
 import { TreePine, BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, Lightbulb, GitMerge, BrainCircuit, Activity, TestTube2 } from 'lucide-react';
 import { useRandomForest } from '@/hooks/use-random-forest';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sidebar, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
@@ -157,7 +158,8 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 md:gap-8">
                     <Card className="lg:col-span-4">
                         <CardHeader>
-                        <CardTitle>Feature Importance</CardTitle>
+                          <CardTitle>Feature Importance</CardTitle>
+                          <CardDescription>This chart shows the relative importance of each feature in predicting the target variable.</CardDescription>
                         </CardHeader>
                         <CardContent className="pl-2">
                         {isLoading && !data.featureImportance.length ? (
@@ -175,6 +177,11 @@ export default function DashboardPage() {
                             <CardTitle>
                                 {state.task === 'regression' ? 'Prediction vs. Actual' : 'Confusion Matrix'}
                             </CardTitle>
+                             <CardDescription>
+                                {state.task === 'regression'
+                                ? "This plot compares the model's predictions against the actual values."
+                                : "This table shows the performance of the classification model."}
+                            </CardDescription>
                         </CardHeader>
                         <CardContent className="pl-2">
                         {isLoading && (!data.chartData && !data.metrics) ? (
@@ -227,16 +234,16 @@ export default function DashboardPage() {
                  <Card>
                     <CardHeader>
                         <CardTitle>Summary Statistics</CardTitle>
+                        <CardDescription>A summary of basic statistics for each numeric feature in the dataset.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <ChartContainer config={{}} className="h-auto w-full">
                         <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
-                      </ChartContainer>
                     </CardContent>
                 </Card>
                  <Card>
                     <CardHeader>
                         <CardTitle>Missing Values</CardTitle>
+                        <CardDescription>The percentage of missing values for each feature.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <MissingValuesChart dataset={data.dataset} />
@@ -245,8 +252,9 @@ export default function DashboardPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Feature Distributions</CardTitle>
+                        <CardDescription>The distribution of values for a selected feature.</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                     <CardContent>
                         <FeatureDistributionChart 
                           dataset={data.dataset} 
                           features={state.selectedFeatures} 
@@ -256,6 +264,7 @@ export default function DashboardPage() {
                 <Card className="mb-8">
                     <CardHeader>
                         <CardTitle>Correlation Heatmap</CardTitle>
+                        <CardDescription>A heatmap showing the correlation between numeric features.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <CorrelationHeatmap dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
@@ -264,6 +273,7 @@ export default function DashboardPage() {
                  <Card>
                     <CardHeader>
                         <CardTitle>Pair Plot</CardTitle>
+                        <CardDescription>Scatter plots for pairs of features to visualize their relationships.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <PairPlot dataset={data.dataset} targetColumn={state.targetColumn} task={state.task} />
@@ -276,6 +286,7 @@ export default function DashboardPage() {
                 <Card className='lg:col-span-2'>
                     <CardHeader>
                         <CardTitle className='flex items-center gap-2'><Lightbulb className='w-5 h-5' />Partial Dependence Plot</CardTitle>
+                        <CardDescription>Shows the marginal effect of a feature on the predicted outcome of a machine learning model.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <PartialDependencePlot
@@ -289,6 +300,7 @@ export default function DashboardPage() {
                  <Card className='lg:col-span-2'>
                     <CardHeader>
                         <CardTitle className='flex items-center gap-2'><GitMerge className='w-5 h-5' />Decision Tree Snapshot</CardTitle>
+                        <CardDescription>A visualization of a single decision tree from the forest, showing how splits are made.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <DecisionTreeSnapshot tree={data.decisionTree} />
@@ -302,6 +314,7 @@ export default function DashboardPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />Residual Plot</CardTitle>
+                            <CardDescription>Plots the residuals (prediction errors) against the predicted values to check for patterns.</CardDescription>
                         </CardHeader>
                         <CardContent>
                            <ResidualPlot data={data.chartData} />
@@ -310,6 +323,7 @@ export default function DashboardPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle className='flex items-center gap-2'><BarChart3 className='w-5 h-5' />Prediction Error Histogram</CardTitle>
+                             <CardDescription>A histogram of the prediction errors, showing their distribution.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <PredictionErrorHistogram data={data.chartData} />
@@ -318,17 +332,19 @@ export default function DashboardPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle className='flex items-center gap-2'><AreaChart className='w-5 h-5' />Cumulative Error Chart</CardTitle>
+                            <CardDescription>Shows the percentage of predictions within a certain error margin.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <CumulativeErrorChart data={data.chartData} />
                         </CardContent>
-                    </Card>
+                    </card>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
                     <Card>
                         <CardHeader>
                             <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />ROC Curve</CardTitle>
+                            <CardDescription>A graph showing the performance of a classification model at all classification thresholds.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <RocCurveChart data={data.rocCurveData} />
@@ -336,7 +352,8 @@ export default function DashboardPage() {
                     </Card>
                     <Card>
                         <CardHeader>
-                            <CardTitle className='flex items-center gap-2'><Target className='w-5 h-5' />Precision-Recall Curve</CardTitle>
+                            <CardTitle className='flex items-center gap-2'><Target className='w-5 h-5' />Precision-Recall Curve</CardTitle>                            
+                            <CardDescription>Shows the tradeoff between precision and recall for different thresholds.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <PrecisionRecallCurveChart data={data.prCurveData} />
@@ -384,5 +401,7 @@ export default function DashboardPage() {
     </>
   );
 }
+
+    
 
     

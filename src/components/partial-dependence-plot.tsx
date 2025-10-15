@@ -6,6 +6,7 @@ import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TaskType, PdpData } from '@/lib/types';
 import { Card } from './ui/card';
+import { CardDescription } from './ui/card';
 
 interface PartialDependencePlotProps {
     dataset: Record<string, any>[];
@@ -35,7 +36,7 @@ export function PartialDependencePlot({ dataset, features, task, pdpData }: Part
         <div className="space-y-4">
             <div className="flex flex-wrap gap-4">
                  <div className='w-full md:w-1/4'>
-                    <p className='text-sm text-muted-foreground mb-2'>Select a feature to see its effect on the prediction.</p>
+                    <CardDescription>Select a feature to see its effect on the prediction.</CardDescription>
                      <Select value={selectedFeature} onValueChange={setSelectedFeature}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select a feature" />

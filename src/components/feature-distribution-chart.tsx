@@ -67,7 +67,7 @@ export function FeatureDistributionChart({ dataset, features }: FeatureDistribut
                     </SelectContent>
                 </Select>
             </div>
-            <div className="w-full" style={{ height: '300px' }}>
+            <div className="w-full h-[300px]">
               <ChartContainer config={{}} className="h-full w-full">
                 <BarChart data={histogramData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
