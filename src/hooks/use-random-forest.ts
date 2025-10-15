@@ -458,10 +458,16 @@ export const useRandomForest = () => {
         if (isBaseline) {
             setData(d => ({ 
                 ...d, 
-                ...trainedData,
                 baselineMetrics: trainedData.metrics, 
                 baselineFeatureImportance: trainedData.featureImportance, 
                 baselineChartData: trainedData.chartData,
+                metrics: trainedData.metrics, // also set current metrics
+                featureImportance: trainedData.featureImportance,
+                chartData: trainedData.chartData,
+                decisionTree: trainedData.decisionTree,
+                rocCurveData: trainedData.rocCurveData,
+                prCurveData: trainedData.prCurveData,
+                pdpData: trainedData.pdpData,
                 insights: '',
              }));
              updateInsights(trainedData.featureImportance);
@@ -520,3 +526,5 @@ export const useRandomForest = () => {
 
   return { state, data, status, actions };
 };
+
+    
