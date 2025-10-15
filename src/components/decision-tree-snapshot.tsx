@@ -137,8 +137,8 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     return (
         <div className="p-4 overflow-x-auto">
              <TooltipProvider>
-                <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1">
-                    This is a simplified visualization of a single decision tree. Hover over any node for a detailed explanation.
+                <p className="text-sm text-muted-foreground mb-4">
+                    This visualization shows how the model makes predictions by splitting data based on feature values. Hover over any node for a detailed explanation.
                 </p>
                 <div className="font-sans flex justify-start min-w-[800px] px-4">
                     {tree.type === 'node'
