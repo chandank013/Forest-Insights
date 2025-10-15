@@ -143,7 +143,7 @@ const generateMockTree = (
     seed = 1
 ): DecisionTree => {
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth === maxDepth || pseudoRandom(nodeSeed) < 0.4;
+    const isLeaf = depth === maxDepth;
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
 
     let value: number[];
@@ -526,5 +526,3 @@ export const useRandomForest = () => {
 
   return { state, data, status, actions };
 };
-
-    
