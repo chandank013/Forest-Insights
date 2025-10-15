@@ -51,7 +51,7 @@ const NodeDisplay: React.FC<NodeDisplayProps> = ({ node, taskType }) => {
     const getRegressionDisplay = (n: DecisionNode | LeafNode) => {
         const value = `Value: ${n.value[0].toFixed(2)}`;
         if (isLeaf) return value;
-        const criterion = `${(n as DecisionNode).criterion}: ${(n as DecisionNode).impurity.toFixed(2)}`;
+        const criterion = `MSE: ${(n as DecisionNode).impurity.toFixed(2)}`;
         return `${criterion}\n${value}`;
     };
 
@@ -140,7 +140,7 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
                 <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1">
                     This is a simplified visualization of a single decision tree. Hover over any node for a detailed explanation.
                 </p>
-                <div className="font-sans flex justify-center">
+                <div className="font-sans flex justify-start min-w-[800px] px-4">
                     {tree.type === 'node'
                         ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
                         : <NodeDisplay node={tree} taskType={taskType} />
