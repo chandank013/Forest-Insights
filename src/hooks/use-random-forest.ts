@@ -143,7 +143,7 @@ const generateMockTree = (
     seed = 1
 ): DecisionTree => {
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth === maxDepth;
+    const isLeaf = depth >= maxDepth;
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
 
     let value: number[];
@@ -197,9 +197,9 @@ const generateMockTree = (
     };
 };
 
-const createSeed = (hyperparameters: Hyperparameters, salt: string = '') => {
+const createSeed = (state: State, salt: string = '') => {
     let seed = 0;
-    const str = JSON.stringify(hyperparameters) + salt;
+    const str = JSON.stringify(state.hyperparameters) + state.testSize + state.targetColumn + state.task + salt;
     for (let i = 0; i < str.length; i++) {
         seed = (seed << 5) - seed + str.charCodeAt(i);
         seed |= 0; 
@@ -292,8 +292,9 @@ const mockTrainModel = async (
 
   const { task, selectedFeatures } = state;
   const hyperparameters = isBaseline ? BASELINE_HYPERPARAMETERS : state.hyperparameters;
+  const stateForSeed = isBaseline ? { ...state, hyperparameters: BASELINE_HYPERPARAMETERS } : state;
 
-  const seed = createSeed(hyperparameters, task);
+  const seed = createSeed(stateForSeed, task);
 
   let metrics: Data['metrics'];
   let rocCurveData: CurveDataPoint[] | null = null;
@@ -365,9 +366,19 @@ const mockTrainModel = async (
 const mockPredict = (
     values: Record<string, number>,
     hyperparameters: Hyperparameters,
-    taskType: TaskType
+    taskType: TaskType,
+    targetColumn: string,
+    testSize: number
 ): Prediction => {
-  const seed = createSeed(hyperparameters, taskType + 'predict');
+  const seedState = {
+      hyperparameters,
+      task: taskType,
+      targetColumn,
+      testSize,
+      selectedFeatures: Object.keys(values)
+  };
+
+  const seed = createSeed(seedState, 'predict');
   let prediction: number;
 
   if (taskType === 'regression') {
@@ -492,8 +503,8 @@ export const useRandomForest = () => {
     
     const predict = useCallback(async (values: Record<string, number>): Promise<Prediction> => {
         await new Promise(res => setTimeout(res, 1000));
-        return mockPredict(values, state.hyperparameters, state.task);
-    }, [state.hyperparameters, state.task]);
+        return mockPredict(values, state.hyperparameters, state.task, state.targetColumn, state.testSize);
+    }, [state.hyperparameters, state.task, state.targetColumn, state.testSize]);
 
   const actions = {
     setTask: handleStateChange('SET_TASK'),
@@ -510,7 +521,17 @@ export const useRandomForest = () => {
     // Do not auto-train on first load if baseline is not present
     if (!data.baselineMetrics) return;
     
-    if (JSON.stringify(state.hyperparameters) === JSON.stringify(BASELINE_HYPERPARAMETERS) && data.metrics === data.baselineMetrics) return;
+    const baselineStateString = JSON.stringify({
+        hyperparameters: BASELINE_HYPERPARAMETERS,
+        targetColumn: state.task === 'regression' ? regressionInitialState.targetColumn : classificationInitialState.targetColumn,
+        testSize: state.task === 'regression' ? regressionInitialState.testSize : classificationInitialState.testSize,
+    });
+    const currentStateString = JSON.stringify({
+        hyperparameters: state.hyperparameters,
+        targetColumn: state.targetColumn,
+        testSize: state.testSize,
+    });
+    if (baselineStateString === currentStateString && data.metrics === data.baselineMetrics) return;
 
     setIsDebouncing(true);
     const handler = setTimeout(() => {
@@ -526,3 +547,5 @@ export const useRandomForest = () => {
 
   return { state, data, status, actions };
 };
+
+    
