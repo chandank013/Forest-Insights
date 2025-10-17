@@ -106,7 +106,7 @@ export default function DashboardPage() {
       return (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
           <div className="flex flex-col items-center gap-4 text-center">
-            <Image src="/logo.png" alt="Logo" width={64} height={64} className="mb-4" />
+            <Image src="/logo.png" alt="Logo" width={96} height={96} className="mb-4" />
             <h3 className="text-2xl font-bold tracking-tight">Welcome to Forest Insights</h3>
             <p className="text-muted-foreground">
               Train a baseline model or adjust parameters in the sidebar to begin.
