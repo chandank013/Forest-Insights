@@ -105,13 +105,13 @@ export default function DashboardPage() {
     if (status === 'idle' && !data.metrics) {
       return (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-          <div className="flex flex-col items-center gap-4 text-center">
+          <div className="flex flex-col items-center text-center">
             <Image src="/logo.png" alt="Logo" width={400} height={400} className="mb-4" />
-            <h3 className="text-2xl font-bold tracking-tight">Welcome to Forest Insights</h3>
-            <p className="text-muted-foreground">
+            <h3 className="text-2xl font-bold tracking-tight mb-2">Welcome to Forest Insights</h3>
+            <p className="text-muted-foreground mb-4">
               Train a baseline model or adjust parameters in the sidebar to begin.
             </p>
-            <Button className="mt-4" onClick={actions.trainBaselineModel}>
+            <Button onClick={actions.trainBaselineModel}>
               Train Baseline Model
             </Button>
           </div>
