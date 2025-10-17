@@ -303,7 +303,7 @@ const generateForestSimulation = (state: State, seed: number): ForestSimulation 
             id: i,
             prediction,
             keyFeatures: shuffledFeatures.slice(0, 3),
-            tree: generateMockTree(selectedFeatures, task, hyperparameters, 0, 3, treeSeed + 3),
+            tree: generateMockTree(selectedFeatures, task, hyperparameters, 0, hyperparameters.max_depth, treeSeed + 3),
         };
     });
 

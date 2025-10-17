@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip as RechartsTooltip } from 'recharts';
-import { Trees, GitMerge, Info, Play, RefreshCw, Sigma, Vote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trees, GitMerge, Info, Sigma, Vote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { TaskType, ForestSimulation, TreeSimulation, DecisionTree } from '@/lib/types';
 import { Skeleton } from './ui/skeleton';
@@ -17,12 +17,11 @@ interface ForestVisualizationProps {
   simulationData: ForestSimulation | null;
   taskType: TaskType;
   isLoading: boolean;
-  onRetrain: () => void;
 }
 
 const TREES_PER_PAGE = 30;
 
-const MiniTree = ({ tree, isRunning, isFinished, taskType, onTreeClick }: { tree: TreeSimulation, isRunning: boolean, isFinished: boolean, taskType: TaskType, onTreeClick: () => void }) => {
+const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskType: TaskType, onTreeClick: () => void }) => {
   const finalColor = taskType === 'classification'
     ? tree.prediction === 1 ? 'bg-blue-500/80' : 'bg-red-500/80'
     : 'bg-green-500/80';
@@ -34,21 +33,12 @@ const MiniTree = ({ tree, isRunning, isFinished, taskType, onTreeClick }: { tree
           <div className="flex flex-col items-center gap-1 cursor-pointer" onClick={onTreeClick}>
              <div className={cn(
               "relative w-12 h-12 rounded-full bg-muted flex items-center justify-center transition-all duration-500",
-              isFinished && finalColor
+              finalColor
             )}>
-              <Trees className={cn("h-6 w-6 text-muted-foreground transition-colors", isFinished && "text-white")} />
-              <div 
-                className={cn(
-                  "absolute inset-0 border-2 border-primary rounded-full origin-center",
-                  "transition-transform",
-                  isRunning ? "animate-spin-slow" : "scale-0"
-                )}
-                style={{ animationDuration: '1.5s' }}
-              />
+              <Trees className={cn("h-6 w-6 text-white transition-colors")} />
             </div>
             <div className={cn(
               "text-xs font-bold text-muted-foreground transition-opacity duration-300",
-              isFinished ? "opacity-100" : "opacity-0",
             )}>
               {taskType === 'classification' ? `Class ${tree.prediction}` : tree.prediction.toFixed(2)}
             </div>
@@ -56,7 +46,7 @@ const MiniTree = ({ tree, isRunning, isFinished, taskType, onTreeClick }: { tree
         </TooltipTrigger>
         <TooltipContent side="top">
           <p>Tree ID: {tree.id}</p>
-          <p>Prediction: {tree.prediction}</p>
+          <p>Prediction: {tree.prediction.toFixed(2)}</p>
           <p>Key Features: {tree.keyFeatures.join(', ')}</p>
         </TooltipContent>
       </Tooltip>
@@ -64,24 +54,13 @@ const MiniTree = ({ tree, isRunning, isFinished, taskType, onTreeClick }: { tree
   )
 };
 
-export function ForestVisualization({ simulationData, taskType, isLoading, onRetrain }: ForestVisualizationProps) {
-  const [simulationState, setSimulationState] = useState<'idle' | 'running' | 'finished'>('idle');
+export function ForestVisualization({ simulationData, taskType, isLoading }: ForestVisualizationProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedTree, setSelectedTree] = useState<DecisionTree | null>(null);
   
   useEffect(() => {
-    setSimulationState('idle');
     setCurrentPage(0);
   }, [taskType, simulationData]);
-
-  const handleSimulate = () => {
-    setSimulationState('running');
-    setTimeout(() => setSimulationState('finished'), 2000);
-  };
-
-  const handleReset = () => {
-    setSimulationState('idle');
-  };
 
   const totalPages = simulationData ? Math.ceil(simulationData.trees.length / TREES_PER_PAGE) : 0;
   const paginatedTrees = useMemo(() => {
@@ -157,8 +136,6 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                         <div className='flex gap-2'>
                            {totalPages > 1 && <Button variant="outline" size="icon" onClick={() => setCurrentPage(p => Math.max(0, p-1))} disabled={currentPage === 0}><ChevronLeft className='w-4 h-4' /></Button>}
                            {totalPages > 1 && <Button variant="outline" size="icon" onClick={() => setCurrentPage(p => Math.min(totalPages-1, p+1))} disabled={currentPage === totalPages - 1}><ChevronRight className='w-4 h-4' /></Button>}
-                            <Button onClick={handleSimulate} disabled={simulationState === 'running'}><Play className='w-4 h-4 mr-2' />Simulate</Button>
-                            <Button onClick={handleReset} variant='outline'><RefreshCw className='w-4 h-4 mr-2' />Reset</Button>
                         </div>
                     </div>
 
@@ -167,8 +144,6 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                              <DialogTrigger key={tree.id} asChild>
                                 <MiniTree 
                                     tree={tree} 
-                                    isRunning={simulationState === 'running'} 
-                                    isFinished={simulationState === 'finished'} 
                                     taskType={taskType}
                                     onTreeClick={() => setSelectedTree(tree.tree)}
                                 />
@@ -177,7 +152,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                     </div>
                 </CardContent>
             </Card>
-            <Card className={cn("transition-opacity duration-500", simulationState === 'finished' ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden')}>
+            <Card>
                 <CardHeader>
                     <CardTitle className='flex items-center gap-2'><AggregationIcon className='w-5 h-5' />Aggregation Result</CardTitle>
                 </CardHeader>
