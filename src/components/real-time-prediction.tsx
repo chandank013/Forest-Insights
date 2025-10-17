@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -23,26 +23,45 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
   const [predictionResult, setPredictionResult] = useState<Prediction | null>(null);
   const [isPredicting, setIsPredicting] = useState(false);
 
-  const schema = z.object(
+  const formSchema = z.object(
     features.reduce((acc, feature) => {
-      acc[feature] = z.coerce.number({ invalid_type_error: 'Must be a number' });
+      acc[feature] = z.coerce.number({
+        required_error: 'This field is required.',
+        invalid_type_error: 'Must be a number',
+      });
       return acc;
     }, {} as Record<string, z.ZodType<number, any, any>>)
   );
 
-  type FormValues = z.infer<typeof schema>;
+  type FormValues = z.infer<typeof formSchema>;
+  
+  const defaultValues = features.reduce((acc, feature) => {
+    acc[feature] = undefined;
+    return acc;
+  }, {} as Record<string, number | undefined>);
+
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
-    defaultValues: features.reduce((acc, feature) => {
-        acc[feature] = 0;
-        return acc;
-    }, {} as Record<string, number>)
+    resolver: zodResolver(formSchema),
+    defaultValues: defaultValues,
   });
+
+  useEffect(() => {
+    const newDefaultValues = features.reduce((acc, feature) => {
+      acc[feature] = undefined;
+      return acc;
+    }, {} as Record<string, number | undefined>);
+
+    form.reset(newDefaultValues);
+    setPredictionResult(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [features, form.reset]);
+
 
   const onSubmit = async (values: FormValues) => {
     setIsPredicting(true);
-    const result = await onPredict(values);
+    setPredictionResult(null);
+    const result = await onPredict(values as Record<string, number>);
     setPredictionResult(result);
     setIsPredicting(false);
   };
@@ -70,7 +89,7 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
                       <FormItem>
                         <FormLabel className="text-xs">{feature}</FormLabel>
                         <FormControl>
-                          <Input type="number" step="any" {...field} />
+                          <Input type="number" step="any" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : e.target.value)} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -91,6 +110,9 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
         <Card>
             <CardHeader>
                 <CardTitle>Prediction Result</CardTitle>
+                 <CardDescription>
+                  This is the model's prediction based on the input values you provided.
+                </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center h-48">
                 {isPredicting ? (
