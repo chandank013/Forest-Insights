@@ -47,9 +47,9 @@ const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskT
         </TooltipTrigger>
         <TooltipContent side="top">
            <p>Tree ID: {tree.id}</p>
+           <p>Samples: {tree.samples}</p>
           <p>Prediction: {tree.prediction.toFixed(2)}</p>
           <p>Key Features: {tree.keyFeatures.join(', ')}</p>
-          <p>Samples: {tree.samples}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
