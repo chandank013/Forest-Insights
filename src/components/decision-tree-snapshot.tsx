@@ -87,9 +87,27 @@ const NodeDisplay: React.FC<NodeDisplayProps> = ({ node, taskType }) => {
 };
 
 const Edge = ({ isLeft }: { isLeft: boolean }) => (
-    <div className="relative flex-1 pt-10">
-        <div className="absolute top-5 left-0 w-full border-t-2 border-dashed border-muted-foreground"></div>
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
+    <div className="relative flex-1 pt-12">
+        <svg
+            className="absolute top-0 left-0 w-full h-full"
+            preserveAspectRatio="none"
+            viewBox="0 0 100 100"
+        >
+            <path
+                d={isLeft ? "M 100 0 L 50 50 L 50 100" : "M 0 0 L 50 50 L 50 100"}
+                stroke="hsl(var(--muted-foreground))"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4 2"
+            />
+            <path 
+                d="M 46 95 L 50 100 L 54 95" 
+                stroke="hsl(var(--muted-foreground))"
+                strokeWidth="2"
+                fill="none"
+            />
+        </svg>
+         <div className="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground z-10">
             {isLeft ? 'True' : 'False'}
         </div>
     </div>
