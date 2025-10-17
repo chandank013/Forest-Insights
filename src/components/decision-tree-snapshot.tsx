@@ -1,9 +1,11 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import type { DecisionTree, DecisionNode, LeafNode, TaskType } from '@/lib/types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { ZoomIn, ZoomOut } from 'lucide-react';
 
 interface NodeDisplayProps {
     node: DecisionNode | LeafNode;
@@ -145,6 +147,9 @@ const TreeBranch: React.FC<TreeBranchProps> = ({ node, taskType }) => {
 };
 
 export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | null, taskType: TaskType }) {
+    const [zoom, setZoom] = useState(1);
+    const ZOOM_STEP = 0.25;
+
      if (!tree) {
         return (
             <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -154,15 +159,33 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     }
     
     return (
-        <div className="p-4 overflow-x-auto">
-             <TooltipProvider>
-                <div className="font-sans flex justify-center min-w-[800px] px-4">
+        <div className="relative w-full h-full overflow-auto font-sans">
+            <TooltipProvider>
+                <div 
+                    className="min-w-[1200px] p-8 transition-transform duration-300"
+                    style={{ transform: `scale(${zoom})`, transformOrigin: 'top left' }}
+                >
                     {tree.type === 'node'
                         ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
                         : <NodeDisplay node={tree} taskType={taskType} />
                     }
                 </div>
             </TooltipProvider>
+
+            <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+                <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.max(0.25, z - ZOOM_STEP))}>
+                    <ZoomOut className="h-4 w-4" />
+                    <span className="sr-only">Zoom Out</span>
+                </Button>
+                <div className="bg-background/80 text-sm font-medium px-3 py-1.5 rounded-md border">
+                    {Math.round(zoom * 100)}%
+                </div>
+                <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.min(2, z + ZOOM_STEP))}>
+                    <ZoomIn className="h-4 w-4" />
+                    <span className="sr-only">Zoom In</span>
+                </Button>
+            </div>
         </div>
     );
 }
+
