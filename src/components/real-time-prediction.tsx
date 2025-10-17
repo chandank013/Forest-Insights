@@ -23,12 +23,14 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
   const [predictionResult, setPredictionResult] = useState<Prediction | null>(null);
   const [isPredicting, setIsPredicting] = useState(false);
 
+  // Re-create the form schema whenever features change
   const formSchema = z.object(
     features.reduce((acc, feature) => {
-      acc[feature] = z.coerce.number({
-        required_error: 'This field is required.',
+      acc[feature] = z.string().refine(val => val.trim() !== '', {
+        message: 'This field is required.',
+      }).pipe(z.coerce.number({
         invalid_type_error: 'Must be a number',
-      });
+      }));
       return acc;
     }, {} as Record<string, z.ZodType<any, any, any>>)
   );
@@ -55,7 +57,7 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
     form.reset(newDefaultValues);
     setPredictionResult(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [features, form.reset]);
+  }, [features]);
 
 
   const onSubmit = async (values: FormValues) => {
