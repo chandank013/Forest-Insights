@@ -104,7 +104,7 @@ export default function DashboardPage() {
   const renderContent = () => {
     if (status === 'idle' && !data.metrics) {
       return (
-        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+        <div className="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm pt-20">
           <div className="flex flex-col items-center text-center">
             <Image src="/logo.png" alt="Logo" width={400} height={400} />
             <h3 className="text-2xl font-bold tracking-tight mb-2">Welcome to Forest Insights</h3>
