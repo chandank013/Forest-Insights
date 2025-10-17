@@ -447,7 +447,7 @@ export const useRandomForest = () => {
     decisionTree: null,
     rocCurveData: null,
     prCurveData: null,
-    pdpData: null,
+pdpData: null,
     forestSimulation: null,
   });
   const [status, setStatus] = useState<Status>('idle');
@@ -475,10 +475,17 @@ export const useRandomForest = () => {
   };
   
   const trainModel = useCallback(async (isBaseline = false) => {
+      if (isBaseline) {
+        dispatch({ type: 'SET_HYPERPARAMETERS', payload: BASELINE_HYPERPARAMETERS });
+      }
       setStatus('loading');
       try {
         const currentDataset = state.task === 'regression' ? housingDataset : wineDataset;
-        const trainedData = await mockTrainModel(state, currentDataset, isBaseline);
+        
+        // Pass a state snapshot to the training function
+        const stateForTraining = isBaseline ? { ...state, hyperparameters: BASELINE_HYPERPARAMETERS } : state;
+
+        const trainedData = await mockTrainModel(stateForTraining, currentDataset, isBaseline);
         
         const updateInsights = (featureImportance: FeatureImportance[]) => {
             if (featureImportance.length === 0) {
@@ -510,6 +517,7 @@ export const useRandomForest = () => {
                 metrics: trainedData.metrics, // also set current metrics
                 featureImportance: trainedData.featureImportance,
                 chartData: trainedData.chartData,
+                history: trainedData.history,
                 decisionTree: trainedData.decisionTree,
                 rocCurveData: trainedData.rocCurveData,
                 prCurveData: trainedData.prCurveData,
