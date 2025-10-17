@@ -10,7 +10,7 @@ import { Trees, GitMerge, Info, Sigma, Vote, ChevronLeft, ChevronRight } from 'l
 import { cn } from '@/lib/utils';
 import type { TaskType, ForestSimulation, TreeSimulation, DecisionTree } from '@/lib/types';
 import { Skeleton } from './ui/skeleton';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { DecisionTreeSnapshot } from './decision-tree-snapshot';
 
 interface ForestVisualizationProps {
@@ -59,6 +59,7 @@ const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskT
 export function ForestVisualization({ simulationData, taskType, isLoading, onRetrain }: ForestVisualizationProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedTree, setSelectedTree] = useState<DecisionTree | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   useEffect(() => {
     setCurrentPage(0);
@@ -98,6 +99,11 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
     return Object.entries(counts).map(([name, count]) => ({ name, count }));
   }, [simulationData, taskType]);
 
+  const handleTreeClick = (tree: DecisionTree) => {
+    setSelectedTree(tree);
+    setIsDialogOpen(true);
+  };
+
   if (isLoading || !simulationData) {
     return (
         <Card>
@@ -115,7 +121,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
   const AggregationIcon = taskType === 'classification' ? Vote : Sigma;
 
   return (
-    <Dialog onOpenChange={(isOpen) => !isOpen && setSelectedTree(null)}>
+    <>
         <div className='space-y-4'>
             <Card>
                 <CardHeader>
@@ -143,13 +149,12 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
 
                     <div className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4 p-4 rounded-lg border bg-muted/50 min-h-[180px]">
                         {paginatedTrees.map(tree => (
-                             <DialogTrigger key={tree.id} asChild>
-                                <MiniTree 
-                                    tree={tree} 
-                                    taskType={taskType}
-                                    onTreeClick={() => setSelectedTree(tree.tree)}
-                                />
-                             </DialogTrigger>
+                             <MiniTree 
+                                key={tree.id}
+                                tree={tree} 
+                                taskType={taskType}
+                                onTreeClick={() => handleTreeClick(tree.tree)}
+                            />
                         ))}
                     </div>
                 </CardContent>
@@ -189,14 +194,21 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                 </CardContent>
             </Card>
         </div>
-         <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
-            <DialogHeader>
-                <DialogTitle>Decision Tree Snapshot</DialogTitle>
-            </DialogHeader>
-            <div className="flex-1 overflow-auto">
-                <DecisionTreeSnapshot tree={selectedTree} taskType={taskType} />
-            </div>
-        </DialogContent>
-    </Dialog>
+         <Dialog open={isDialogOpen} onOpenChange={(isOpen) => {
+            setIsDialogOpen(isOpen);
+            if (!isOpen) {
+                setSelectedTree(null);
+            }
+         }}>
+            <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
+                <DialogHeader>
+                    <DialogTitle>Decision Tree Snapshot</DialogTitle>
+                </DialogHeader>
+                <div className="flex-1 overflow-auto">
+                    <DecisionTreeSnapshot tree={selectedTree} taskType={taskType} />
+                </div>
+            </DialogContent>
+        </Dialog>
+    </>
   )
 }
