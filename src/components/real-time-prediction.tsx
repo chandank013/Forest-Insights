@@ -30,15 +30,15 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
         invalid_type_error: 'Must be a number',
       });
       return acc;
-    }, {} as Record<string, z.ZodType<number, any, any>>)
+    }, {} as Record<string, z.ZodType<any, any, any>>)
   );
 
   type FormValues = z.infer<typeof formSchema>;
   
   const defaultValues = features.reduce((acc, feature) => {
-    acc[feature] = undefined;
+    acc[feature] = '';
     return acc;
-  }, {} as Record<string, number | undefined>);
+  }, {} as Record<string, any>);
 
 
   const form = useForm<FormValues>({
@@ -48,9 +48,9 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
 
   useEffect(() => {
     const newDefaultValues = features.reduce((acc, feature) => {
-      acc[feature] = undefined;
+      acc[feature] = '';
       return acc;
-    }, {} as Record<string, number | undefined>);
+    }, {} as Record<string, any>);
 
     form.reset(newDefaultValues);
     setPredictionResult(null);
@@ -89,7 +89,7 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
                       <FormItem>
                         <FormLabel className="text-xs">{feature}</FormLabel>
                         <FormControl>
-                          <Input type="number" step="any" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : e.target.value)} />
+                          <Input type="number" step="any" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
