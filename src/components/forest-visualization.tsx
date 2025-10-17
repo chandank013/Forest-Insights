@@ -46,7 +46,7 @@ const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskT
           </div>
         </TooltipTrigger>
         <TooltipContent side="top">
-          <p>Tree ID: {tree.id}</p>
+           <p>Tree ID: {tree.id}</p>
           <p>Prediction: {tree.prediction.toFixed(2)}</p>
           <p>Key Features: {tree.keyFeatures.join(', ')}</p>
           <p>Samples: {tree.samples}</p>
@@ -200,7 +200,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                 setSelectedTree(null);
             }
          }}>
-            <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
+            <DialogContent className="max-w-7xl h-[90vh] flex flex-col">
                 <DialogHeader>
                     <DialogTitle>Decision Tree Snapshot</DialogTitle>
                 </DialogHeader>
