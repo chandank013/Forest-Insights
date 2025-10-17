@@ -79,10 +79,13 @@ export type PdpData = {
   [feature: string]: PdpPoint[];
 };
 
+export type TreeSimulation = {
+    id: number;
+    prediction: number;
+    keyFeatures: string[];
+    tree: DecisionTree;
+};
+
 export type ForestSimulation = {
-    trees: {
-        id: number;
-        prediction: number;
-        keyFeatures: string[];
-    }[];
+    trees: TreeSimulation[];
 };

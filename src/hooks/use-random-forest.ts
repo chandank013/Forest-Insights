@@ -146,7 +146,7 @@ const generateMockTree = (
     seed = 1
 ): DecisionTree => {
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth >= maxDepth;
+    const isLeaf = depth >= maxDepth || depth >= hyperparameters.max_depth;
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
 
     let value: number[];
@@ -302,7 +302,8 @@ const generateForestSimulation = (state: State, seed: number): ForestSimulation 
         return {
             id: i,
             prediction,
-            keyFeatures: shuffledFeatures.slice(0, 3)
+            keyFeatures: shuffledFeatures.slice(0, 3),
+            tree: generateMockTree(selectedFeatures, task, hyperparameters, 0, 3, treeSeed + 3),
         };
     });
 
