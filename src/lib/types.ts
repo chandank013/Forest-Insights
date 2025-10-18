@@ -96,4 +96,5 @@ export type DatasetOption = {
     name: string;
     value: string;
     data: Record<string, any>[];
+    target: string;
 }

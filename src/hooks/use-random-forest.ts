@@ -42,27 +42,27 @@ const BASELINE_HYPERPARAMETERS: Hyperparameters = {
 
 const DATASETS: Record<TaskType, DatasetOption[]> = {
     regression: [
-        { name: 'California Housing', value: 'california-housing', data: housingDataset },
-        { name: 'Diabetes', value: 'diabetes', data: diabetesDataset },
-        { name: 'Linnerud', value: 'linnerud', data: linnerudDataset },
+        { name: 'California Housing', value: 'california-housing', data: housingDataset, target: 'MedHouseVal' },
+        { name: 'Diabetes', value: 'diabetes', data: diabetesDataset, target: 'target' },
+        { name: 'Linnerud', value: 'linnerud', data: linnerudDataset, target: 'Weight' },
     ],
     classification: [
-        { name: 'Wine Quality', value: 'wine-quality', data: wineDataset },
-        { name: 'Breast Cancer', value: 'breast-cancer', data: breastCancerDataset },
-        { name: 'Digits Recognition', value: 'digits', data: digitsDataset },
+        { name: 'Wine Quality', value: 'wine-quality', data: wineDataset, target: 'quality' },
+        { name: 'Breast Cancer', value: 'breast-cancer', data: breastCancerDataset, target: 'target' },
+        { name: 'Digits Recognition', value: 'digits', data: digitsDataset, target: 'target' },
     ]
 };
 
 const getInitialStateForTask = (task: TaskType, datasetName: string): State => {
-    const datasetOption = DATASETS[task].find(d => d.value === datasetName);
-    const dataset = datasetOption ? datasetOption.data : DATASETS[task][0].data;
+    const datasetOption = DATASETS[task].find(d => d.value === datasetName) ?? DATASETS[task][0];
+    const dataset = datasetOption.data;
     const allHeaders = Object.keys(dataset[0] ?? {});
-    const targetColumn = allHeaders[allHeaders.length - 1];
+    const targetColumn = datasetOption.target;
     const selectedFeatures = allHeaders.filter(h => h !== targetColumn);
 
     return {
         task,
-        datasetName: datasetOption ? datasetName : DATASETS[task][0].value,
+        datasetName: datasetOption.value,
         hyperparameters: BASELINE_HYPERPARAMETERS,
         selectedFeatures,
         targetColumn,
