@@ -20,7 +20,7 @@ interface ForestVisualizationProps {
   onRetrain: () => void;
 }
 
-const TREES_PER_PAGE = 30;
+const TREES_PER_PAGE = 50;
 
 const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskType: TaskType, onTreeClick: () => void }) => {
   const finalColor = taskType === 'classification'
@@ -73,41 +73,6 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
       return simulationData.trees.slice(start, end);
   }, [simulationData, currentPage]);
 
-
-  const aggregationResult = useMemo(() => {
-    if (!simulationData) return null;
-    if (taskType === 'regression') {
-        if (simulationData.trees.length === 0) return 0;
-        const sum = simulationData.trees.reduce((acc, t) => acc + t.prediction, 0);
-        return sum / simulationData.trees.length;
-    } else {
-        const votes: Record<string, number> = {'0': 0, '1': 0};
-        simulationData.trees.forEach(t => {
-            votes[t.prediction] = (votes[t.prediction] || 0) + 1;
-        });
-        
-        if (votes['1'] > votes['0']) {
-            return 1;
-        } else {
-            return 0; // Default to 0 if votes['0'] is greater or if it's a tie.
-        }
-    }
-  }, [simulationData, taskType]);
-  
-  const voteCounts = useMemo(() => {
-    if (!simulationData || taskType !== 'classification') return [];
-    const counts = simulationData.trees.reduce((acc, tree) => {
-        const key = `Class ${tree.prediction}`;
-        acc[key] = (acc[key] || 0) + 1;
-        return acc;
-    }, {} as Record<string, number>);
-    
-    // Ensure both classes are present for consistent coloring
-    if (!counts['Class 0']) counts['Class 0'] = 0;
-    if (!counts['Class 1']) counts['Class 1'] = 0;
-
-    return Object.entries(counts).map(([name, count]) => ({ name, count })).sort((a,b) => a.name.localeCompare(b.name));
-  }, [simulationData, taskType]);
 
   const handleTreeClick = (tree: DecisionTree) => {
     setSelectedTree(tree);
@@ -166,50 +131,6 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                                 onTreeClick={() => handleTreeClick(tree.tree)}
                             />
                         ))}
-                    </div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle className='flex items-center gap-2'><AggregationIcon className='w-5 h-5' />Aggregation Result</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center'>
-                        <div className='text-center'>
-                            <p className="text-muted-foreground">{taskType === 'regression' ? 'Final Averaged Prediction' : 'Final Voted Prediction'}</p>
-                            <p className="text-6xl font-bold text-primary">
-                                {aggregationResult !== null ? (taskType === 'regression' ? aggregationResult.toFixed(3) : `Class ${aggregationResult}`) : 'N/A'}
-                            </p>
-                        </div>
-                        <div>
-                            {taskType === 'classification' && voteCounts.length > 0 && (
-                                <ResponsiveContainer width="100%" height={150}>
-                                    <BarChart data={voteCounts} layout="vertical" margin={{ left: 20 }}>
-                                        <XAxis type="number" hide />
-                                        <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} />
-                                        <RechartsTooltip cursor={{ fill: 'hsl(var(--accent))' }} contentStyle={{background: 'hsl(var(--background))', border: '1px solid hsl(var(--border))'}} />
-                                        <Bar dataKey="count" radius={[0, 4, 4, 0]}>
-                                            {voteCounts.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.name === 'Class 1' ? 'hsl(var(--chart-2))' : 'hsl(var(--chart-5))'} />
-                                            ))}
-                                        </Bar>
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            )}
-                            {taskType === 'regression' && aggregationResult !== null && (
-                               <div className='space-y-2'>
-                                   <p className='text-sm text-center text-muted-foreground'>The final prediction is the average of all individual tree predictions.</p>
-                                   <div className='w-full bg-muted rounded-full h-2.5'>
-                                       <div className='bg-primary h-2.5 rounded-full' style={{width: `${(aggregationResult/5)*100}%`}}></div>
-                                   </div>
-                                   <div className='flex justify-between text-xs text-muted-foreground'>
-                                       <span>0</span>
-                                       <span>2.5</span>
-                                       <span>5</span>
-                                   </div>
-                               </div>
-                            )}
-                        </div>
                     </div>
                 </CardContent>
             </Card>
