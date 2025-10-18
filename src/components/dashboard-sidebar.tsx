@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { HelpCircle, Loader2 } from 'lucide-react';
@@ -58,7 +57,8 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                   </div>
                 </RadioGroup>
                 <HelpTooltip>
-                  <p><b>Regression</b> predicts a continuous value (e.g., price).<br /><b>Classification</b> predicts a category (e.g., good/bad quality).</p>
+                  <p><b>Regression</b> predicts a continuous value (e.g., a house price, a patient's weight).</p>
+                  <p><b>Classification</b> predicts a category (e.g., wine is 'good' or 'bad', a tumor is 'malignant' or 'benign').</p>
                 </HelpTooltip>
               </div>
             </SidebarGroupContent>
@@ -70,7 +70,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <Label>Select Dataset</Label>
-                        <HelpTooltip>Choose the dataset to train the model on.</HelpTooltip>
+                        <HelpTooltip>Choose the dataset to train the model on. The available datasets will change based on the selected task.</HelpTooltip>
                     </div>
                     <Select value={state.datasetName} onValueChange={actions.setDataset}>
                         <SelectTrigger><SelectValue placeholder="Select dataset..." /></SelectTrigger>
@@ -85,7 +85,12 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                   <div className="flex items-center gap-2 mb-1">
                     <Label>Target Column</Label>
                     <HelpTooltip>
-                      <p>The output variable the model will try to predict.</p>
+                      <p>The variable the model is trying to predict. This is pre-set for each dataset.</p>
+                      <ul className="list-disc pl-4 mt-2">
+                        <li><b>Housing:</b> Median House Value</li>
+                        <li><b>Wine:</b> Quality Score</li>
+                        <li><b>Diabetes:</b> Disease Progression</li>
+                      </ul>
                     </HelpTooltip>
                   </div>
                     <Select value={state.targetColumn} onValueChange={actions.setTargetColumn} disabled>
@@ -101,7 +106,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                   <div className="flex items-center gap-2">
                     <Label>Feature Columns</Label>
                      <HelpTooltip>
-                      <p>These columns are used as input for the model to make its prediction.</p>
+                      <p>The input variables the model uses to make predictions (e.g., for housing, this includes number of rooms, house age, etc.).</p>
                     </HelpTooltip>
                   </div>
                   <p className="text-sm text-muted-foreground">All columns except the target are used as features.</p>
@@ -110,7 +115,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                     <div className="flex justify-between">
                         <div className="flex items-center gap-2">
                             <Label>Test Set Size</Label>
-                            <HelpTooltip>The proportion of the dataset to include in the test split.</HelpTooltip>
+                            <HelpTooltip>The percentage of data reserved for testing the model's performance. The rest is used for training. For example, 20% means the model is tested on data it has never seen before.</HelpTooltip>
                         </div>
                         <span className="text-sm text-muted-foreground">{Math.round(testSize * 100)}%</span>
                     </div>
@@ -138,7 +143,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
                     <Label>Number of Trees</Label>
-                    <HelpTooltip>The number of decision trees in the forest. More trees can lead to a more accurate model, but will take longer to train.</HelpTooltip>
+                    <HelpTooltip>The number of individual decision trees in the forest. More trees can improve accuracy but increase training time. Think of it as asking more 'experts' for their opinion.</HelpTooltip>
                   </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.n_estimators}</span>
                 </div>
@@ -152,7 +157,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
                     <Label>Max Depth</Label>
-                     <HelpTooltip>The maximum depth of each decision tree. A deeper tree can capture more complex patterns but may overfit.</HelpTooltip>
+                     <HelpTooltip>The maximum number of levels (or questions) each tree can have. Deeper trees can capture more complex patterns but risk 'overfitting'—memorizing the training data instead of learning general patterns.</HelpTooltip>
                   </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.max_depth || 'None'}</span>
                 </div>
@@ -166,7 +171,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                 <div className="flex justify-between">
                    <div className="flex items-center gap-2">
                     <Label>Min Samples Split</Label>
-                    <HelpTooltip>The minimum number of samples required to split an internal node.</HelpTooltip>
+                    <HelpTooltip>The minimum number of data points required in a group before the tree is allowed to split it further. Higher values prevent the model from learning from very small, potentially noisy groups.</HelpTooltip>
                   </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.min_samples_split}</span>
                 </div>
@@ -180,7 +185,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                 <div className="flex justify-between">
                    <div className="flex items-center gap-2">
                     <Label>Min Samples Leaf</Label>
-                    <HelpTooltip>The minimum number of samples required to be at a leaf node.</HelpTooltip>
+                    <HelpTooltip>The minimum number of data points allowed in a final leaf node (a final prediction). This helps smooth the model and avoid making predictions based on just one or two examples.</HelpTooltip>
                   </div>
                   <span className="text-sm text-muted-foreground">{hyperparameters.min_samples_leaf}</span>
                 </div>
@@ -193,7 +198,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                <div className="space-y-2">
                 <div className="flex items-center gap-2 mb-1">
                   <Label>Max Features</Label>
-                  <HelpTooltip>The number of features to consider when looking for the best split.</HelpTooltip>
+                  <HelpTooltip>The number of features (e.g., 'alcohol content', 'house age') to consider when looking for the best split at each node. Limiting this encourages diversity among the trees.</HelpTooltip>
                 </div>
                 <Select
                     value={hyperparameters.max_features ?? 'null'}
@@ -210,7 +215,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
               <div className="flex items-center justify-between">
                  <div className="flex items-center gap-2">
                   <Label>Bootstrap Samples</Label>
-                   <HelpTooltip>Whether bootstrap samples are used when building trees. If False, the whole dataset is used to build each tree.</HelpTooltip>
+                   <HelpTooltip>If enabled, each tree is trained on a random subsample of the data. This randomness is key to why Random Forests work well, as it prevents all trees from being identical.</HelpTooltip>
                 </div>
                 <Switch
                   checked={hyperparameters.bootstrap}
@@ -223,7 +228,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                   <div className="flex justify-between">
                      <div className="flex items-center gap-2">
                       <Label>Min Impurity Decrease</Label>
-                       <HelpTooltip>A node will be split if this split induces a decrease of the impurity greater than or equal to this value.</HelpTooltip>
+                       <HelpTooltip>A node will only be split if it significantly improves the model's purity (i.e., reduces prediction error). This parameter sets the threshold for what is considered a 'significant' improvement.</HelpTooltip>
                     </div>
                     <span className="text-sm text-muted-foreground">{hyperparameters.min_impurity_decrease.toFixed(2)}</span>
                   </div>
@@ -240,7 +245,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                     <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-1">
                           <Label>Criterion</Label>
-                          <HelpTooltip>The function to measure the quality of a split. "Gini" is for Gini impurity and "Entropy" for the information gain.</HelpTooltip>
+                          <HelpTooltip>The function to measure the quality of a split. 'Gini' and 'Entropy' are two different mathematical ways to measure how 'pure' or 'mixed' a group of samples is.</HelpTooltip>
                         </div>
                         <Select
                             value={hyperparameters.criterion}
@@ -256,7 +261,7 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders, avail
                     <div className="space-y-2">
                        <div className="flex items-center gap-2 mb-1">
                         <Label>Class Weight</Label>
-                         <HelpTooltip>Adjusts weights inversely proportional to class frequencies. "Balanced" is often a good choice for imbalanced datasets.</HelpTooltip>
+                         <HelpTooltip>This option is useful for imbalanced datasets (e.g., 95% 'good' wine, 5% 'bad' wine). 'Balanced' automatically gives more weight to the minority class, preventing the model from simply ignoring it.</HelpTooltip>
                       </div>
                         <Select
                             value={hyperparameters.class_weight ?? 'null'}

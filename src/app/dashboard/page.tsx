@@ -1,6 +1,4 @@
 
-
-
 'use client';
 
 import Image from 'next/image';
@@ -37,10 +35,85 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { ForestVisualization } from '@/components/forest-visualization';
 import { AggregationResultsDashboard } from '@/components/aggregation-results-dashboard';
 
+const domainSpecificText = {
+  'california-housing': {
+    featureImportance: "Shows which housing attributes (like median income or house age) are most influential in predicting a home's value.",
+    predictionPlot: "Compares the model's predicted home values against the actual sale prices.",
+    residualPlot: "Examines if the model's price prediction errors are random or if they follow a pattern (e.g., consistently overpricing cheaper homes).",
+    errorHistogram: "Shows the distribution of price prediction errors. Ideally, most errors should be close to zero.",
+    cumulativeError: "Shows what percentage of home price predictions fall within a certain dollar amount of the actual price.",
+    pdp: "Shows how changing a single factor, like the number of rooms, affects the predicted house price, holding all other factors constant.",
+    summary: "Provides an overview of the housing data, like average number of rooms and the range of house ages.",
+    correlation: "Reveals how different housing features relate to each other, like whether older houses tend to have fewer rooms.",
+  },
+  'diabetes': {
+    featureImportance: "Highlights which clinical measurements (like BMI or blood pressure) are most critical for predicting disease progression a year later.",
+    predictionPlot: "Compares the model's predicted disease progression score against the actual measured score.",
+    residualPlot: "Checks if the model's prediction errors are random or if they have a bias (e.g., underestimating progression in older patients).",
+    errorHistogram: "Visualizes the spread of prediction errors. A tight cluster around zero is ideal.",
+    cumulativeError: "Shows the percentage of predictions that are within a certain range of the true disease progression score.",
+    pdp: "Isolates one factor, like BMI, to see its direct impact on the predicted disease progression, independent of other measurements.",
+    summary: "Provides key statistics for each clinical measurement, such as the average BMI and blood pressure in the patient group.",
+    correlation: "Shows relationships between different clinical markers, like whether higher BMI is associated with higher blood pressure.",
+  },
+  'linnerud': {
+    featureImportance: "Shows which exercises (like Chinups or Situps) have the biggest impact on a person's physiological measurements (like Weight).",
+    predictionPlot: "Compares the model's predicted weight against the athlete's actual weight.",
+    residualPlot: "Analyzes if prediction errors for an athlete's weight have a pattern, or if they are random.",
+    errorHistogram: "Displays the distribution of weight prediction errors. Most errors should ideally be small.",
+    cumulativeError: "Shows how many weight predictions are within a certain number of pounds of the actual weight.",
+    pdp: "Shows how changing performance in one exercise, like situps, is predicted to affect an athlete's weight, keeping other exercises constant.",
+    summary: "Gives a statistical summary of the athletes' performance, including average number of chinups and situps.",
+    correlation: "Examines if performance in one exercise, like chinups, is related to performance in another, like situps.",
+  },
+  'wine-quality': {
+    featureImportance: "Reveals which chemical properties (like alcohol content or acidity) are the strongest predictors of wine quality.",
+    confusionMatrix: "Shows how well the model distinguishes between 'Good' and 'Bad' quality wines. It highlights where mistakes are made.",
+    rocCurve: "Measures the model's ability to correctly identify a 'Good' quality wine without incorrectly flagging a 'Bad' one.",
+    prCurve: "Shows the trade-off between being right about a 'Good' wine prediction (Precision) and finding all 'Good' wines (Recall).",
+    pdp: "Isolates a single ingredient, like 'sulphates', to see how its concentration level impacts the predicted quality of the wine.",
+    summary: "Provides an overview of the chemical properties, such as the average alcohol content and pH range across all wines.",
+    correlation: "Shows how different chemical properties are related, such as whether higher acidity is linked to lower pH.",
+  },
+  'breast-cancer': {
+    featureImportance: "Pinpoints which tumor characteristics (like radius or texture) are the most significant indicators for a diagnosis.",
+    confusionMatrix: "Summarizes the model's diagnostic accuracy, showing correct vs. incorrect classifications for 'Malignant' and 'Benign' cases.",
+    rocCurve: "Evaluates how well the model can distinguish between 'Malignant' and 'Benign' tumors.",
+    prCurve: "Demonstrates the trade-off between the accuracy of a 'Malignant' prediction (Precision) and correctly identifying all malignant cases (Recall).",
+    pdp: "Shows how a single tumor measurement, like 'mean radius', influences the model's diagnosis, holding other factors constant.",
+    summary: "Gives a statistical overview of the tumor measurements, like the average radius and texture of the cells.",
+    correlation: "Reveals relationships between tumor characteristics, like whether a larger radius is correlated with higher compactness.",
+  },
+  'digits': {
+    featureImportance: "Identifies which pixel areas are most important for the model to recognize a handwritten digit.",
+    confusionMatrix: "Shows a breakdown of which digits the model confuses. For example, does it often mistake a '3' for an '8'?",
+    rocCurve: "Measures the model's ability to distinguish one digit from another (e.g., telling a '7' from all other digits).",
+    prCurve: "For a specific digit, this shows the balance between making sure a prediction is correct (Precision) and not missing any instances of that digit (Recall).",
+    pdp: "Shows how the brightness of a single pixel region influences the model's decision on what digit it is.",
+    summary: "Provides statistics on pixel intensity values across the dataset of images.",
+    correlation: "Shows if the brightness of one pixel is related to the brightness of another, which can reveal stroke patterns.",
+  },
+  default: {
+    featureImportance: "Shows the relative importance of each feature in predicting the target variable.",
+    predictionPlot: "Compares the model's predictions against the actual values.",
+    confusionMatrix: "A visual breakdown of the model's prediction accuracy for each class.",
+    residualPlot: "This chart plots the model's prediction errors (residuals) against the predicted values. It helps to check for patterns in the errors, which can indicate if the model has a systematic bias.",
+    errorHistogram: "This histogram shows the distribution of prediction errors. An ideal histogram would be centered at zero, indicating that the model's errors are unbiased.",
+    cumulativeError: "This chart shows the percentage of predictions that fall within a certain error margin. A steep curve indicates that most predictions have small errors.",
+    rocCurve: "The Receiver Operating Characteristic (ROC) curve shows the model's ability to distinguish between classes. A curve that bows toward the top-left corner indicates a better-performing model.",
+    prCurve: "This curve demonstrates the trade-off between precision (the accuracy of positive predictions) and recall (the ability to find all positive samples). A curve that bows out toward the top-right indicates a better model.",
+    pdp: "Shows the marginal effect of a feature on the predicted outcome.",
+    summary: "Provides a summary of basic statistics for each numeric feature in the dataset.",
+    correlation: "Displays a heatmap showing the correlation between numeric features.",
+  }
+};
+
 
 export default function DashboardPage() {
   const { state, data, status, actions, availableDatasets } = useRandomForest();
   const isLoading = status === 'loading';
+
+  const descriptions = domainSpecificText[state.datasetName as keyof typeof domainSpecificText] || domainSpecificText.default;
 
   const renderKpiCards = (
     metrics: Metric | null,
@@ -161,7 +234,7 @@ export default function DashboardPage() {
                       <Card className="lg:col-span-4">
                           <CardHeader>
                             <CardTitle>Feature Importance</CardTitle>
-                            <CardDescription>Shows the relative importance of each feature in predicting the target variable.</CardDescription>
+                            <CardDescription>{descriptions.featureImportance}</CardDescription>
                           </CardHeader>
                           <CardContent className="pl-2">
                           {isLoading && !data.featureImportance.length ? (
@@ -190,9 +263,7 @@ export default function DashboardPage() {
                                   )}
                               </CardTitle>
                               <CardDescription>
-                                  {state.task === 'regression'
-                                  ? "Compares the model's predictions against the actual values."
-                                  : "A visual breakdown of the model's prediction accuracy for each class."}
+                                  {state.task === 'regression' ? descriptions.predictionPlot : descriptions.confusionMatrix}
                               </CardDescription>
                           </CardHeader>
                           <CardContent className="pl-2">
@@ -248,7 +319,7 @@ export default function DashboardPage() {
                       <Card>
                           <CardHeader>
                               <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />Residual Plot</CardTitle>
-                              <CardDescription>This chart plots the model's prediction errors (residuals) against the predicted values. It helps to check for patterns in the errors, which can indicate if the model has a systematic bias.</CardDescription>
+                              <CardDescription>{descriptions.residualPlot}</CardDescription>
                           </CardHeader>
                           <CardContent>
                              <ResidualPlot data={data.chartData} />
@@ -257,7 +328,7 @@ export default function DashboardPage() {
                       <Card>
                           <CardHeader>
                               <CardTitle className='flex items-center gap-2'><BarChart3 className='w-5 h-5' />Prediction Error Histogram</CardTitle>
-                               <CardDescription>This histogram shows the distribution of prediction errors. An ideal histogram would be centered at zero, indicating that the model's errors are unbiased.</CardDescription>
+                               <CardDescription>{descriptions.errorHistogram}</CardDescription>
                           </CardHeader>
                           <CardContent>
                               <PredictionErrorHistogram data={data.chartData} />
@@ -266,7 +337,7 @@ export default function DashboardPage() {
                       <Card>
                           <CardHeader>
                               <CardTitle className='flex items-center gap-2'><AreaChart className='w-5 h-5' />Cumulative Error Chart</CardTitle>
-                              <CardDescription>This chart shows the percentage of predictions that fall within a certain error margin. A steep curve indicates that most predictions have small errors.</CardDescription>
+                              <CardDescription>{descriptions.cumulativeError}</CardDescription>
                           </CardHeader>
                           <CardContent>
                               <CumulativeErrorChart data={data.chartData} />
@@ -278,7 +349,7 @@ export default function DashboardPage() {
                       <Card>
                           <CardHeader>
                               <CardTitle className='flex items-center gap-2'><Activity className='w-5 h-5' />ROC Curve</CardTitle>
-                              <CardDescription>The Receiver Operating Characteristic (ROC) curve shows the model's ability to distinguish between classes. A curve that bows toward the top-left corner indicates a better-performing model.</CardDescription>
+                              <CardDescription>{descriptions.rocCurve}</CardDescription>
                           </CardHeader>
                           <CardContent>
                               <RocCurveChart data={data.rocCurveData} />
@@ -287,7 +358,7 @@ export default function DashboardPage() {
                       <Card>
                           <CardHeader>
                               <CardTitle className='flex items-center gap-2'><Target className='w-5 h' />Precision-Recall Curve</CardTitle>                            
-                              <CardDescription>This curve demonstrates the trade-off between precision (the accuracy of positive predictions) and recall (the ability to find all positive samples). A curve that bows out toward the top-right indicates a better model.</CardDescription>
+                              <CardDescription>{descriptions.prCurve}</CardDescription>
                           </CardHeader>
                           <CardContent>
                               <PrecisionRecallCurveChart data={data.prCurveData} />
@@ -301,7 +372,7 @@ export default function DashboardPage() {
                    <Card>
                       <CardHeader>
                           <CardTitle>Summary Statistics</CardTitle>
-                          <CardDescription>Provides a summary of basic statistics for each numeric feature in the dataset.</CardDescription>
+                          <CardDescription>{descriptions.summary}</CardDescription>
                       </CardHeader>
                       <CardContent>
                           <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
@@ -331,7 +402,7 @@ export default function DashboardPage() {
                   <Card className="mb-8">
                       <CardHeader>
                           <CardTitle>Correlation Heatmap</CardTitle>
-                          <CardDescription>Displays a heatmap showing the correlation between numeric features.</CardDescription>
+                          <CardDescription>{descriptions.correlation}</CardDescription>
                       </CardHeader>
                       <CardContent>
                           <CorrelationHeatmap dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} />
@@ -353,7 +424,7 @@ export default function DashboardPage() {
                    <Card>
                       <CardHeader>
                           <CardTitle className='flex items-center gap-2'><Lightbulb className='w-5 h-5' />Partial Dependence Plot</CardTitle>
-                          <CardDescription>Shows the marginal effect of a feature on the predicted outcome.</CardDescription>
+                          <CardDescription>{descriptions.pdp}</CardDescription>
                       </CardHeader>
                       <CardContent>
                           <PartialDependencePlot
@@ -365,7 +436,7 @@ export default function DashboardPage() {
                       </CardContent>
                   </Card>
               </div>
-              <div className="grid grid-cols-1 gap-4 md:gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
                    <ForestVisualization
                       simulationData={data.forestSimulation}
                       taskType={state.task}
