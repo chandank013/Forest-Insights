@@ -5,8 +5,8 @@ import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell, Tooltip as RechartsTooltip } from 'recharts';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from './ui/skeleton';
@@ -109,12 +109,11 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                         <CardDescription>{descriptions.predictionSpread}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <ChartContainer config={{}} className="h-full w-full">
                         <ResponsiveContainer width="100%" height={200}>
                             <BarChart data={voteData}>
                                 <XAxis dataKey="name" />
                                 <YAxis />
-                                <ChartTooltip content={<ChartTooltipContent />} cursor={{ fill: 'hsl(var(--accent))' }} />
+                                <RechartsTooltip cursor={{ fill: 'hsl(var(--accent))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
                                 <Bar dataKey="votes" fill="hsl(var(--primary))">
                                     {voteData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -122,7 +121,6 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                                 </Bar>
                             </BarChart>
                         </ResponsiveContainer>
-                      </ChartContainer>
                     </CardContent>
                 </Card>
             </div>
@@ -150,7 +148,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <ChartTooltip content={<ChartTooltipContent />} />
+                                <RechartsTooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
                             </PieChart>
                         </ResponsiveContainer>
                     </CardContent>
@@ -197,18 +195,19 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
             <CardDescription>{descriptions.individualPredictions}</CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={{}} className="h-[200px] w-full">
+            <ResponsiveContainer width="100%" height={200}>
               <BarChart data={trees}>
                   <XAxis dataKey="id" label={{ value: 'Tree ID', position: 'insideBottom', offset: -5 }} />
                   <YAxis label={{ value: 'Prediction', angle: -90, position: 'insideLeft' }} />
-                  <ChartTooltip
-                      content={<ChartTooltipContent formatter={(value, name, props) => `${props.payload.id}: ${value.toFixed(3)}`} />}
+                  <RechartsTooltip
+                      contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                      formatter={(value: number, name, props) => [`${value.toFixed(3)}`, `Tree ${props.payload.id}`]}
                       cursor={{ fill: 'hsl(var(--accent))' }}
                   />
                   <Bar dataKey="prediction" fill="hsl(var(--primary))" />
                   <ReferenceLine y={average} stroke="hsl(var(--destructive))" strokeDasharray="3 3" label={{ value: 'Avg', position: 'right' }} />
               </BarChart>
-            </ChartContainer>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
         {renderSummaryTable()}
