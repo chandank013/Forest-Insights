@@ -43,13 +43,13 @@ const BASELINE_HYPERPARAMETERS: Hyperparameters = {
 const DATASETS: Record<TaskType, DatasetOption[]> = {
     regression: [
         { name: 'California Housing', value: 'california-housing', data: housingDataset, target: 'MedHouseVal' },
-        { name: 'Diabetes', value: 'diabetes', data: diabetesDataset, target: 'target' },
+        { name: 'Diabetes', value: 'diabetes', data: diabetesDataset, target: 'DiseaseProgression' },
         { name: 'Linnerud', value: 'linnerud', data: linnerudDataset, target: 'Weight' },
     ],
     classification: [
         { name: 'Wine Quality', value: 'wine-quality', data: wineDataset, target: 'quality' },
-        { name: 'Breast Cancer', value: 'breast-cancer', data: breastCancerDataset, target: 'target' },
-        { name: 'Digits Recognition', value: 'digits', data: digitsDataset, target: 'target' },
+        { name: 'Breast Cancer', value: 'breast-cancer', data: breastCancerDataset, target: 'Diagnosis' },
+        { name: 'Digits Recognition', value: 'digits', data: digitsDataset, target: 'Digit' },
     ]
 };
 
