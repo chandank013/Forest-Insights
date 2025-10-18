@@ -81,12 +81,16 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
         const sum = simulationData.trees.reduce((acc, t) => acc + t.prediction, 0);
         return sum / simulationData.trees.length;
     } else {
-        const votes: Record<string, number> = {};
+        const votes: Record<string, number> = {'0': 0, '1': 0};
         simulationData.trees.forEach(t => {
             votes[t.prediction] = (votes[t.prediction] || 0) + 1;
         });
-        if (Object.keys(votes).length === 0) return 0;
-        return parseInt(Object.keys(votes).reduce((a, b) => votes[a] > votes[b] ? a : b));
+
+        if (votes['1'] > votes['0']) {
+            return 1;
+        }
+        // In case of a tie, or if 0 has more votes, default to 0.
+        return 0;
     }
   }, [simulationData, taskType]);
   
