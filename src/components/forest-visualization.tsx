@@ -204,11 +204,27 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                 <DialogHeader>
                     <DialogTitle>Decision Tree Snapshot</DialogTitle>
                 </DialogHeader>
-                <div className="flex-1 overflow-auto">
-                    <DecisionTreeSnapshot tree={selectedTree} taskType={taskType} />
+                 <div className="flex-1 overflow-auto">
+                    <div
+                        className="relative p-8 transition-transform duration-300 mx-auto"
+                        style={{
+                            transform: `scale(${zoom})`,
+                            transformOrigin: 'top',
+                            width: 'fit-content'
+                        }}
+                    >
+                         <div className="flex justify-center">
+                            {tree.type === 'node'
+                                ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
+                                : <NodeDisplay node={tree} taskType={taskType} />
+                            }
+                        </div>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>
     </>
   )
 }
+
+    
