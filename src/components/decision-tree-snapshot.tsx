@@ -158,23 +158,28 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     }
     
     return (
-        <div className="relative w-full h-full font-sans overflow-auto">
-            <TooltipProvider>
-                <div 
-                    className="p-8 transition-transform duration-300 min-w-[1200px]"
-                    style={{ transform: `scale(${zoom})`, transformOrigin: 'top' }}
-                >
-                    <div className="flex justify-center">
-                    {tree.type === 'node'
-                        ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
-                        : <NodeDisplay node={tree} taskType={taskType} />
-                    }
+        <div className="relative w-full h-full font-sans">
+             <TooltipProvider>
+                <div className='overflow-auto w-full h-full'>
+                    <div 
+                        className="p-8 transition-transform duration-300 min-w-[1200px]"
+                        style={{ 
+                            transform: `scale(${zoom})`, 
+                            transformOrigin: 'top' 
+                        }}
+                    >
+                         <div className="flex justify-center">
+                            {tree.type === 'node'
+                                ? <TreeBranch node={tree as DecisionNode} taskType={taskType} />
+                                : <NodeDisplay node={tree} taskType={taskType} />
+                            }
+                        </div>
                     </div>
                 </div>
             </TooltipProvider>
 
             <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
-                <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.max(0.25, z - ZOOM_STEP))}>
+                <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.max(0.1, z - ZOOM_STEP))}>
                     <ZoomOut className="h-4 w-4" />
                     <span className="sr-only">Zoom Out</span>
                 </Button>
