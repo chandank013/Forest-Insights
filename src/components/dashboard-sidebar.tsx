@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { HelpCircle, Loader2 } from 'lucide-react';
@@ -16,7 +17,7 @@ type DashboardSidebarProps = ReturnType<typeof useRandomForest> & {
   datasetHeaders: string[];
 };
 
-export function DashboardSidebar({ state, actions, status, datasetHeaders }: DashboardSidebarProps) {
+export function DashboardSidebar({ state, actions, status, datasetHeaders, availableDatasets }: DashboardSidebarProps) {
   const { hyperparameters, task, testSize } = state;
   const { setHyperparameters, setTestSize } = actions;
 
@@ -67,14 +68,24 @@ export function DashboardSidebar({ state, actions, status, datasetHeaders }: Das
             <SidebarGroupLabel>Data Configuration</SidebarGroupLabel>
             <SidebarGroupContent className="space-y-4">
                 <div>
+                    <div className="flex items-center gap-2 mb-1">
+                        <Label>Select Dataset</Label>
+                        <HelpTooltip>Choose the dataset to train the model on.</HelpTooltip>
+                    </div>
+                    <Select value={state.datasetName} onValueChange={actions.setDataset}>
+                        <SelectTrigger><SelectValue placeholder="Select dataset..." /></SelectTrigger>
+                        <SelectContent>
+                        {availableDatasets.map(dataset => (
+                            <SelectItem key={dataset.value} value={dataset.value}>{dataset.name}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div>
                   <div className="flex items-center gap-2 mb-1">
                     <Label>Target Column</Label>
                     <HelpTooltip>
-                      {task === 'regression' ? (
-                        <p><b>Median House Value (MedHouseVal):</b> The median house value for California districts, in hundreds of thousands of dollars (e.g., 3.5 = $350,000).</p>
-                      ) : (
-                        <p><b>Wine Quality:</b> The quality of the wine, rated as good (1) or bad (0).</p>
-                      )}
+                      <p>The output variable the model will try to predict.</p>
                     </HelpTooltip>
                   </div>
                     <Select value={state.targetColumn} onValueChange={actions.setTargetColumn} disabled>

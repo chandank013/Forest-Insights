@@ -1,4 +1,5 @@
 
+
 export type TaskType = 'regression' | 'classification';
 
 export type Hyperparameters = {
@@ -90,3 +91,9 @@ export type TreeSimulation = {
 export type ForestSimulation = {
     trees: TreeSimulation[];
 };
+
+export type DatasetOption = {
+    name: string;
+    value: string;
+    data: Record<string, any>[];
+}

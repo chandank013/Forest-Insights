@@ -1,0 +1,13 @@
+
+[
+  { "pixel_2_2": 5, "pixel_2_3": 13, "pixel_2_4": 15, "pixel_2_5": 10, "pixel_3_2": 13, "pixel_3_3": 15, "pixel_3_4": 9, "pixel_3_5": 0, "pixel_4_2": 15, "pixel_4_3": 14, "pixel_4_4": 0, "pixel_4_5": 0, "target": 0 },
+  { "pixel_2_2": 0, "pixel_2_3": 9, "pixel_2_4": 16, "pixel_2_5": 12, "pixel_3_2": 1, "pixel_3_3": 11, "pixel_3_4": 16, "pixel_3_5": 3, "pixel_4_2": 0, "pixel_4_3": 12, "pixel_4_4": 16, "pixel_4_5": 2, "target": 1 },
+  { "pixel_2_2": 0, "pixel_2_3": 2, "pixel_2_4": 12, "pixel_2_5": 13, "pixel_3_2": 0, "pixel_3_3": 6, "pixel_3_4": 14, "pixel_3_5": 14, "pixel_4_2": 0, "pixel_4_3": 5, "pixel_4_4": 15, "pixel_4_5": 12, "target": 2 },
+  { "pixel_2_2": 7, "pixel_2_3": 15, "pixel_2_4": 13, "pixel_2_5": 2, "pixel_3_2": 8, "pixel_3_3": 13, "pixel_3_4": 8, "pixel_3_5": 0, "pixel_4_2": 0, "pixel_4_3": 10, "pixel_4_4": 16, "pixel_4_5": 9, "target": 3 },
+  { "pixel_2_2": 0, "pixel_2_3": 1, "pixel_2_4": 11, "pixel_2_5": 0, "pixel_3_2": 0, "pixel_3_3": 7, "pixel_3_4": 8, "pixel_3_5": 0, "pixel_4_2": 0, "pixel_4_3": 1, "pixel_4_4": 13, "pixel_4_5": 3, "target": 4 },
+  { "pixel_2_2": 12, "pixel_2_3": 10, "pixel_2_4": 2, "pixel_2_5": 0, "pixel_3_2": 13, "pixel_3_3": 16, "pixel_3_4": 9, "pixel_3_5": 0, "pixel_4_2": 8, "pixel_4_3": 16, "pixel_4_4": 16, "pixel_4_5": 12, "target": 5 },
+  { "pixel_2_2": 0, "pixel_2_3": 4, "pixel_2_4": 15, "pixel_2_5": 12, "pixel_3_2": 0, "pixel_3_3": 8, "pixel_3_4": 16, "pixel_3_5": 13, "pixel_4_2": 0, "pixel_4_3": 1, "pixel_4_4": 12, "pixel_4_5": 0, "target": 6 },
+  { "pixel_2_2": 8, "pixel_2_3": 16, "pixel_2_4": 10, "pixel_2_5": 0, "pixel_3_2": 12, "pixel_3_3": 16, "pixel_3_4": 10, "pixel_3_5": 0, "pixel_4_2": 0, "pixel_4_3": 11, "pixel_4_4": 14, "pixel_4_5": 0, "target": 7 },
+  { "pixel_2_2": 6, "pixel_2_3": 14, "pixel_2_4": 10, "pixel_2_5": 0, "pixel_3_2": 5, "pixel_3_3": 16, "pixel_3_4": 7, "pixel_3_5": 0, "pixel_4_2": 6, "pixel_4_3": 16, "pixel_4_4": 12, "pixel_4_5": 0, "target": 8 },
+  { "pixel_2_2": 11, "pixel_2_3": 16, "pixel_2_4": 12, "pixel_2_5": 0, "pixel_3_2": 8, "pixel_3_3": 16, "pixel_3_4": 5, "pixel_3_5": 0, "pixel_4_2": 1, "pixel_4_3": 16, "pixel_4_4": 6, "pixel_4_5": 0, "target": 9 }
+]

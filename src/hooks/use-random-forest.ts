@@ -14,9 +14,15 @@ import type {
   DecisionNode,
   ForestSimulation,
   TreeSimulation,
+  DatasetOption,
 } from '@/lib/types';
 import housingDataset from '@/lib/data/california-housing.json';
 import wineDataset from '@/lib/data/wine-quality.json';
+import diabetesDataset from '@/lib/data/diabetes.json';
+import linnerudDataset from '@/lib/data/linnerud.json';
+import breastCancerDataset from '@/lib/data/breast-cancer.json';
+import digitsDataset from '@/lib/data/digits.json';
+
 import { getFeatureImportanceInsights } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 
@@ -34,47 +40,40 @@ const BASELINE_HYPERPARAMETERS: Hyperparameters = {
   class_weight: null,
 };
 
-
-const regressionInitialState = {
-  task: 'regression' as TaskType,
-  hyperparameters: BASELINE_HYPERPARAMETERS,
-  selectedFeatures: [
-    'MedInc',
-    'HouseAge',
-    'AveRooms',
-    'AveBedrms',
-    'Population',
-    'AveOccup',
-    'Latitude',
-    'Longitude',
-  ],
-  targetColumn: 'MedHouseVal',
-  testSize: 0.2,
+const DATASETS: Record<TaskType, DatasetOption[]> = {
+    regression: [
+        { name: 'California Housing', value: 'california-housing', data: housingDataset },
+        { name: 'Diabetes', value: 'diabetes', data: diabetesDataset },
+        { name: 'Linnerud', value: 'linnerud', data: linnerudDataset },
+    ],
+    classification: [
+        { name: 'Wine Quality', value: 'wine-quality', data: wineDataset },
+        { name: 'Breast Cancer', value: 'breast-cancer', data: breastCancerDataset },
+        { name: 'Digits Recognition', value: 'digits', data: digitsDataset },
+    ]
 };
 
-const classificationInitialState = {
-  task: 'classification' as TaskType,
-  hyperparameters: BASELINE_HYPERPARAMETERS,
-  selectedFeatures: [
-    'fixed_acidity',
-    'volatile_acidity',
-    'citric_acid',
-    'residual_sugar',
-    'chlorides',
-    'free_sulfur_dioxide',
-    'total_sulfur_dioxide',
-    'density',
-    'pH',
-    'sulphates',
-    'alcohol',
-  ],
-  targetColumn: 'quality',
-  testSize: 0.2,
+const getInitialStateForTask = (task: TaskType, datasetName: string): State => {
+    const datasetOption = DATASETS[task].find(d => d.value === datasetName);
+    const dataset = datasetOption ? datasetOption.data : DATASETS[task][0].data;
+    const allHeaders = Object.keys(dataset[0] ?? {});
+    const targetColumn = allHeaders[allHeaders.length - 1];
+    const selectedFeatures = allHeaders.filter(h => h !== targetColumn);
+
+    return {
+        task,
+        datasetName: datasetOption ? datasetName : DATASETS[task][0].value,
+        hyperparameters: BASELINE_HYPERPARAMETERS,
+        selectedFeatures,
+        targetColumn,
+        testSize: 0.2,
+    };
 };
 
 
 type State = {
   task: TaskType;
+  datasetName: string;
   hyperparameters: Hyperparameters;
   selectedFeatures: string[];
   targetColumn: string;
@@ -100,28 +99,28 @@ type Data = {
 
 type Action =
   | { type: 'SET_TASK'; payload: TaskType }
+  | { type: 'SET_DATASET'; payload: string }
   | { type: 'SET_HYPERPARAMETERS'; payload: Partial<Hyperparameters> }
   | { type: 'SET_SELECTED_FEATURES'; payload: string[] }
   | { type: 'SET_TARGET_COLUMN'; payload: string }
   | { type: 'SET_TEST_SIZE'; payload: number };
 
-const initialState: State = regressionInitialState;
+const initialState: State = getInitialStateForTask('regression', 'california-housing');
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'SET_TASK': {
-        if (action.payload === 'regression') {
-            return regressionInitialState;
-        } else {
-            return classificationInitialState;
-        }
+        return getInitialStateForTask(action.payload, DATASETS[action.payload][0].value);
+    }
+    case 'SET_DATASET': {
+        return getInitialStateForTask(state.task, action.payload);
     }
     case 'SET_HYPERPARAMETERS':
       return { ...state, hyperparameters: { ...state.hyperparameters, ...action.payload } };
     case 'SET_SELECTED_FEATURES':
       return { ...state, selectedFeatures: action.payload };
     case 'SET_TARGET_COLUMN': {
-      const currentDataset = state.task === 'regression' ? housingDataset : wineDataset;
+      const currentDataset = DATASETS[state.task].find(d => d.value === state.datasetName)?.data ?? [];
       const allHeaders = Object.keys(currentDataset[0] ?? {});
       const newFeatures = allHeaders.filter(h => h !== action.payload);
       return { ...state, targetColumn: action.payload, selectedFeatures: newFeatures };
@@ -203,7 +202,7 @@ const generateMockTree = (
 
 const createSeed = (state: State, salt: string = '') => {
     let seed = 0;
-    const str = JSON.stringify(state.hyperparameters) + state.testSize + state.targetColumn + state.task + salt;
+    const str = JSON.stringify(state.hyperparameters) + state.testSize + state.targetColumn + state.task + state.datasetName + salt;
     for (let i = 0; i < str.length; i++) {
         seed = (seed << 5) - seed + str.charCodeAt(i);
         seed |= 0; 
@@ -370,8 +369,9 @@ const mockTrainModel = async (
     if (task === 'regression') {
        prediction = actual * (0.8 + pseudoRandom(predSeed) * 0.4);
     } else {
-        const threshold = 10.5;
-        prediction = (row['alcohol'] + pseudoRandom(predSeed) * 2) > threshold ? 1 : 0;
+        const threshold = task === 'wine-quality' ? 10.5 : 0.5; // Different threshold for different datasets
+        const featureToUse = task === 'wine-quality' ? 'alcohol' : selectedFeatures[0];
+        prediction = (row[featureToUse] + pseudoRandom(predSeed) * 2) > threshold ? 1 : 0;
     }
 
     const features = selectedFeatures.reduce((acc, feat) => {
@@ -408,7 +408,8 @@ const mockPredict = (
       task: taskType,
       targetColumn,
       testSize,
-      selectedFeatures: Object.keys(values)
+      selectedFeatures: Object.keys(values),
+      datasetName: ''
   };
 
   const seed = createSeed(seedState, 'predict');
@@ -435,7 +436,7 @@ const mockPredict = (
 export const useRandomForest = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [data, setData] = useState<Data>({
-    dataset: housingDataset,
+    dataset: DATASETS['regression'][0].data,
     metrics: null,
     featureImportance: [],
     history: [],
@@ -455,7 +456,9 @@ pdpData: null,
   const [isDebouncing, setIsDebouncing] = useState(false);
 
   useEffect(() => {
-    const newDataset = state.task === 'regression' ? housingDataset : wineDataset;
+    const newDatasetOption = DATASETS[state.task].find(d => d.value === state.datasetName);
+    const newDataset = newDatasetOption ? newDatasetOption.data : [];
+    
     setData(d => ({
         ...d,
         dataset: newDataset,
@@ -467,8 +470,7 @@ pdpData: null,
         pdpData: null,
         forestSimulation: null,
     }));
-    dispatch({ type: 'SET_HYPERPARAMETERS', payload: BASELINE_HYPERPARAMETERS });
-  }, [state.task]);
+  }, [state.task, state.datasetName]);
 
   const handleStateChange = <T extends Action['type']>(type: T) => (payload: Extract<Action, { type: T }>['payload']) => {
     dispatch({ type, payload } as Action);
@@ -480,9 +482,8 @@ pdpData: null,
       }
       setStatus('loading');
       try {
-        const currentDataset = state.task === 'regression' ? housingDataset : wineDataset;
+        const currentDataset = DATASETS[state.task].find(d => d.value === state.datasetName)?.data ?? [];
         
-        // Pass a state snapshot to the training function
         const stateForTraining = isBaseline ? { ...state, hyperparameters: BASELINE_HYPERPARAMETERS } : state;
 
         const trainedData = await mockTrainModel(stateForTraining, currentDataset, isBaseline);
@@ -552,6 +553,7 @@ pdpData: null,
 
   const actions = {
     setTask: handleStateChange('SET_TASK'),
+    setDataset: handleStateChange('SET_DATASET'),
     setHyperparameters: handleStateChange('SET_HYPERPARAMETERS'),
     setSelectedFeatures: handleStateChange('SET_SELECTED_FEATURES'),
     setTargetColumn: handleStateChange('SET_TARGET_COLUMN'),
@@ -562,18 +564,19 @@ pdpData: null,
   };
 
   useEffect(() => {
-    // Do not auto-train on first load if baseline is not present
     if (!data.baselineMetrics) return;
     
     const baselineStateString = JSON.stringify({
         hyperparameters: BASELINE_HYPERPARAMETERS,
-        targetColumn: state.task === 'regression' ? regressionInitialState.targetColumn : classificationInitialState.targetColumn,
-        testSize: state.task === 'regression' ? regressionInitialState.testSize : classificationInitialState.testSize,
+        targetColumn: state.targetColumn,
+        testSize: state.testSize,
+        datasetName: state.datasetName,
     });
     const currentStateString = JSON.stringify({
         hyperparameters: state.hyperparameters,
         targetColumn: state.targetColumn,
         testSize: state.testSize,
+        datasetName: state.datasetName,
     });
     if (baselineStateString === currentStateString && data.metrics === data.baselineMetrics) return;
 
@@ -587,7 +590,7 @@ pdpData: null,
       clearTimeout(handler);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.hyperparameters, state.targetColumn, state.testSize]);
+  }, [state.hyperparameters, state.targetColumn, state.testSize, state.datasetName]);
 
-  return { state, data, status, actions };
+  return { state, data, status, actions, availableDatasets: DATASETS[state.task] };
 };

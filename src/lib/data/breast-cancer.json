@@ -1,0 +1,18 @@
+
+[
+  { "mean radius": 17.99, "mean texture": 10.38, "mean smoothness": 0.1184, "mean compactness": 0.2776, "mean symmetry": 0.2419, "mean fractal dimension": 0.0787, "target": 0 },
+  { "mean radius": 20.57, "mean texture": 17.77, "mean smoothness": 0.0847, "mean compactness": 0.0786, "mean symmetry": 0.1812, "mean fractal dimension": 0.0567, "target": 0 },
+  { "mean radius": 19.69, "mean texture": 21.25, "mean smoothness": 0.1096, "mean compactness": 0.1599, "mean symmetry": 0.2069, "mean fractal dimension": 0.06, "target": 0 },
+  { "mean radius": 11.42, "mean texture": 20.38, "mean smoothness": 0.1425, "mean compactness": 0.2839, "mean symmetry": 0.2597, "mean fractal dimension": 0.0974, "target": 0 },
+  { "mean radius": 20.29, "mean texture": 14.34, "mean smoothness": 0.1003, "mean compactness": 0.1328, "mean symmetry": 0.1809, "mean fractal dimension": 0.0588, "target": 0 },
+  { "mean radius": 12.45, "mean texture": 15.7, "mean smoothness": 0.1278, "mean compactness": 0.17, "mean symmetry": 0.2087, "mean fractal dimension": 0.0761, "target": 0 },
+  { "mean radius": 18.25, "mean texture": 19.98, "mean smoothness": 0.0946, "mean compactness": 0.109, "mean symmetry": 0.1794, "mean fractal dimension": 0.0574, "target": 0 },
+  { "mean radius": 13.71, "mean texture": 20.83, "mean smoothness": 0.1189, "mean compactness": 0.1645, "mean symmetry": 0.2196, "mean fractal dimension": 0.0745, "target": 0 },
+  { "mean radius": 13, "mean texture": 21.82, "mean smoothness": 0.1273, "mean compactness": 0.1932, "mean symmetry": 0.235, "mean fractal dimension": 0.0739, "target": 0 },
+  { "mean radius": 12.46, "mean texture": 24.04, "mean smoothness": 0.1186, "mean compactness": 0.2396, "mean symmetry": 0.203, "mean fractal dimension": 0.0824, "target": 0 },
+  { "mean radius": 16.02, "mean texture": 23.24, "mean smoothness": 0.0821, "mean compactness": 0.0667, "mean symmetry": 0.1528, "mean fractal dimension": 0.0569, "target": 1 },
+  { "mean radius": 15.78, "mean texture": 17.89, "mean smoothness": 0.0971, "mean compactness": 0.1292, "mean symmetry": 0.1949, "mean fractal dimension": 0.0615, "target": 1 },
+  { "mean radius": 19.17, "mean texture": 10.4, "mean smoothness": 0.111, "mean compactness": 0.2458, "mean symmetry": 0.2397, "mean fractal dimension": 0.078, "target": 0 },
+  { "mean radius": 15.85, "mean texture": 23.95, "mean smoothness": 0.084, "mean compactness": 0.1, "mean symmetry": 0.1445, "mean fractal dimension": 0.0555, "target": 1 },
+  { "mean radius": 13.73, "mean texture": 22.61, "mean smoothness": 0.1131, "mean compactness": 0.2293, "mean symmetry": 0.2098, "mean fractal dimension": 0.0808, "target": 0 }
+]

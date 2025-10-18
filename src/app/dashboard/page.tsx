@@ -1,5 +1,6 @@
 
 
+
 'use client';
 
 import Image from 'next/image';
@@ -38,7 +39,7 @@ import { AggregationResultsDashboard } from '@/components/aggregation-results-da
 
 
 export default function DashboardPage() {
-  const { state, data, status, actions } = useRandomForest();
+  const { state, data, status, actions, availableDatasets } = useRandomForest();
   const isLoading = status === 'loading';
 
   const renderKpiCards = (
@@ -400,6 +401,7 @@ export default function DashboardPage() {
           actions={actions}
           status={status}
           datasetHeaders={Object.keys(data.dataset?.[0] ?? {})}
+          availableDatasets={availableDatasets}
         />
       </Sidebar>
       <SidebarInset className="flex flex-col">
