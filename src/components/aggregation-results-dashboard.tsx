@@ -6,8 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell } from 'recharts';
-import { ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Tooltip as UiTooltip, TooltipProvider as UiTooltipProvider, TooltipTrigger as UiTooltipTrigger, TooltipContent as UiTooltipContent } from '@/components/ui/tooltip';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from './ui/skeleton';
 import { ForestSimulation, TaskType, TreeSimulation } from '@/lib/types';
@@ -85,18 +85,20 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
             <CardDescription>Comparison of predictions from different trees in the forest.</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={trees}>
-                <XAxis dataKey="id" label={{ value: 'Tree ID', position: 'insideBottom', offset: -5 }} />
-                <YAxis label={{ value: 'Prediction', angle: -90, position: 'insideLeft' }} />
-                <ChartTooltip
-                    content={<ChartTooltipContent formatter={(value, name, props) => `${props.payload.id}: ${value.toFixed(3)}`} />}
-                    cursor={{ fill: 'hsl(var(--accent))' }}
-                />
-                <Bar dataKey="prediction" fill="hsl(var(--primary))" />
-                <ReferenceLine y={average} stroke="hsl(var(--destructive))" strokeDasharray="3 3" label={{ value: 'Avg', position: 'right' }} />
-              </BarChart>
-            </ResponsiveContainer>
+            <ChartContainer config={{}} className="h-[200px] w-full">
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={trees}>
+                  <XAxis dataKey="id" label={{ value: 'Tree ID', position: 'insideBottom', offset: -5 }} />
+                  <YAxis label={{ value: 'Prediction', angle: -90, position: 'insideLeft' }} />
+                  <ChartTooltip
+                      content={<ChartTooltipContent formatter={(value, name, props) => `${props.payload.id}: ${value.toFixed(3)}`} />}
+                      cursor={{ fill: 'hsl(var(--accent))' }}
+                  />
+                  <Bar dataKey="prediction" fill="hsl(var(--primary))" />
+                  <ReferenceLine y={average} stroke="hsl(var(--destructive))" strokeDasharray="3 3" label={{ value: 'Avg', position: 'right' }} />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
         <Card className="lg:col-span-3">
@@ -140,6 +142,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                     <CardDescription>How the trees voted for each class.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4">
+                  <ChartContainer config={{}} className="h-[200px] w-full">
                     <ResponsiveContainer width="100%" height={200}>
                         <BarChart data={voteData}>
                             <XAxis dataKey="name" />
@@ -152,6 +155,8 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                             </Bar>
                         </BarChart>
                     </ResponsiveContainer>
+                  </ChartContainer>
+                  <ChartContainer config={{}} className="h-[200px] w-full">
                     <ResponsiveContainer width="100%" height={200}>
                         <PieChart>
                             <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
@@ -162,6 +167,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                             <ChartTooltip content={<ChartTooltipContent />} />
                         </PieChart>
                     </ResponsiveContainer>
+                  </ChartContainer>
                 </CardContent>
             </Card>
         </div>
@@ -194,19 +200,19 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                                 <TableCell>{taskType === 'regression' ? tree.prediction.toFixed(3) : tree.prediction}</TableCell>
                                 <TableCell>{(1 / trees.length).toFixed(3)}</TableCell>
                                 <TableCell>
-                                     <UiTooltipProvider>
-                                        <UiTooltip>
-                                            <UiTooltipTrigger>
+                                     <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger>
                                                 <span>{confidence !== 'N/A' ? `${confidence}%` : `${contribution.toFixed(2)}%`}</span>
-                                            </UiTooltipTrigger>
-                                            <UiTooltipContent>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
                                                 {taskType === 'classification' ? 
                                                     <p>Mock confidence score for demonstration.</p> :
                                                     <p>Percentage contribution to the final averaged prediction.</p>
                                                 }
-                                            </UiTooltipContent>
-                                        </UiTooltip>
-                                    </UiTooltipProvider>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </TableCell>
                             </TableRow>
                         );
@@ -248,5 +254,3 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
     </div>
   );
 }
-
-    
