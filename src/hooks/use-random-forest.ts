@@ -561,8 +561,8 @@ pdpData: null,
   };
 
   useEffect(() => {
-    if (!data.baselineMetrics) return;
-    
+    if (status === 'idle') return;
+
     const baselineStateString = JSON.stringify({
         hyperparameters: BASELINE_HYPERPARAMETERS,
         targetColumn: state.targetColumn,
@@ -575,6 +575,7 @@ pdpData: null,
         testSize: state.testSize,
         datasetName: state.datasetName,
     });
+
     if (baselineStateString === currentStateString && data.metrics === data.baselineMetrics) return;
 
     setIsDebouncing(true);
