@@ -142,7 +142,24 @@ const generateMockTree = (
     seed = 1
 ): DecisionTree => {
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth >= hyperparameters.max_depth;
+    
+    // Termination conditions
+    if (depth >= hyperparameters.max_depth || depth >= 10) { // Add a safety depth limit
+        const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 10);
+        let value: number[];
+        if (task === 'regression') {
+            value = [pseudoRandom(nodeSeed * 2) * 3 + 1];
+        } else {
+            const class1Samples = Math.floor(pseudoRandom(nodeSeed * 2) * samples);
+            value = [samples - class1Samples, class1Samples];
+        }
+        return {
+            type: 'leaf',
+            value: value,
+            samples: samples
+        };
+    }
+    
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
 
     let value: number[];
@@ -150,8 +167,8 @@ const generateMockTree = (
     let criterion: DecisionNode['criterion'] = 'MSE';
 
     if (task === 'regression') {
-        const baseValue = pseudoRandom(nodeSeed * 2) * 3 + 1; // e.g. 1-4
-        impurity = pseudoRandom(nodeSeed * 3); // MSE
+        const baseValue = pseudoRandom(nodeSeed * 2) * 3 + 1;
+        impurity = pseudoRandom(nodeSeed * 3); 
         value = [baseValue];
         criterion = 'MSE';
     } else { // classification
@@ -169,18 +186,10 @@ const generateMockTree = (
         }
         value = [class0Samples, class1Samples];
     }
-
-    if (isLeaf) {
-        return {
-            type: 'leaf',
-            value: value,
-            samples: samples
-        };
-    }
-
+    
     const feature = features[Math.floor(pseudoRandom(nodeSeed * 4) * features.length)];
     const threshold = pseudoRandom(nodeSeed * 5) * 10 + 5;
-    
+
     return {
         type: 'node',
         feature,
@@ -444,7 +453,7 @@ export const useRandomForest = () => {
     decisionTree: null,
     rocCurveData: null,
     prCurveData: null,
-pdpData: null,
+    pdpData: null,
     forestSimulation: null,
   });
   const [status, setStatus] = useState<Status>('idle');
@@ -560,7 +569,7 @@ pdpData: null,
   };
 
   useEffect(() => {
-    if (status === 'idle' && data.metrics === null) return;
+    if (status === 'idle') return;
 
     setIsDebouncing(true);
     const handler = setTimeout(() => {

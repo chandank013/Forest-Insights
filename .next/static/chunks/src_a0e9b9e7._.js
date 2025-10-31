@@ -188,14 +188,34 @@ const pseudoRandom = (seed)=>{
 };
 const generateMockTree = (features, task, hyperparameters, depth = 0, seed = 1)=>{
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth >= hyperparameters.max_depth;
+    // Termination conditions
+    if (depth >= hyperparameters.max_depth || depth >= 10) {
+        const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 10);
+        let value;
+        if (task === 'regression') {
+            value = [
+                pseudoRandom(nodeSeed * 2) * 3 + 1
+            ];
+        } else {
+            const class1Samples = Math.floor(pseudoRandom(nodeSeed * 2) * samples);
+            value = [
+                samples - class1Samples,
+                class1Samples
+            ];
+        }
+        return {
+            type: 'leaf',
+            value: value,
+            samples: samples
+        };
+    }
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
     let value;
     let impurity;
     let criterion = 'MSE';
     if (task === 'regression') {
-        const baseValue = pseudoRandom(nodeSeed * 2) * 3 + 1; // e.g. 1-4
-        impurity = pseudoRandom(nodeSeed * 3); // MSE
+        const baseValue = pseudoRandom(nodeSeed * 2) * 3 + 1;
+        impurity = pseudoRandom(nodeSeed * 3);
         value = [
             baseValue
         ];
@@ -216,13 +236,6 @@ const generateMockTree = (features, task, hyperparameters, depth = 0, seed = 1)=
             class0Samples,
             class1Samples
         ];
-    }
-    if (isLeaf) {
-        return {
-            type: 'leaf',
-            value: value,
-            samples: samples
-        };
     }
     const feature = features[Math.floor(pseudoRandom(nodeSeed * 4) * features.length)];
     const threshold = pseudoRandom(nodeSeed * 5) * 10 + 5;
@@ -684,7 +697,7 @@ const useRandomForest = ()=>{
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "useRandomForest.useEffect": ()=>{
-            if (status === 'idle' && data.metrics === null) return;
+            if (status === 'idle') return;
             setIsDebouncing(true);
             const handler = setTimeout({
                 "useRandomForest.useEffect.handler": ()=>{
@@ -713,7 +726,7 @@ const useRandomForest = ()=>{
         availableDatasets: DATASETS[state.task]
     };
 };
-_s(useRandomForest, "aIOBeGshN0oWZOg4MSxeU2GHjAc=", false, function() {
+_s(useRandomForest, "q+ST4knWxo9yv66frwvOr0OOT5Q=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"]
     ];
