@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Image from 'next/image';
@@ -381,6 +382,7 @@ export default function DashboardPage() {
                               <FeatureImportanceChart 
                                   tunedData={data.featureImportance}
                                   baselineData={data.baselineFeatureImportance}
+                                  metadata={data.metadata}
                               />
                           )}
                           </CardContent>
