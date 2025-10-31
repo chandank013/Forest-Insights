@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { TreePine, BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, Lightbulb, GitMerge, BrainCircuit, Activity, TestTube2, HelpCircle } from 'lucide-react';
+import { TreePine, BarChart3, Target, PanelLeft, LineChart, BeakerIcon, AreaChart, Lightbulb, GitMerge, BrainCircuit, Activity, TestTube2, HelpCircle, BookOpen } from 'lucide-react';
 import { useRandomForest } from '@/hooks/use-random-forest';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -16,7 +16,7 @@ import { ConfusionMatrix } from '@/components/confusion-matrix';
 import { ExplainPrediction } from '@/components/explain-prediction';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Metric, RegressionMetric, ClassificationMetric } from '@/lib/types';
+import { Metric, RegressionMetric, ClassificationMetric, DatasetMetadata } from '@/lib/types';
 import { FeatureDistributionChart } from '@/components/feature-distribution-chart';
 import { CorrelationHeatmap } from '@/components/correlation-heatmap';
 import { SummaryStatistics } from '@/components/summary-statistics';
@@ -34,6 +34,7 @@ import { RealTimePrediction } from '@/components/real-time-prediction';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ForestVisualization } from '@/components/forest-visualization';
 import { AggregationResultsDashboard } from '@/components/aggregation-results-dashboard';
+import { ProblemStatement } from '@/components/problem-statement';
 
 const domainSpecificText = {
   'california-housing': {
@@ -179,7 +180,7 @@ const domainSpecificText = {
     confusionMatrix: "Shows a breakdown of which digits the model confuses. For example, does it often mistake a '3' for an '8'?",
     rocCurve: "Measures the model's ability to distinguish one digit from another (e.g., telling a '7' from all other digits).",
     prCurve: "For a specific digit, this shows the balance between making sure a prediction is correct (Precision) and not missing any instances of that digit (Recall).",
-pdp: "Shows how the brightness of a single pixel region influences the model's decision on what digit it is.",
+    pdp: "Shows how the brightness of a single pixel region influences the model's decision on what digit it is.",
     summary: "Provides statistics on pixel intensity values across the dataset of images.",
     correlation: "Shows if the brightness of one pixel is related to the brightness of another, which can reveal stroke patterns.",
     aggregation: {
@@ -352,6 +353,7 @@ export default function DashboardPage() {
     
     return (
       <TooltipProvider>
+        <ProblemStatement metadata={data.metadata} />
         <Tabs defaultValue="dashboard">
           <div className="flex items-center">
             <TabsList className="w-full justify-start">

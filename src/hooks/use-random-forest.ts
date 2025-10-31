@@ -15,6 +15,7 @@ import type {
   ForestSimulation,
   TreeSimulation,
   DatasetOption,
+  DatasetMetadata,
 } from '@/lib/types';
 import housingDataset from '@/lib/data/california-housing.json';
 import wineDataset from '@/lib/data/wine-quality.json';
@@ -22,6 +23,7 @@ import diabetesDataset from '@/lib/data/diabetes.json';
 import linnerudDataset from '@/lib/data/linnerud.json';
 import breastCancerDataset from '@/lib/data/breast-cancer.json';
 import digitsDataset from '@/lib/data/digits.json';
+import datasetsMetadata from '@/lib/data/datasets-metadata.json';
 
 import { getFeatureImportanceInsights } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -95,6 +97,7 @@ type Data = {
   prCurveData: CurveDataPoint[] | null;
   pdpData: PdpData | null;
   forestSimulation: ForestSimulation | null;
+  metadata: DatasetMetadata | null;
 };
 
 type Action =
@@ -323,7 +326,7 @@ const mockTrainModel = async (
   state: State,
   dataset: Record<string, any>[],
   isBaseline: boolean = false,
-): Promise<Omit<Data, 'dataset' | 'insights' | 'baselineMetrics' | 'baselineFeatureImportance' | 'baselineChartData'>> => {
+): Promise<Omit<Data, 'dataset' | 'insights' | 'baselineMetrics' | 'baselineFeatureImportance' | 'baselineChartData' | 'metadata'>> => {
   await new Promise((res) => setTimeout(res, 1500));
 
   const { task, selectedFeatures } = state;
@@ -455,6 +458,7 @@ export const useRandomForest = () => {
     prCurveData: null,
     pdpData: null,
     forestSimulation: null,
+    metadata: (datasetsMetadata as Record<string, DatasetMetadata>)['california-housing'],
   });
   const [status, setStatus] = useState<Status>('idle');
   const { toast } = useToast();
@@ -532,9 +536,11 @@ export const useRandomForest = () => {
     useEffect(() => {
         const newDatasetOption = DATASETS[state.task].find(d => d.value === state.datasetName);
         const newDataset = newDatasetOption ? newDatasetOption.data : [];
+        const newMetadata = (datasetsMetadata as Record<string, DatasetMetadata>)[state.datasetName] ?? null;
         
         setData({
             dataset: newDataset,
+            metadata: newMetadata,
             metrics: null,
             featureImportance: [],
             history: [],
@@ -555,7 +561,8 @@ export const useRandomForest = () => {
     useEffect(() => {
         // Only auto-train if a baseline has been set and the hyperparameters have changed.
         if (data.baselineMetrics && JSON.stringify(state.hyperparameters) !== JSON.stringify(BASELINE_HYPERPARAMETERS)) {
-          trainModel(false);
+          const handler = setTimeout(() => trainModel(false), 500);
+          return () => clearTimeout(handler);
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [JSON.stringify(state.hyperparameters), state.testSize]);
@@ -565,7 +572,7 @@ export const useRandomForest = () => {
         return mockPredict(values, state.hyperparameters, state.task, state.targetColumn, state.testSize);
     }, [state.hyperparameters, state.task, state.targetColumn, state.testSize]);
 
-  function handleStateChange<T>(type: Action['type']) {
+  const handleStateChange = <T>(type: Action['type']) => {
     return (payload: T) => dispatch({ type, payload } as Action);
   }
 

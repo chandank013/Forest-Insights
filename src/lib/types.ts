@@ -98,3 +98,11 @@ export type DatasetOption = {
     data: Record<string, any>[];
     target: string;
 }
+
+export type DatasetMetadata = {
+  story: string;
+  attributes: Record<string, {
+      description: string;
+      type: string;
+  }>;
+};
