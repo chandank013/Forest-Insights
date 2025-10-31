@@ -50,6 +50,11 @@ const domainSpecificText = {
       predictionSpread: "Measures how much the price predictions vary from tree to tree. Low variance means the 'experts' agree.",
       individualPredictions: "Comparison of price predictions from each individual 'expert' tree in the forest.",
       summaryTable: "A detailed breakdown of each tree's predicted price and its contribution to the final averaged outcome."
+    },
+    metrics: {
+        r2: "Explains how much of the variation in house prices the model can predict. A score of 0.8 means it explains 80% of the price variance.",
+        rmse: "The average dollar amount the model's price predictions are off by. A lower RMSE is better.",
+        mae: "Another measure of average prediction error in dollars. It's less sensitive to very large, one-off errors than RMSE."
     }
   },
   'diabetes': {
@@ -66,6 +71,11 @@ const domainSpecificText = {
       predictionSpread: "Measures the variance in predicted scores across all trees. Lower variance suggests higher confidence.",
       individualPredictions: "Shows the predicted disease progression score from each tree in the forest.",
       summaryTable: "Detailed breakdown of each tree's prediction and its influence on the final averaged score."
+    },
+    metrics: {
+        r2: "How much of the variability in disease progression can be explained by the model's inputs. A higher score means a more predictive model.",
+        rmse: "The average error of the model's prediction for the disease progression score. A lower value indicates a more accurate model.",
+        mae: "Similar to RMSE, this shows the average absolute error in the prediction score. It gives a straightforward idea of the prediction error magnitude."
     }
   },
   'linnerud': {
@@ -82,6 +92,11 @@ const domainSpecificText = {
       predictionSpread: "Shows the agreement among the trees' weight predictions. Less spread means more consensus.",
       individualPredictions: "A look at the weight prediction made by each individual tree in the ensemble.",
       summaryTable: "A detailed list of each tree's weight prediction and how much it contributed to the final result."
+    },
+    metrics: {
+        r2: "Measures how well the exercise data explains the variance in the athletes' weight. A high score means the exercises are good predictors of weight.",
+        rmse: "The average number of pounds by which the model's weight prediction is incorrect. A smaller RMSE means a more accurate model.",
+        mae: "The average absolute difference between the predicted and actual weight, in pounds. It provides a direct measure of the typical prediction error."
     }
   },
   'wine-quality': {
@@ -97,6 +112,11 @@ const domainSpecificText = {
       predictionSpread: "Shows the distribution of votes. A strong majority for one class indicates a high-confidence prediction.",
       individualPredictions: "Visualizes the proportion of trees that voted for 'Good' vs. 'Bad' quality.",
       summaryTable: "A detailed log of each tree's individual vote for the wine's quality."
+    },
+     metrics: {
+        accuracy: "The overall percentage of wines the model correctly classifies as 'Good' or 'Bad' quality.",
+        precision: "Of all the wines the model labeled as 'Good', what percentage were actually 'Good'? A high precision means fewer false positives.",
+        recall: "Of all the wines that were actually 'Good', what percentage did the model correctly identify? A high recall means fewer missed 'Good' wines."
     }
   },
   'breast-cancer': {
@@ -112,6 +132,11 @@ const domainSpecificText = {
       predictionSpread: "Shows how many trees voted for each diagnosis, indicating the model's confidence.",
       individualPredictions: "A pie chart showing the breakdown of votes for 'Malignant' vs. 'Benign' from all trees.",
       summaryTable: "A detailed record of each tree's diagnostic vote."
+    },
+    metrics: {
+        accuracy: "The overall percentage of correct diagnoses ('Malignant' or 'Benign') made by the model.",
+        precision: "When the model predicts a tumor is 'Malignant', how often is it correct? High precision is critical for avoiding unnecessary treatments.",
+        recall: "Of all the tumors that were actually 'Malignant', how many did the model successfully identify? High recall is crucial for not missing any cancers."
     }
   },
   'digits': {
@@ -127,6 +152,11 @@ pdp: "Shows how the brightness of a single pixel region influences the model's d
       predictionSpread: "Illustrates the consensus among the trees, showing the vote count for each possible digit.",
       individualPredictions: "A visual breakdown of how many trees voted for each digit (0-9).",
       summaryTable: "A detailed log of the digit predicted by each individual tree."
+    },
+    metrics: {
+        accuracy: "What percentage of handwritten digits did the model correctly recognize?",
+        precision: "When the model predicts a digit is a '7', how often is it actually a '7'? High precision means the model is very sure of its predictions.",
+        recall: "Out of all the '7's in the dataset, how many did the model find? High recall means the model is good at not missing any digits."
     }
   },
   default: {
@@ -146,6 +176,14 @@ pdp: "Shows how the brightness of a single pixel region influences the model's d
       predictionSpread: "Measures the variance or vote distribution of predictions across all trees.",
       individualPredictions: "Comparison of predictions from different trees in the forest.",
       summaryTable: "Detailed predictions from each tree in the forest."
+    },
+    metrics: {
+        r2: "R-squared is a statistical measure of how close the data are to the fitted regression line.",
+        rmse: "Root Mean Square Error is the standard deviation of the residuals (prediction errors).",
+        mae: "Mean Absolute Error is the average of the absolute errors.",
+        accuracy: "The proportion of correct predictions among the total number of cases processed.",
+        precision: "The proportion of positive cases that were correctly identified.",
+        recall: "The proportion of actual positive cases which are correctly identified."
     }
   }
 };
@@ -156,6 +194,7 @@ export default function DashboardPage() {
   const isLoading = status === 'loading';
 
   const descriptions = domainSpecificText[state.datasetName as keyof typeof domainSpecificText] || domainSpecificText.default;
+  const metricDescriptions = descriptions.metrics;
 
   const renderKpiCards = (
     metrics: Metric | null,
@@ -172,6 +211,7 @@ export default function DashboardPage() {
             baselineValue={baseRegMetrics?.r2?.toFixed(3)}
             icon={<Target className="size-4 text-muted-foreground" />}
             isLoading={isLoading}
+            tooltipDescription={metricDescriptions.r2}
           />
           <KpiCard
             title="RMSE"
@@ -179,6 +219,7 @@ export default function DashboardPage() {
             baselineValue={baseRegMetrics?.rmse?.toFixed(3)}
             icon={<LineChart className="size-4 text-muted-foreground" />}
             isLoading={isLoading}
+            tooltipDescription={metricDescriptions.rmse}
           />
           <KpiCard
             title="MAE"
@@ -186,6 +227,7 @@ export default function DashboardPage() {
             baselineValue={baseRegMetrics?.mae?.toFixed(3)}
             icon={<BeakerIcon className="size-4 text-muted-foreground" />}
             isLoading={isLoading}
+            tooltipDescription={metricDescriptions.mae}
           />
         </>
       );
@@ -200,6 +242,7 @@ export default function DashboardPage() {
           baselineValue={baseClassMetrics?.accuracy?.toFixed(3)}
           icon={<Target className="size-4 text-muted-foreground" />}
           isLoading={isLoading}
+          tooltipDescription={metricDescriptions.accuracy}
         />
         <KpiCard
           title="Precision"
@@ -207,6 +250,7 @@ export default function DashboardPage() {
           baselineValue={baseClassMetrics?.precision?.toFixed(3)}
           icon={<LineChart className="size-4 text-muted-foreground" />}
           isLoading={isLoading}
+          tooltipDescription={metricDescriptions.precision}
         />
         <KpiCard
           title="Recall"
@@ -214,6 +258,7 @@ export default function DashboardPage() {
           baselineValue={baseClassMetrics?.recall?.toFixed(3)}
           icon={<BeakerIcon className="size-4 text-muted-foreground" />}
           isLoading={isLoading}
+          tooltipDescription={metricDescriptions.recall}
         />
       </>
     );

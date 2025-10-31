@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { ArrowUp, ArrowDown, Minus, HelpCircle } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface KpiCardProps {
   title: string;
@@ -11,9 +12,10 @@ interface KpiCardProps {
   isInsight?: boolean;
   isLoading?: boolean;
   cardClassName?: string;
+  tooltipDescription?: string;
 }
 
-export function KpiCard({ title, value, baselineValue, icon, isInsight = false, isLoading = false, cardClassName }: KpiCardProps) {
+export function KpiCard({ title, value, baselineValue, icon, isInsight = false, isLoading = false, cardClassName, tooltipDescription }: KpiCardProps) {
     const numericValue = typeof value === 'string' ? parseFloat(value) : value;
     const numericBaseline = typeof baselineValue === 'string' ? parseFloat(baselineValue) : baselineValue;
 
@@ -30,11 +32,27 @@ export function KpiCard({ title, value, baselineValue, icon, isInsight = false, 
              comparisonIndicator = <Minus className="h-4 w-4 text-muted-foreground" />;
         }
     }
+    
+    const TitleComponent = (
+        <CardTitle className="text-sm font-medium flex items-center gap-2">
+            {title}
+            {tooltipDescription && (
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                        <p>{tooltipDescription}</p>
+                    </TooltipContent>
+                </Tooltip>
+            )}
+        </CardTitle>
+    )
 
   return (
     <Card className={cn(cardClassName)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        {TitleComponent}
         {icon}
       </CardHeader>
       <CardContent>
