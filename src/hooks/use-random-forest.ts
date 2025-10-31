@@ -109,7 +109,7 @@ type Action =
   | { type: 'SET_TARGET_COLUMN'; payload: string }
   | { type: 'SET_TEST_SIZE'; payload: number };
 
-const initialState: State = getInitialStateForTask('regression', 'california-housing');
+const initialState: State = getInitialStateForTask('classification', 'wine-quality');
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -445,7 +445,7 @@ const mockPredict = (
 export const useRandomForest = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [data, setData] = useState<Data>({
-    dataset: DATASETS['regression'][0].data,
+    dataset: DATASETS['classification'][0].data,
     metrics: null,
     featureImportance: [],
     history: [],
@@ -459,8 +459,8 @@ export const useRandomForest = () => {
     prCurveData: null,
     pdpData: null,
     forestSimulation: null,
-    metadata: (datasetsMetadata as Record<string, DatasetMetadata>)['california-housing'],
-    placeholderValues: DATASETS['regression'][0].data[0] || null,
+    metadata: (datasetsMetadata as Record<string, DatasetMetadata>)['wine-quality'],
+    placeholderValues: DATASETS['classification'][0].data[0] || null,
   });
   const [status, setStatus] = useState<Status>('idle');
   const { toast } = useToast();

@@ -149,7 +149,7 @@ const getInitialStateForTask = (task, datasetName)=>{
         testSize: 0.2
     };
 };
-const initialState = getInitialStateForTask('regression', 'california-housing');
+const initialState = getInitialStateForTask('classification', 'wine-quality');
 const reducer = (state, action)=>{
     switch(action.type){
         case 'SET_TASK':
@@ -503,7 +503,7 @@ const useRandomForest = ()=>{
     _s();
     const [state, dispatch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReducer"])(reducer, initialState);
     const [data, setData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-        dataset: DATASETS['regression'][0].data,
+        dataset: DATASETS['classification'][0].data,
         metrics: null,
         featureImportance: [],
         history: [],
@@ -517,8 +517,8 @@ const useRandomForest = ()=>{
         prCurveData: null,
         pdpData: null,
         forestSimulation: null,
-        metadata: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$data$2f$datasets$2d$metadata$2e$json__$28$json$29$__["default"]['california-housing'],
-        placeholderValues: DATASETS['regression'][0].data[0] || null
+        metadata: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$data$2f$datasets$2d$metadata$2e$json__$28$json$29$__["default"]['wine-quality'],
+        placeholderValues: DATASETS['classification'][0].data[0] || null
     });
     const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('idle');
     const { toast } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"])();
@@ -736,7 +736,7 @@ const useRandomForest = ()=>{
         availableDatasets: DATASETS[state.task]
     };
 };
-_s(useRandomForest, "iRM7Cb/OBFWjlAgsfuw0E8EyHhM=", false, function() {
+_s(useRandomForest, "hJLrh+lbDOeVi1gNMAyLZig9Kd0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"]
     ];
