@@ -144,7 +144,7 @@ const generateMockTree = (
     const nodeSeed = seed + depth * 10;
     
     // Termination conditions
-    if (depth >= (hyperparameters.max_depth ?? 10) || depth >= 10) { 
+    if (depth >= (hyperparameters.max_depth ?? 10)) { 
         const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 10);
         let value: number[];
         if (task === 'regression') {
@@ -459,34 +459,6 @@ export const useRandomForest = () => {
   const [status, setStatus] = useState<Status>('idle');
   const { toast } = useToast();
 
-  useEffect(() => {
-    const newDatasetOption = DATASETS[state.task].find(d => d.value === state.datasetName);
-    const newDataset = newDatasetOption ? newDatasetOption.data : [];
-    
-    setData(d => ({
-        ...d,
-        dataset: newDataset,
-        metrics: null,
-        featureImportance: [],
-        history: [],
-        chartData: null,
-        insights: '',
-        baselineMetrics: null,
-        baselineFeatureImportance: [],
-        baselineChartData: null,
-        decisionTree: null,
-        rocCurveData: null,
-        prCurveData: null,
-        pdpData: null,
-        forestSimulation: null,
-    }));
-    setStatus('idle');
-  }, [state.task, state.datasetName]);
-
-  const handleStateChange = <T extends Action['type']>(type: T) => (payload: Extract<Action, { type: T }>['payload']) => {
-    dispatch({ type, payload } as Action);
-  };
-  
   const trainModel = useCallback(async (isBaseline = false) => {
       if (isBaseline) {
         dispatch({ type: 'SET_HYPERPARAMETERS', payload: BASELINE_HYPERPARAMETERS });
@@ -556,11 +528,46 @@ export const useRandomForest = () => {
          }
       }
     }, [state, toast]);
+
+    useEffect(() => {
+        const newDatasetOption = DATASETS[state.task].find(d => d.value === state.datasetName);
+        const newDataset = newDatasetOption ? newDatasetOption.data : [];
+        
+        setData({
+            dataset: newDataset,
+            metrics: null,
+            featureImportance: [],
+            history: [],
+            chartData: null,
+            insights: '',
+            baselineMetrics: null,
+            baselineFeatureImportance: [],
+            baselineChartData: null,
+            decisionTree: null,
+            rocCurveData: null,
+            prCurveData: null,
+            pdpData: null,
+            forestSimulation: null,
+        });
+        setStatus('idle');
+    }, [state.task, state.datasetName]);
+
+    useEffect(() => {
+        // Only auto-train if a baseline has been set and the hyperparameters have changed.
+        if (data.baselineMetrics && JSON.stringify(state.hyperparameters) !== JSON.stringify(BASELINE_HYPERPARAMETERS)) {
+          trainModel(false);
+        }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [JSON.stringify(state.hyperparameters), state.testSize]);
     
     const predict = useCallback(async (values: Record<string, number>): Promise<Prediction> => {
         await new Promise(res => setTimeout(res, 1000));
         return mockPredict(values, state.hyperparameters, state.task, state.targetColumn, state.testSize);
     }, [state.hyperparameters, state.task, state.targetColumn, state.testSize]);
+
+  function handleStateChange<T>(type: Action['type']) {
+    return (payload: T) => dispatch({ type, payload } as Action);
+  }
 
   const actions = {
     setTask: handleStateChange('SET_TASK'),

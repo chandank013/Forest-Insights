@@ -189,7 +189,7 @@ const pseudoRandom = (seed)=>{
 const generateMockTree = (features, task, hyperparameters, depth = 0, seed = 1)=>{
     const nodeSeed = seed + depth * 10;
     // Termination conditions
-    if (depth >= (hyperparameters.max_depth ?? 10) || depth >= 10) {
+    if (depth >= (hyperparameters.max_depth ?? 10)) {
         const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 10);
         let value;
         if (task === 'regression') {
@@ -513,43 +513,6 @@ const useRandomForest = ()=>{
     });
     const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('idle');
     const { toast } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"])();
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "useRandomForest.useEffect": ()=>{
-            const newDatasetOption = DATASETS[state.task].find({
-                "useRandomForest.useEffect.newDatasetOption": (d)=>d.value === state.datasetName
-            }["useRandomForest.useEffect.newDatasetOption"]);
-            const newDataset = newDatasetOption ? newDatasetOption.data : [];
-            setData({
-                "useRandomForest.useEffect": (d)=>({
-                        ...d,
-                        dataset: newDataset,
-                        metrics: null,
-                        featureImportance: [],
-                        history: [],
-                        chartData: null,
-                        insights: '',
-                        baselineMetrics: null,
-                        baselineFeatureImportance: [],
-                        baselineChartData: null,
-                        decisionTree: null,
-                        rocCurveData: null,
-                        prCurveData: null,
-                        pdpData: null,
-                        forestSimulation: null
-                    })
-            }["useRandomForest.useEffect"]);
-            setStatus('idle');
-        }
-    }["useRandomForest.useEffect"], [
-        state.task,
-        state.datasetName
-    ]);
-    const handleStateChange = (type)=>(payload)=>{
-            dispatch({
-                type,
-                payload
-            });
-        };
     const trainModel = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useRandomForest.useCallback[trainModel]": async (isBaseline = false)=>{
             if (isBaseline) {
@@ -677,6 +640,46 @@ const useRandomForest = ()=>{
         state,
         toast
     ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "useRandomForest.useEffect": ()=>{
+            const newDatasetOption = DATASETS[state.task].find({
+                "useRandomForest.useEffect.newDatasetOption": (d)=>d.value === state.datasetName
+            }["useRandomForest.useEffect.newDatasetOption"]);
+            const newDataset = newDatasetOption ? newDatasetOption.data : [];
+            setData({
+                dataset: newDataset,
+                metrics: null,
+                featureImportance: [],
+                history: [],
+                chartData: null,
+                insights: '',
+                baselineMetrics: null,
+                baselineFeatureImportance: [],
+                baselineChartData: null,
+                decisionTree: null,
+                rocCurveData: null,
+                prCurveData: null,
+                pdpData: null,
+                forestSimulation: null
+            });
+            setStatus('idle');
+        }
+    }["useRandomForest.useEffect"], [
+        state.task,
+        state.datasetName
+    ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "useRandomForest.useEffect": ()=>{
+            // Only auto-train if a baseline has been set and the hyperparameters have changed.
+            if (data.baselineMetrics && JSON.stringify(state.hyperparameters) !== JSON.stringify(BASELINE_HYPERPARAMETERS)) {
+                trainModel(false);
+            }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }
+    }["useRandomForest.useEffect"], [
+        JSON.stringify(state.hyperparameters),
+        state.testSize
+    ]);
     const predict = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useRandomForest.useCallback[predict]": async (values)=>{
             await new Promise({
@@ -690,6 +693,12 @@ const useRandomForest = ()=>{
         state.targetColumn,
         state.testSize
     ]);
+    function handleStateChange(type) {
+        return (payload)=>dispatch({
+                type,
+                payload
+            });
+    }
     const actions = {
         setTask: handleStateChange('SET_TASK'),
         setDataset: handleStateChange('SET_DATASET'),
@@ -709,7 +718,7 @@ const useRandomForest = ()=>{
         availableDatasets: DATASETS[state.task]
     };
 };
-_s(useRandomForest, "esMb/tkZf2eL6lPR/+GwjKoxmHU=", false, function() {
+_s(useRandomForest, "u4zgtz+C4EMzYh+VWEMuIZ5uHS0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"]
     ];
