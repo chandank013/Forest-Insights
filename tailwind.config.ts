@@ -97,11 +97,16 @@ export default {
             transform: 'rotate(360deg)',
           },
         },
+        'glow': {
+          '0%, 100%': { 'box-shadow': '0 0 5px hsl(var(--primary) / 0.6)' },
+          '50%': { 'box-shadow': '0 0 20px hsl(var(--primary) / 0.8)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin-slow 1.5s linear infinite',
+        'glow': 'glow 3s ease-in-out infinite',
       },
     },
   },

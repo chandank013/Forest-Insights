@@ -1000,6 +1000,20 @@ body {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--primary) / .6);
+  }
+
+  50% {
+    box-shadow: 0 0 20px hsl(var(--primary) / .8);
+  }
+}
+
+.animate-glow {
+  animation: 3s ease-in-out infinite glow;
+}
+
 @keyframes pulse {
   50% {
     opacity: .5;
@@ -1791,6 +1805,11 @@ body {
   --tw-shadow: 0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a;
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-primary\/50 {
+  --tw-shadow-color: hsl(var(--primary) / .5);
+  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .outline-none {
