@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -36,16 +37,13 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
   );
 
   type FormValues = z.infer<typeof formSchema>;
-  
-  const defaultValues = features.reduce((acc, feature) => {
-    acc[feature] = '';
-    return acc;
-  }, {} as Record<string, any>);
-
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultValues,
+    defaultValues: features.reduce((acc, feature) => {
+      acc[feature] = '';
+      return acc;
+    }, {} as Record<string, any>),
   });
 
   useEffect(() => {
