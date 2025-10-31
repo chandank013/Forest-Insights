@@ -120,7 +120,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                 <CardHeader>
                     <CardTitle className='flex items-center gap-2'><GitMerge className='w-5 h-5' />How the Random Forest Combiles Predictions</CardTitle>
                     <CardDescription className='flex items-center gap-2'>
-                        A Random Forest is an ensemble of Decision Trees. The final prediction is obtained by aggregating the outputs of all trees. <strong>Click each tree to see the full decision tree.</strong>
+                        A Random Forest is an ensemble of Decision Trees. The final prediction is obtained by aggregating the outputs of all trees.
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger><Info className='w-4 h-4' /></TooltipTrigger>
@@ -134,6 +134,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                         <div className="flex-1 text-sm text-muted-foreground">
                             {simulationData.trees.length > 0 && `Showing ${currentPage * TREES_PER_PAGE + 1}-${Math.min((currentPage + 1) * TREES_PER_PAGE, simulationData.trees.length)} of ${simulationData.trees.length} trees`}
                         </div>
+                        <strong className="text-sm font-semibold">Click each tree to see the full decision tree.</strong>
                         <div className='flex gap-2'>
                            {totalPages > 1 && <Button variant="outline" size="icon" onClick={() => setCurrentPage(p => Math.max(0, p-1))} disabled={currentPage === 0}><ChevronLeft className='w-4 h-4' /></Button>}
                            {totalPages > 1 && <Button variant="outline" size="icon" onClick={() => setCurrentPage(p => Math.min(totalPages-1, p+1))} disabled={currentPage === totalPages - 1}><ChevronRight className='w-4 h-4' /></Button>}

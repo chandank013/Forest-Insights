@@ -8511,14 +8511,7 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     className: "flex items-center gap-2",
                                     children: [
-                                        "A Random Forest is an ensemble of Decision Trees. The final prediction is obtained by aggregating the outputs of all trees. ",
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                            children: "Click each tree to see the full decision tree."
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 123,
-                                            columnNumber: 149
-                                        }, this),
+                                        "A Random Forest is an ensemble of Decision Trees. The final prediction is obtained by aggregating the outputs of all trees.",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TooltipProvider"], {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {
                                                 children: [
@@ -8578,6 +8571,14 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                             lineNumber: 134,
                                             columnNumber: 25
                                         }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                            className: "text-sm font-semibold",
+                                            children: "Click each tree to see the full decision tree."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/forest-visualization.tsx",
+                                            lineNumber: 137,
+                                            columnNumber: 25
+                                        }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex gap-2",
                                             children: [
@@ -8590,12 +8591,12 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forest-visualization.tsx",
-                                                        lineNumber: 138,
+                                                        lineNumber: 139,
                                                         columnNumber: 168
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                                    lineNumber: 138,
+                                                    lineNumber: 139,
                                                     columnNumber: 47
                                                 }, this),
                                                 totalPages > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -8607,18 +8608,18 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forest-visualization.tsx",
-                                                        lineNumber: 139,
+                                                        lineNumber: 140,
                                                         columnNumber: 192
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                                    lineNumber: 139,
+                                                    lineNumber: 140,
                                                     columnNumber: 47
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 137,
+                                            lineNumber: 138,
                                             columnNumber: 25
                                         }, this)
                                     ]
@@ -8638,13 +8639,13 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                             classLabel: classLabel
                                         }, tree.id, false, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 148,
+                                            lineNumber: 149,
                                             columnNumber: 37
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                    lineNumber: 143,
+                                    lineNumber: 144,
                                     columnNumber: 21
                                 }, this)
                             ]
@@ -8683,12 +8684,12 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 167,
+                                lineNumber: 168,
                                 columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 166,
+                            lineNumber: 167,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8698,23 +8699,23 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, d
                                 taskType: taskType
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 170,
+                                lineNumber: 171,
                                 columnNumber: 20
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 169,
+                            lineNumber: 170,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 165,
+                    lineNumber: 166,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/forest-visualization.tsx",
-                lineNumber: 160,
+                lineNumber: 161,
                 columnNumber: 10
             }, this)
         ]
