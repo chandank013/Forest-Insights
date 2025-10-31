@@ -186,9 +186,9 @@ const pseudoRandom = (seed)=>{
     let x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
 };
-const generateMockTree = (features, task, hyperparameters, depth = 0, maxDepth = 3, seed = 1)=>{
+const generateMockTree = (features, task, hyperparameters, depth = 0, seed = 1)=>{
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth >= maxDepth || depth >= hyperparameters.max_depth;
+    const isLeaf = depth >= hyperparameters.max_depth;
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
     let value;
     let impurity;
@@ -235,8 +235,8 @@ const generateMockTree = (features, task, hyperparameters, depth = 0, maxDepth =
         value,
         criterion,
         children: [
-            generateMockTree(features, task, hyperparameters, depth + 1, maxDepth, seed + 1),
-            generateMockTree(features, task, hyperparameters, depth + 1, maxDepth, seed + 2)
+            generateMockTree(features, task, hyperparameters, depth + 1, seed + 1),
+            generateMockTree(features, task, hyperparameters, depth + 1, seed + 2)
         ]
     };
 };
@@ -348,7 +348,7 @@ const generateForestSimulation = (state, seed)=>{
         const shuffledFeatures = [
             ...selectedFeatures
         ].sort(()=>pseudoRandom(treeSeed) - 0.5);
-        const mockTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, hyperparameters.max_depth, treeSeed + 3);
+        const mockTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, treeSeed + 3);
         let prediction;
         if (task === 'regression') {
             prediction = 1 + pseudoRandom(treeSeed + 1) * 4;
@@ -438,7 +438,7 @@ const mockTrainModel = async (state, dataset, isBaseline = false)=>{
             actual: p.actual,
             prediction: p.prediction
         }));
-    const decisionTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, 3, seed);
+    const decisionTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, seed);
     const pdpData = generatePdpData(selectedFeatures, dataset, task, seed);
     const forestSimulation = generateForestSimulation(state, seed);
     return {
@@ -684,11 +684,7 @@ const useRandomForest = ()=>{
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "useRandomForest.useEffect": ()=>{
-            if (status === 'idle') return;
-            // This check is to prevent re-training when the baseline model is the one being trained
-            // and its params match the current state.
-            const isBaselineSameAsCurrent = JSON.stringify(state.hyperparameters) === JSON.stringify(BASELINE_HYPERPARAMETERS);
-            if (isBaselineSameAsCurrent && data.metrics === data.baselineMetrics) return;
+            if (status === 'idle' && data.metrics === null) return;
             setIsDebouncing(true);
             const handler = setTimeout({
                 "useRandomForest.useEffect.handler": ()=>{

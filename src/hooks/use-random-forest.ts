@@ -139,11 +139,10 @@ const generateMockTree = (
     task: TaskType,
     hyperparameters: Hyperparameters,
     depth: number = 0,
-    maxDepth: number = 3,
     seed = 1
 ): DecisionTree => {
     const nodeSeed = seed + depth * 10;
-    const isLeaf = depth >= maxDepth || depth >= hyperparameters.max_depth;
+    const isLeaf = depth >= hyperparameters.max_depth;
     const samples = Math.floor(pseudoRandom(nodeSeed * 6) * (200 / (depth + 1)) + 50);
 
     let value: number[];
@@ -191,8 +190,8 @@ const generateMockTree = (
         value,
         criterion,
         children: [
-            generateMockTree(features, task, hyperparameters, depth + 1, maxDepth, seed + 1),
-            generateMockTree(features, task, hyperparameters, depth + 1, maxDepth, seed + 2)
+            generateMockTree(features, task, hyperparameters, depth + 1, seed + 1),
+            generateMockTree(features, task, hyperparameters, depth + 1, seed + 2)
         ]
     };
 };
@@ -289,7 +288,7 @@ const generateForestSimulation = (state: State, seed: number): ForestSimulation 
     const trees: TreeSimulation[] = Array.from({ length: numTrees }, (_, i) => {
         const treeSeed = seed + i * 50;
         const shuffledFeatures = [...selectedFeatures].sort(() => pseudoRandom(treeSeed) - 0.5);
-        const mockTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, hyperparameters.max_depth, treeSeed + 3);
+        const mockTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, treeSeed + 3);
 
         let prediction: number;
         if (task === 'regression') {
@@ -386,7 +385,7 @@ const mockTrainModel = async (
   });
   
   const chartData = history.map(p => ({ actual: p.actual, prediction: p.prediction }));
-  const decisionTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, 3, seed);
+  const decisionTree = generateMockTree(selectedFeatures, task, hyperparameters, 0, seed);
   const pdpData = generatePdpData(selectedFeatures, dataset, task, seed);
   const forestSimulation = generateForestSimulation(state, seed);
 
@@ -561,12 +560,7 @@ pdpData: null,
   };
 
   useEffect(() => {
-    if (status === 'idle') return;
-
-    // This check is to prevent re-training when the baseline model is the one being trained
-    // and its params match the current state.
-    const isBaselineSameAsCurrent = JSON.stringify(state.hyperparameters) === JSON.stringify(BASELINE_HYPERPARAMETERS);
-    if (isBaselineSameAsCurrent && data.metrics === data.baselineMetrics) return;
+    if (status === 'idle' && data.metrics === null) return;
 
     setIsDebouncing(true);
     const handler = setTimeout(() => {
