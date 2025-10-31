@@ -6,7 +6,7 @@
   "static/chunks/node_modules_lodash_e693ce99._.js",
   "static/chunks/node_modules_recharts_es6_d4e6d450._.js",
   "static/chunks/node_modules_zod_lib_index_mjs_ee760afb._.js",
-  "static/chunks/node_modules_fb43e3bf._.js"
+  "static/chunks/node_modules_27854344._.js"
 ],
     source: "dynamic"
 });

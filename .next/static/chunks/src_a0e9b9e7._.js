@@ -8029,8 +8029,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$t
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trees$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trees$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trees.js [app-client] (ecmascript) <export default as Trees>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$git$2d$merge$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__GitMerge$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/git-merge.js [app-client] (ecmascript) <export default as GitMerge>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$info$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Info$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/info.js [app-client] (ecmascript) <export default as Info>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sigma$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sigma$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sigma.js [app-client] (ecmascript) <export default as Sigma>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$vote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Vote$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/vote.js [app-client] (ecmascript) <export default as Vote>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-left.js [app-client] (ecmascript) <export default as ChevronLeft>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-client] (ecmascript) <export default as ChevronRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
@@ -8050,7 +8048,39 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 const TREES_PER_PAGE = 50;
-const MiniTree = ({ tree, taskType, onTreeClick })=>{
+const getClassificationLabels = (datasetName)=>{
+    switch(datasetName){
+        case 'wine-quality':
+            return {
+                '0': 'Bad',
+                '1': 'Good'
+            };
+        case 'breast-cancer':
+            return {
+                '0': 'Malignant',
+                '1': 'Benign'
+            };
+        case 'digits':
+            return {
+                '0': '0',
+                '1': '1',
+                '2': '2',
+                '3': '3',
+                '4': '4',
+                '5': '5',
+                '6': '6',
+                '7': '7',
+                '8': '8',
+                '9': '9'
+            };
+        default:
+            return {
+                '0': 'Class 0',
+                '1': 'Class 1'
+            };
+    }
+};
+const MiniTree = ({ tree, taskType, onTreeClick, classLabel })=>{
     const finalColor = taskType === 'classification' ? tree.prediction === 1 ? 'bg-blue-500/80' : 'bg-red-500/80' : 'bg-green-500/80';
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipProvider"], {
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -8067,31 +8097,31 @@ const MiniTree = ({ tree, taskType, onTreeClick })=>{
                                     className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("h-6 w-6 text-white transition-colors")
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                    lineNumber: 40,
+                                    lineNumber: 53,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 36,
+                                lineNumber: 49,
                                 columnNumber: 14
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("text-xs font-bold text-muted-foreground transition-opacity duration-300"),
-                                children: taskType === 'classification' ? `Class ${tree.prediction}` : tree.prediction.toFixed(2)
+                                children: classLabel
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 42,
+                                lineNumber: 55,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forest-visualization.tsx",
-                        lineNumber: 35,
+                        lineNumber: 48,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 34,
+                    lineNumber: 47,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
@@ -8104,7 +8134,7 @@ const MiniTree = ({ tree, taskType, onTreeClick })=>{
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 50,
+                            lineNumber: 63,
                             columnNumber: 12
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -8114,7 +8144,7 @@ const MiniTree = ({ tree, taskType, onTreeClick })=>{
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 51,
+                            lineNumber: 64,
                             columnNumber: 12
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -8124,7 +8154,7 @@ const MiniTree = ({ tree, taskType, onTreeClick })=>{
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 52,
+                            lineNumber: 65,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -8134,29 +8164,29 @@ const MiniTree = ({ tree, taskType, onTreeClick })=>{
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 53,
+                            lineNumber: 66,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 49,
+                    lineNumber: 62,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/forest-visualization.tsx",
-            lineNumber: 33,
+            lineNumber: 46,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/forest-visualization.tsx",
-        lineNumber: 32,
+        lineNumber: 45,
         columnNumber: 5
     }, this);
 };
 _c = MiniTree;
-function ForestVisualization({ simulationData, taskType, isLoading, onRetrain }) {
+function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, datasetName }) {
     _s();
     const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [selectedTree, setSelectedTree] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
@@ -8169,6 +8199,7 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
         taskType,
         simulationData
     ]);
+    const classLabels = getClassificationLabels(datasetName);
     const totalPages = simulationData ? Math.ceil(simulationData.trees.length / TREES_PER_PAGE) : 0;
     const paginatedTrees = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "ForestVisualization.useMemo[paginatedTrees]": ()=>{
@@ -8196,19 +8227,19 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                 className: "w-5 h-5"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 87,
+                                lineNumber: 102,
                                 columnNumber: 64
                             }, this),
                             "How the Random Forest Combines Predictions"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/forest-visualization.tsx",
-                        lineNumber: 87,
+                        lineNumber: 102,
                         columnNumber: 17
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 86,
+                    lineNumber: 101,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8218,7 +8249,7 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                             className: "h-48 w-full"
                         }, void 0, false, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 90,
+                            lineNumber: 105,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -8226,23 +8257,22 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                             children: "Train a model to see the visualization."
                         }, void 0, false, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 91,
+                            lineNumber: 106,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 89,
+                    lineNumber: 104,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/forest-visualization.tsx",
-            lineNumber: 85,
+            lineNumber: 100,
             columnNumber: 9
         }, this);
     }
-    const AggregationIcon = taskType === 'classification' ? __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$vote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Vote$3e$__["Vote"] : __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sigma$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sigma$3e$__["Sigma"];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8258,14 +8288,14 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 104,
+                                            lineNumber: 117,
                                             columnNumber: 68
                                         }, this),
                                         "How the Random Forest Combines Predictions"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                    lineNumber: 104,
+                                    lineNumber: 117,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
@@ -8280,42 +8310,42 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                                             className: "w-4 h-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                                            lineNumber: 109,
+                                                            lineNumber: 122,
                                                             columnNumber: 49
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forest-visualization.tsx",
-                                                        lineNumber: 109,
+                                                        lineNumber: 122,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
                                                         children: "Why it works: Randomness + Aggregation = Better Generalization."
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forest-visualization.tsx",
-                                                        lineNumber: 110,
+                                                        lineNumber: 123,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                                lineNumber: 108,
+                                                lineNumber: 121,
                                                 columnNumber: 29
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 107,
+                                            lineNumber: 120,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                    lineNumber: 105,
+                                    lineNumber: 118,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 103,
+                            lineNumber: 116,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8328,7 +8358,7 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                             children: simulationData.trees.length > 0 && `Showing ${currentPage * TREES_PER_PAGE + 1}-${Math.min((currentPage + 1) * TREES_PER_PAGE, simulationData.trees.length)} of ${simulationData.trees.length} trees`
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 117,
+                                            lineNumber: 130,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8343,12 +8373,12 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forest-visualization.tsx",
-                                                        lineNumber: 121,
+                                                        lineNumber: 134,
                                                         columnNumber: 168
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                                    lineNumber: 121,
+                                                    lineNumber: 134,
                                                     columnNumber: 47
                                                 }, this),
                                                 totalPages > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -8360,57 +8390,61 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/forest-visualization.tsx",
-                                                        lineNumber: 122,
+                                                        lineNumber: 135,
                                                         columnNumber: 192
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                                    lineNumber: 122,
+                                                    lineNumber: 135,
                                                     columnNumber: 47
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 120,
+                                            lineNumber: 133,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                    lineNumber: 116,
+                                    lineNumber: 129,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4 p-4 rounded-lg border bg-muted/50 min-h-[180px]",
-                                    children: paginatedTrees.map((tree)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MiniTree, {
+                                    children: paginatedTrees.map((tree)=>{
+                                        const classLabel = taskType === 'classification' ? classLabels[tree.prediction.toString()] || `Class ${tree.prediction}` : tree.prediction.toFixed(2);
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MiniTree, {
                                             tree: tree,
                                             taskType: taskType,
-                                            onTreeClick: ()=>handleTreeClick(tree.tree)
+                                            onTreeClick: ()=>handleTreeClick(tree.tree),
+                                            classLabel: classLabel
                                         }, tree.id, false, {
                                             fileName: "[project]/src/components/forest-visualization.tsx",
-                                            lineNumber: 128,
-                                            columnNumber: 30
-                                        }, this))
+                                            lineNumber: 144,
+                                            columnNumber: 37
+                                        }, this);
+                                    })
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/forest-visualization.tsx",
-                                    lineNumber: 126,
+                                    lineNumber: 139,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 115,
+                            lineNumber: 128,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 102,
+                    lineNumber: 115,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/forest-visualization.tsx",
-                lineNumber: 101,
+                lineNumber: 114,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -8429,12 +8463,12 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                 children: "Decision Tree Snapshot"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 147,
+                                lineNumber: 164,
                                 columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 146,
+                            lineNumber: 163,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8444,23 +8478,23 @@ function ForestVisualization({ simulationData, taskType, isLoading, onRetrain })
                                 taskType: taskType
                             }, void 0, false, {
                                 fileName: "[project]/src/components/forest-visualization.tsx",
-                                lineNumber: 150,
+                                lineNumber: 167,
                                 columnNumber: 20
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/forest-visualization.tsx",
-                            lineNumber: 149,
+                            lineNumber: 166,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/forest-visualization.tsx",
-                    lineNumber: 145,
+                    lineNumber: 162,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/forest-visualization.tsx",
-                lineNumber: 139,
+                lineNumber: 156,
                 columnNumber: 10
             }, this)
         ]
@@ -10950,7 +10984,8 @@ function DashboardPage() {
                                     simulationData: data.forestSimulation,
                                     taskType: state.task,
                                     isLoading: isLoading && !data.metrics,
-                                    onRetrain: actions.trainModel
+                                    onRetrain: actions.trainModel,
+                                    datasetName: state.datasetName
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/page.tsx",
                                     lineNumber: 580,
@@ -10964,7 +10999,7 @@ function DashboardPage() {
                                     datasetName: state.datasetName
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/page.tsx",
-                                    lineNumber: 586,
+                                    lineNumber: 587,
                                     columnNumber: 17
                                 }, this)
                             ]
@@ -10990,12 +11025,12 @@ function DashboardPage() {
                             descriptions: descriptions.prediction
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/page.tsx",
-                            lineNumber: 597,
+                            lineNumber: 598,
                             columnNumber: 16
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/page.tsx",
-                        lineNumber: 596,
+                        lineNumber: 597,
                         columnNumber: 11
                     }, this)
                 ]
@@ -11024,12 +11059,12 @@ function DashboardPage() {
                     availableDatasets: availableDatasets
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/page.tsx",
-                    lineNumber: 614,
+                    lineNumber: 615,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/page.tsx",
-                lineNumber: 613,
+                lineNumber: 614,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SidebarInset"], {
@@ -11045,12 +11080,12 @@ function DashboardPage() {
                                         className: "md:hidden",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeft$3e$__["PanelLeft"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/page.tsx",
-                                            lineNumber: 626,
+                                            lineNumber: 627,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/page.tsx",
-                                        lineNumber: 625,
+                                        lineNumber: 626,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -11063,7 +11098,7 @@ function DashboardPage() {
                                                 height: 32
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                                lineNumber: 629,
+                                                lineNumber: 630,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -11071,30 +11106,30 @@ function DashboardPage() {
                                                 children: "Forest Insights"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                                lineNumber: 630,
+                                                lineNumber: 631,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/page.tsx",
-                                        lineNumber: 628,
+                                        lineNumber: 629,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                lineNumber: 624,
+                                lineNumber: 625,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$theme$2d$toggle$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ThemeToggle"], {}, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                lineNumber: 633,
+                                lineNumber: 634,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/page.tsx",
-                        lineNumber: 623,
+                        lineNumber: 624,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -11102,13 +11137,13 @@ function DashboardPage() {
                         children: renderContent()
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/page.tsx",
-                        lineNumber: 635,
+                        lineNumber: 636,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/page.tsx",
-                lineNumber: 622,
+                lineNumber: 623,
                 columnNumber: 7
             }, this)
         ]

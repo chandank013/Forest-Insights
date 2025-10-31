@@ -6,8 +6,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip as RechartsTooltip } from 'recharts';
-import { Trees, GitMerge, Info, Sigma, Vote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trees, GitMerge, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { TaskType, ForestSimulation, TreeSimulation, DecisionTree } from '@/lib/types';
 import { Skeleton } from './ui/skeleton';
@@ -19,11 +18,25 @@ interface ForestVisualizationProps {
   taskType: TaskType;
   isLoading: boolean;
   onRetrain: () => void;
+  datasetName: string;
 }
 
 const TREES_PER_PAGE = 50;
 
-const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskType: TaskType, onTreeClick: () => void }) => {
+const getClassificationLabels = (datasetName: string) => {
+    switch (datasetName) {
+        case 'wine-quality':
+            return { '0': 'Bad', '1': 'Good' };
+        case 'breast-cancer':
+            return { '0': 'Malignant', '1': 'Benign' };
+        case 'digits':
+             return { '0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9' };
+        default:
+            return { '0': 'Class 0', '1': 'Class 1' };
+    }
+};
+
+const MiniTree = ({ tree, taskType, onTreeClick, classLabel }: { tree: TreeSimulation, taskType: TaskType, onTreeClick: () => void, classLabel: string }) => {
   const finalColor = taskType === 'classification'
     ? tree.prediction === 1 ? 'bg-blue-500/80' : 'bg-red-500/80'
     : 'bg-green-500/80';
@@ -42,7 +55,7 @@ const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskT
             <div className={cn(
               "text-xs font-bold text-muted-foreground transition-opacity duration-300",
             )}>
-              {taskType === 'classification' ? `Class ${tree.prediction}` : tree.prediction.toFixed(2)}
+              {classLabel}
             </div>
           </div>
         </TooltipTrigger>
@@ -57,7 +70,7 @@ const MiniTree = ({ tree, taskType, onTreeClick }: { tree: TreeSimulation, taskT
   )
 };
 
-export function ForestVisualization({ simulationData, taskType, isLoading, onRetrain }: ForestVisualizationProps) {
+export function ForestVisualization({ simulationData, taskType, isLoading, onRetrain, datasetName }: ForestVisualizationProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedTree, setSelectedTree] = useState<DecisionTree | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -65,6 +78,8 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
   useEffect(() => {
     setCurrentPage(0);
   }, [taskType, simulationData]);
+
+  const classLabels = getClassificationLabels(datasetName);
 
   const totalPages = simulationData ? Math.ceil(simulationData.trees.length / TREES_PER_PAGE) : 0;
   const paginatedTrees = useMemo(() => {
@@ -94,8 +109,6 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
     )
   }
 
-  const AggregationIcon = taskType === 'classification' ? Vote : Sigma;
-
   return (
     <>
         <div className='space-y-4'>
@@ -124,14 +137,18 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                     </div>
 
                     <div className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4 p-4 rounded-lg border bg-muted/50 min-h-[180px]">
-                        {paginatedTrees.map(tree => (
-                             <MiniTree 
+                        {paginatedTrees.map(tree => {
+                             const classLabel = taskType === 'classification'
+                                ? classLabels[tree.prediction.toString() as keyof typeof classLabels] || `Class ${tree.prediction}`
+                                : tree.prediction.toFixed(2);
+                             return <MiniTree 
                                 key={tree.id}
                                 tree={tree} 
                                 taskType={taskType}
                                 onTreeClick={() => handleTreeClick(tree.tree)}
+                                classLabel={classLabel}
                             />
-                        ))}
+                        })}
                     </div>
                 </CardContent>
             </Card>

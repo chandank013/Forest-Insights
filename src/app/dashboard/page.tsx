@@ -578,17 +578,18 @@ export default function DashboardPage() {
                 </CardContent>
                 </Card>
                 <ForestVisualization
-                simulationData={data.forestSimulation}
-                taskType={state.task}
-                isLoading={isLoading && !data.metrics}
-                onRetrain={actions.trainModel}
+                    simulationData={data.forestSimulation}
+                    taskType={state.task}
+                    isLoading={isLoading && !data.metrics}
+                    onRetrain={actions.trainModel}
+                    datasetName={state.datasetName}
                 />
                 <AggregationResultsDashboard
-                simulationData={data.forestSimulation}
-                taskType={state.task}
-                isLoading={isLoading && !data.metrics}
-                descriptions={descriptions.aggregation}
-                datasetName={state.datasetName}
+                    simulationData={data.forestSimulation}
+                    taskType={state.task}
+                    isLoading={isLoading && !data.metrics}
+                    descriptions={descriptions.aggregation}
+                    datasetName={state.datasetName}
                 />
             </div>
           </TabsContent>
