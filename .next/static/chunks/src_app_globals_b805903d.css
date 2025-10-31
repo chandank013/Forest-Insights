@@ -2024,6 +2024,20 @@ body {
   z-index: 20;
 }
 
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0)scale(1);
+  }
+
+  50% {
+    transform: translateY(-4px)scale(1.05);
+  }
+}
+
+.hover\:animate-bounce-subtle:hover {
+  animation: 1.5s ease-in-out infinite bounce-subtle;
+}
+
 .hover\:bg-accent:hover {
   background-color: hsl(var(--accent));
 }

@@ -101,12 +101,17 @@ export default {
           '0%, 100%': { 'box-shadow': '0 0 5px hsl(var(--primary) / 0.6)' },
           '50%': { 'box-shadow': '0 0 20px hsl(var(--primary) / 0.8)' },
         },
+        'bounce-subtle': {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-4px) scale(1.05)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin-slow 1.5s linear infinite',
         'glow': 'glow 3s ease-in-out infinite',
+        'bounce-subtle': 'bounce-subtle 1.5s ease-in-out infinite',
       },
     },
   },
