@@ -50,31 +50,33 @@ export function FeatureImportanceChart({ tunedData, baselineData, metadata }: Fe
 
   return (
     <div className="h-[250px] md:h-[350px]">
-      <ChartContainer config={{}} className="h-full w-full">
-        <ResponsiveContainer>
-        <BarChart
-          data={combinedData}
-          layout="vertical"
-          margin={{ left: 80, right: 30, top: 20, bottom: 20 }}
-        >
-          <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-          <XAxis type="number" />
-          <YAxis
-            dataKey="feature"
-            type="category"
-            tickLine={false}
-            axisLine={false}
-            tick={<CustomYAxisTick metadata={metadata} />}
-            interval={0}
-            width={100}
-          />
-          <Tooltip cursor={{ fill: 'hsl(var(--accent))' }} content={<ChartTooltipContent />} />
-          <Legend />
-          <Bar dataKey="baseline" name="Baseline" fill="hsl(var(--secondary-foreground))" radius={[0, 4, 4, 0]} />
-          <Bar dataKey="tuned" name="Tuned" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
-        </BarChart>
-        </ResponsiveContainer>
-      </ChartContainer>
+      <TooltipProvider>
+        <ChartContainer config={{}} className="h-full w-full">
+          <ResponsiveContainer>
+          <BarChart
+            data={combinedData}
+            layout="vertical"
+            margin={{ left: 80, right: 30, top: 20, bottom: 20 }}
+          >
+            <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+            <XAxis type="number" />
+            <YAxis
+              dataKey="feature"
+              type="category"
+              tickLine={false}
+              axisLine={false}
+              tick={<CustomYAxisTick metadata={metadata} />}
+              interval={0}
+              width={100}
+            />
+            <Tooltip cursor={{ fill: 'hsl(var(--accent))' }} content={<ChartTooltipContent />} />
+            <Legend />
+            <Bar dataKey="baseline" name="Baseline" fill="hsl(var(--secondary-foreground))" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="tuned" name="Tuned" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+          </BarChart>
+          </ResponsiveContainer>
+        </ChartContainer>
+      </TooltipProvider>
     </div>
   );
 }

@@ -60,32 +60,34 @@ export function MissingValuesChart({ dataset, metadata }: MissingValuesChartProp
     
     return (
         <div className="w-full h-[300px]">
-            <ChartContainer config={{}} className="h-full w-full">
-                <ResponsiveContainer>
-                    <BarChart
-                      data={missingData}
-                      layout="vertical"
-                      margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                        <XAxis type="number" domain={[0, 100]} label={{ value: 'Percentage Missing', position: 'insideBottom', offset: -5 }}/>
-                        <YAxis 
-                            dataKey="name" 
-                            type="category" 
-                            tickLine={false}
-                            axisLine={false}
-                            tick={<CustomYAxisTick metadata={metadata} />}
-                            interval={0}
-                            width={120}
-                        />
-                        <Tooltip
-                            cursor={{fill: 'hsl(var(--accent))'}}
-                            content={<ChartTooltipContent formatter={(value) => `${(value as number).toFixed(2)}%`} />}
-                        />
-                        <Bar dataKey="Missing (%)" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
-                    </BarChart>
-                </ResponsiveContainer>
-            </ChartContainer>
+            <TooltipProvider>
+              <ChartContainer config={{}} className="h-full w-full">
+                  <ResponsiveContainer>
+                      <BarChart
+                        data={missingData}
+                        layout="vertical"
+                        margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
+                      >
+                          <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                          <XAxis type="number" domain={[0, 100]} label={{ value: 'Percentage Missing', position: 'insideBottom', offset: -5 }}/>
+                          <YAxis 
+                              dataKey="name" 
+                              type="category" 
+                              tickLine={false}
+                              axisLine={false}
+                              tick={<CustomYAxisTick metadata={metadata} />}
+                              interval={0}
+                              width={120}
+                          />
+                          <Tooltip
+                              cursor={{fill: 'hsl(var(--accent))'}}
+                              content={<ChartTooltipContent formatter={(value) => `${(value as number).toFixed(2)}%`} />}
+                          />
+                          <Bar dataKey="Missing (%)" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+                      </BarChart>
+                  </ResponsiveContainer>
+              </ChartContainer>
+            </TooltipProvider>
         </div>
     );
 }
