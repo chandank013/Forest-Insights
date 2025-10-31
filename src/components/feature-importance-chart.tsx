@@ -21,15 +21,18 @@ const CustomYAxisTick = (props: any) => {
     return (
         <g transform={`translate(${x},${y})`}>
             <UiTooltip>
-                <UiTooltipTrigger asChild>
-                     <text x={0} y={0} dy={4} textAnchor="end" fill="hsl(var(--foreground))" className="text-xs cursor-help flex items-center">
-                        {featureName.length > 15 ? `${featureName.substring(0, 13)}...` : featureName}
-                    </text>
-                </UiTooltipTrigger>
                 <UiTooltipContent side="right" className="max-w-xs">
                     <p className='font-bold'>{featureName}</p>
                     <p>{description || 'No description available.'}</p>
                 </UiTooltipContent>
+                <UiTooltipTrigger asChild>
+                    <foreignObject x={-110} y={-8} width={120} height={20}>
+                        <div className="flex items-center justify-end gap-1 w-full text-xs cursor-help text-right pr-2">
+                             {description && <HelpCircle className="h-3 w-3 shrink-0" />}
+                            <span className="truncate">{featureName}</span>
+                        </div>
+                    </foreignObject>
+                </UiTooltipTrigger>
             </UiTooltip>
         </g>
     );
