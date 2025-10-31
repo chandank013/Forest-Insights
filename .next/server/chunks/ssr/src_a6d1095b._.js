@@ -7976,6 +7976,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$polar$2f$Pie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/polar/Pie.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Cell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/Cell.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/Tooltip.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Legend$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/Legend.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/tooltip.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/skeleton.tsx [app-ssr] (ecmascript)");
@@ -7997,11 +7998,31 @@ const COLORS = [
     'hsl(var(--chart-2))',
     'hsl(var(--chart-1))'
 ];
-function AggregationResultsDashboard({ simulationData, taskType, isLoading, descriptions }) {
+const getClassificationLabels = (datasetName)=>{
+    switch(datasetName){
+        case 'wine-quality':
+            return {
+                '0': 'Bad',
+                '1': 'Good'
+            };
+        case 'breast-cancer':
+            return {
+                '0': 'Malignant',
+                '1': 'Benign'
+            };
+        default:
+            return {
+                '0': 'Class 0',
+                '1': 'Class 1'
+            };
+    }
+};
+function AggregationResultsDashboard({ simulationData, taskType, isLoading, descriptions, datasetName }) {
     const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const trees = simulationData?.trees || [];
     const totalPages = Math.ceil(trees.length / TREES_PER_PAGE);
     const paginatedTrees = trees.slice(currentPage * TREES_PER_PAGE, (currentPage + 1) * TREES_PER_PAGE);
+    const classLabels = getClassificationLabels(datasetName);
     const aggregationResult = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
         if (!trees || trees.length === 0) return null;
         if (taskType === 'regression') {
@@ -8038,20 +8059,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                             className: "h-6 w-1/2"
                         }, void 0, false, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 60,
+                            lineNumber: 73,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Skeleton"], {
                             className: "h-4 w-3/4"
                         }, void 0, false, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 61,
+                            lineNumber: 74,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 59,
+                    lineNumber: 72,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8059,18 +8080,18 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                         className: "h-48 w-full"
                     }, void 0, false, {
                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                        lineNumber: 64,
+                        lineNumber: 77,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 63,
+                    lineNumber: 76,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-            lineNumber: 58,
+            lineNumber: 71,
             columnNumber: 7
         }, this);
     }
@@ -8081,40 +8102,39 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
         const { votes, winner } = aggregationResult;
         const voteData = [
             {
-                name: 'Class 0',
+                name: classLabels['0'],
                 votes: votes['0']
             },
             {
-                name: 'Class 1',
+                name: classLabels['1'],
                 votes: votes['1']
             }
         ];
         const pieData = [
             {
-                name: 'Class 0',
+                name: classLabels['0'],
                 value: votes['0']
             },
             {
-                name: 'Class 1',
+                name: classLabels['1'],
                 value: votes['1']
             }
         ];
-        const totalVotes = pieData.reduce((acc, entry)=>acc + entry.value, 0);
-        const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index })=>{
+        const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent })=>{
             const RADIAN = Math.PI / 180;
-            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+            const radius = innerRadius + (outerRadius - innerRadius) * 0.7;
             const x = cx + radius * Math.cos(-midAngle * RADIAN);
             const y = cy + radius * Math.sin(-midAngle * RADIAN);
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("text", {
                 x: x,
                 y: y,
                 fill: "white",
-                textAnchor: x > cx ? 'start' : 'end',
+                textAnchor: "middle",
                 dominantBaseline: "central",
                 children: `${(percent * 100).toFixed(0)}%`
             }, void 0, false, {
                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                lineNumber: 87,
+                lineNumber: 105,
                 columnNumber: 13
             }, this);
         };
@@ -8132,20 +8152,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             children: "Final Voted Prediction"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 98,
+                                            lineNumber: 116,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                             children: descriptions.finalPrediction
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 99,
+                                            lineNumber: 117,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 97,
+                                    lineNumber: 115,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8153,13 +8173,10 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "text-5xl font-bold",
-                                            children: [
-                                                "Class ",
-                                                winner
-                                            ]
-                                        }, void 0, true, {
+                                            children: classLabels[winner]
+                                        }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 102,
+                                            lineNumber: 120,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -8172,19 +8189,19 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 103,
+                                            lineNumber: 121,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 101,
+                                    lineNumber: 119,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 96,
+                            lineNumber: 114,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -8195,20 +8212,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             children: "Class Vote Distribution"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 108,
+                                            lineNumber: 126,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                             children: descriptions.predictionSpread
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 109,
+                                            lineNumber: 127,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 107,
+                                    lineNumber: 125,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8222,12 +8239,12 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                     dataKey: "name"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 114,
+                                                    lineNumber: 132,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["YAxis"], {}, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 115,
+                                                    lineNumber: 133,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -8240,7 +8257,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 116,
+                                                    lineNumber: 134,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Bar"], {
@@ -8250,40 +8267,40 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                             fill: COLORS[index % COLORS.length]
                                                         }, `cell-${index}`, false, {
                                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                            lineNumber: 119,
+                                                            lineNumber: 140,
                                                             columnNumber: 41
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 117,
+                                                    lineNumber: 138,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 113,
+                                            lineNumber: 131,
                                             columnNumber: 29
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 112,
+                                        lineNumber: 130,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 111,
+                                    lineNumber: 129,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 106,
+                            lineNumber: 124,
                             columnNumber: 18
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 95,
+                    lineNumber: 113,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8297,82 +8314,89 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             children: "Individual Tree Predictions"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 130,
+                                            lineNumber: 151,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                             children: descriptions.individualPredictions
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 131,
+                                            lineNumber: 152,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 129,
+                                    lineNumber: 150,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
-                                    className: "h-[300px]",
+                                    className: "h-[350px]",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ResponsiveContainer"], {
                                         width: "100%",
                                         height: "100%",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$PieChart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PieChart"], {
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$polar$2f$Pie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Pie"], {
-                                                data: pieData,
-                                                dataKey: "value",
-                                                nameKey: "name",
-                                                cx: "50%",
-                                                cy: "50%",
-                                                outerRadius: 120,
-                                                fill: "hsl(var(--primary))",
-                                                labelLine: false,
-                                                label: renderCustomizedLabel,
-                                                children: pieData.map((entry, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Cell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Cell"], {
-                                                        fill: COLORS[index % COLORS.length]
-                                                    }, `cell-${index}`, false, {
-                                                        fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                        lineNumber: 148,
-                                                        columnNumber: 41
-                                                    }, this))
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 136,
-                                                columnNumber: 33
-                                            }, this)
-                                        }, void 0, false, {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$polar$2f$Pie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Pie"], {
+                                                    data: pieData,
+                                                    dataKey: "value",
+                                                    nameKey: "name",
+                                                    cx: "50%",
+                                                    cy: "50%",
+                                                    outerRadius: 150,
+                                                    fill: "hsl(var(--primary))",
+                                                    labelLine: false,
+                                                    label: renderCustomizedLabel,
+                                                    children: pieData.map((entry, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Cell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Cell"], {
+                                                            fill: COLORS[index % COLORS.length]
+                                                        }, `cell-${index}`, false, {
+                                                            fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
+                                                            lineNumber: 169,
+                                                            columnNumber: 41
+                                                        }, this))
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
+                                                    lineNumber: 157,
+                                                    columnNumber: 33
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Legend$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Legend"], {}, void 0, false, {
+                                                    fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
+                                                    lineNumber: 172,
+                                                    columnNumber: 33
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 135,
+                                            lineNumber: 156,
                                             columnNumber: 29
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 134,
+                                        lineNumber: 155,
                                         columnNumber: 26
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 133,
+                                    lineNumber: 154,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 128,
+                            lineNumber: 149,
                             columnNumber: 17
                         }, this),
                         renderSummaryTable()
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 127,
+                    lineNumber: 148,
                     columnNumber: 14
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-            lineNumber: 94,
+            lineNumber: 112,
             columnNumber: 9
         }, this);
     };
@@ -8392,20 +8416,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             children: "Final Averaged Prediction"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 191,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                             children: descriptions.finalPrediction
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 170,
+                                            lineNumber: 192,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 168,
+                                    lineNumber: 190,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8415,18 +8439,18 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                         children: average.toFixed(3)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 173,
+                                        lineNumber: 195,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 172,
+                                    lineNumber: 194,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 167,
+                            lineNumber: 189,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -8437,20 +8461,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             children: "Prediction Spread"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 178,
+                                            lineNumber: 200,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                             children: descriptions.predictionSpread
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 179,
+                                            lineNumber: 201,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 177,
+                                    lineNumber: 199,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8461,7 +8485,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                 children: "Low"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 205,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$progress$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Progress"], {
@@ -8469,14 +8493,14 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                 className: "w-full"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 184,
+                                                lineNumber: 206,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: "High"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 185,
+                                                lineNumber: 207,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -8487,30 +8511,30 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 186,
+                                                lineNumber: 208,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 182,
+                                        lineNumber: 204,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 181,
+                                    lineNumber: 203,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 176,
+                            lineNumber: 198,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 166,
+                    lineNumber: 188,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -8521,20 +8545,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                     children: "Individual Tree Predictions"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 193,
+                                    lineNumber: 215,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: descriptions.individualPredictions
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 194,
+                                    lineNumber: 216,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 192,
+                            lineNumber: 214,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8553,7 +8577,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 199,
+                                            lineNumber: 221,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["YAxis"], {
@@ -8564,7 +8588,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 200,
+                                            lineNumber: 222,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -8581,7 +8605,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 201,
+                                            lineNumber: 223,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Bar"], {
@@ -8589,7 +8613,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             fill: "hsl(var(--primary))"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 206,
+                                            lineNumber: 228,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$ReferenceLine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ReferenceLine"], {
@@ -8602,36 +8626,36 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 207,
+                                            lineNumber: 229,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 198,
+                                    lineNumber: 220,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                lineNumber: 197,
+                                lineNumber: 219,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 196,
+                            lineNumber: 218,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 191,
+                    lineNumber: 213,
                     columnNumber: 9
                 }, this),
                 renderSummaryTable()
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-            lineNumber: 165,
+            lineNumber: 187,
             columnNumber: 7
         }, this);
     };
@@ -8643,20 +8667,20 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                             children: "Prediction Summary Table"
                         }, void 0, false, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 220,
+                            lineNumber: 242,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                             children: descriptions.summaryTable
                         }, void 0, false, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 221,
+                            lineNumber: 243,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 219,
+                    lineNumber: 241,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -8670,66 +8694,67 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                 children: "Tree ID"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 227,
+                                                lineNumber: 249,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                 children: taskType === 'regression' ? 'Prediction' : 'Predicted Class'
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 228,
+                                                lineNumber: 250,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                 children: "Weight"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 229,
+                                                lineNumber: 251,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                 children: taskType === 'regression' ? 'Contribution' : 'Confidence'
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                lineNumber: 230,
+                                                lineNumber: 252,
                                                 columnNumber: 25
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 226,
+                                        lineNumber: 248,
                                         columnNumber: 21
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 225,
+                                    lineNumber: 247,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableBody"], {
                                     children: paginatedTrees.map((tree)=>{
                                         const contribution = taskType === 'regression' ? tree.prediction / (aggregationResult?.average * trees.length) * 100 : 'N/A';
                                         const confidence = taskType === 'classification' ? (Math.random() * (95 - 80) + 80).toFixed(2) : 'N/A';
+                                        const predictedClassLabel = taskType === 'classification' ? classLabels[tree.prediction.toString()] : '';
                                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableRow"], {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
                                                     children: tree.id
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 239,
+                                                    lineNumber: 262,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
-                                                    children: taskType === 'regression' ? tree.prediction.toFixed(3) : tree.prediction
+                                                    children: taskType === 'regression' ? tree.prediction.toFixed(3) : predictedClassLabel
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 263,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
                                                     children: (1 / trees.length).toFixed(3)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 241,
+                                                    lineNumber: 264,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -8741,12 +8766,12 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                                         children: confidence !== 'N/A' ? `${confidence}%` : `${typeof contribution === 'number' ? contribution.toFixed(2) : 'N/A'}%`
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                                        lineNumber: 246,
+                                                                        lineNumber: 269,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                                    lineNumber: 245,
+                                                                    lineNumber: 268,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TooltipContent"], {
@@ -8754,52 +8779,52 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                                                         children: "Mock confidence score for demonstration."
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                                        lineNumber: 250,
+                                                                        lineNumber: 273,
                                                                         columnNumber: 53
                                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                         children: "Percentage contribution to the final averaged prediction."
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                                        lineNumber: 251,
+                                                                        lineNumber: 274,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                                    lineNumber: 248,
+                                                                    lineNumber: 271,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                            lineNumber: 244,
+                                                            lineNumber: 267,
                                                             columnNumber: 41
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                        lineNumber: 243,
+                                                        lineNumber: 266,
                                                         columnNumber: 38
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                                    lineNumber: 242,
+                                                    lineNumber: 265,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, tree.id, true, {
                                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                            lineNumber: 238,
+                                            lineNumber: 261,
                                             columnNumber: 29
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 233,
+                                    lineNumber: 255,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 224,
+                            lineNumber: 246,
                             columnNumber: 14
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8815,7 +8840,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 263,
+                                    lineNumber: 286,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -8827,12 +8852,12 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 267,
+                                        lineNumber: 290,
                                         columnNumber: 21
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 266,
+                                    lineNumber: 289,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -8844,30 +8869,30 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                        lineNumber: 270,
+                                        lineNumber: 293,
                                         columnNumber: 21
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                                    lineNumber: 269,
+                                    lineNumber: 292,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                            lineNumber: 262,
+                            lineNumber: 285,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-                    lineNumber: 223,
+                    lineNumber: 245,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-            lineNumber: 218,
+            lineNumber: 240,
             columnNumber: 6
         }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8875,7 +8900,7 @@ function AggregationResultsDashboard({ simulationData, taskType, isLoading, desc
         children: taskType === 'regression' ? renderRegressionDashboard() : renderClassificationDashboard()
     }, void 0, false, {
         fileName: "[project]/src/components/aggregation-results-dashboard.tsx",
-        lineNumber: 278,
+        lineNumber: 301,
         columnNumber: 5
     }, this);
 }
@@ -10348,7 +10373,8 @@ function DashboardPage() {
                                     simulationData: data.forestSimulation,
                                     taskType: state.task,
                                     isLoading: isLoading && !data.metrics,
-                                    descriptions: descriptions.aggregation
+                                    descriptions: descriptions.aggregation,
+                                    datasetName: state.datasetName
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/page.tsx",
                                     lineNumber: 586,
@@ -10377,12 +10403,12 @@ function DashboardPage() {
                             descriptions: descriptions.prediction
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/page.tsx",
-                            lineNumber: 596,
+                            lineNumber: 597,
                             columnNumber: 16
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/page.tsx",
-                        lineNumber: 595,
+                        lineNumber: 596,
                         columnNumber: 11
                     }, this)
                 ]
@@ -10411,12 +10437,12 @@ function DashboardPage() {
                     availableDatasets: availableDatasets
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/page.tsx",
-                    lineNumber: 613,
+                    lineNumber: 614,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/page.tsx",
-                lineNumber: 612,
+                lineNumber: 613,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sidebar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SidebarInset"], {
@@ -10432,12 +10458,12 @@ function DashboardPage() {
                                         className: "md:hidden",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeft$3e$__["PanelLeft"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/page.tsx",
-                                            lineNumber: 625,
+                                            lineNumber: 626,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/page.tsx",
-                                        lineNumber: 624,
+                                        lineNumber: 625,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10450,7 +10476,7 @@ function DashboardPage() {
                                                 height: 32
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                                lineNumber: 628,
+                                                lineNumber: 629,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -10458,30 +10484,30 @@ function DashboardPage() {
                                                 children: "Forest Insights"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                                lineNumber: 629,
+                                                lineNumber: 630,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/page.tsx",
-                                        lineNumber: 627,
+                                        lineNumber: 628,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                lineNumber: 623,
+                                lineNumber: 624,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$theme$2d$toggle$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ThemeToggle"], {}, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/page.tsx",
-                                lineNumber: 632,
+                                lineNumber: 633,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/page.tsx",
-                        lineNumber: 622,
+                        lineNumber: 623,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -10489,13 +10515,13 @@ function DashboardPage() {
                         children: renderContent()
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/page.tsx",
-                        lineNumber: 634,
+                        lineNumber: 635,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/page.tsx",
-                lineNumber: 621,
+                lineNumber: 622,
                 columnNumber: 7
             }, this)
         ]

@@ -588,6 +588,7 @@ export default function DashboardPage() {
                 taskType={state.task}
                 isLoading={isLoading && !data.metrics}
                 descriptions={descriptions.aggregation}
+                datasetName={state.datasetName}
                 />
             </div>
           </TabsContent>
@@ -638,7 +639,3 @@ export default function DashboardPage() {
     </>
   );
 }
-
-    
-
-    

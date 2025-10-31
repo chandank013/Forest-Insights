@@ -5,13 +5,12 @@ import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell, Tooltip as RechartsTooltip } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend } from 'recharts';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from './ui/skeleton';
-import { ForestSimulation, TaskType, TreeSimulation } from '@/lib/types';
-import { Sigma, Vote, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ForestSimulation, TaskType } from '@/lib/types';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface AggregationResultsDashboardProps {
   simulationData: ForestSimulation | null;
@@ -23,18 +22,32 @@ interface AggregationResultsDashboardProps {
     individualPredictions: string;
     summaryTable: string;
   };
+  datasetName: string;
 }
 
 const TREES_PER_PAGE = 10;
 
 const COLORS = ['hsl(var(--chart-2))', 'hsl(var(--chart-1))'];
 
-export function AggregationResultsDashboard({ simulationData, taskType, isLoading, descriptions }: AggregationResultsDashboardProps) {
+const getClassificationLabels = (datasetName: string) => {
+    switch (datasetName) {
+        case 'wine-quality':
+            return { '0': 'Bad', '1': 'Good' };
+        case 'breast-cancer':
+            return { '0': 'Malignant', '1': 'Benign' };
+        default:
+            return { '0': 'Class 0', '1': 'Class 1' };
+    }
+};
+
+export function AggregationResultsDashboard({ simulationData, taskType, isLoading, descriptions, datasetName }: AggregationResultsDashboardProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const trees = simulationData?.trees || [];
   const totalPages = Math.ceil(trees.length / TREES_PER_PAGE);
   const paginatedTrees = trees.slice(currentPage * TREES_PER_PAGE, (currentPage + 1) * TREES_PER_PAGE);
+
+  const classLabels = getClassificationLabels(datasetName);
 
   const aggregationResult = useMemo(() => {
     if (!trees || trees.length === 0) return null;
@@ -73,18 +86,23 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
   
   const renderClassificationDashboard = () => {
     const { votes, winner } = aggregationResult as { votes: { [key: string]: number }, winner: string };
-    const voteData = [{ name: 'Class 0', votes: votes['0'] }, { name: 'Class 1', votes: votes['1'] }];
-    const pieData = [{ name: 'Class 0', value: votes['0'] }, { name: 'Class 1', value: votes['1'] }];
-    const totalVotes = pieData.reduce((acc, entry) => acc + entry.value, 0);
+    const voteData = [
+        { name: classLabels['0'], votes: votes['0'] }, 
+        { name: classLabels['1'], votes: votes['1'] }
+    ];
+    const pieData = [
+        { name: classLabels['0'], value: votes['0'] }, 
+        { name: classLabels['1'], value: votes['1'] }
+    ];
 
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
         const RADIAN = Math.PI / 180;
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.7;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
         return (
-            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+            <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
             {`${(percent * 100).toFixed(0)}%`}
             </text>
         );
@@ -99,7 +117,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                         <CardDescription>{descriptions.finalPrediction}</CardDescription>
                     </CardHeader>
                     <CardContent className="text-center">
-                        <div className="text-5xl font-bold">Class {winner}</div>
+                        <div className="text-5xl font-bold">{classLabels[winner as keyof typeof classLabels]}</div>
                         <p className="text-muted-foreground">{votes[winner]} out of {trees.length} votes</p>
                     </CardContent>
                 </Card>
@@ -113,7 +131,10 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                             <BarChart data={voteData}>
                                 <XAxis dataKey="name" />
                                 <YAxis />
-                                <RechartsTooltip cursor={{ fill: 'hsl(var(--accent))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
+                                <RechartsTooltip 
+                                    cursor={{ fill: 'hsl(var(--accent))' }} 
+                                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                                />
                                 <Bar dataKey="votes" fill="hsl(var(--primary))">
                                     {voteData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -130,7 +151,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                         <CardTitle>Individual Tree Predictions</CardTitle>
                         <CardDescription>{descriptions.individualPredictions}</CardDescription>
                     </CardHeader>
-                    <CardContent className="h-[300px]">
+                    <CardContent className="h-[350px]">
                          <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie 
@@ -139,7 +160,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                                     nameKey="name" 
                                     cx="50%" 
                                     cy="50%" 
-                                    outerRadius={120} 
+                                    outerRadius={150} 
                                     fill="hsl(var(--primary))" 
                                     labelLine={false}
                                     label={renderCustomizedLabel}
@@ -148,6 +169,7 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
+                                <Legend />
                             </PieChart>
                         </ResponsiveContainer>
                     </CardContent>
@@ -234,10 +256,11 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                     {paginatedTrees.map((tree) => {
                         const contribution = taskType === 'regression' ? (tree.prediction / ((aggregationResult as { average: number })?.average * trees.length) * 100) : 'N/A';
                         const confidence = taskType === 'classification' ? (Math.random() * (95 - 80) + 80).toFixed(2) : 'N/A';
+                        const predictedClassLabel = taskType === 'classification' ? classLabels[tree.prediction.toString() as keyof typeof classLabels] : '';
                         return (
                             <TableRow key={tree.id}>
                                 <TableCell>{tree.id}</TableCell>
-                                <TableCell>{taskType === 'regression' ? tree.prediction.toFixed(3) : tree.prediction}</TableCell>
+                                <TableCell>{taskType === 'regression' ? tree.prediction.toFixed(3) : predictedClassLabel}</TableCell>
                                 <TableCell>{(1 / trees.length).toFixed(3)}</TableCell>
                                 <TableCell>
                                      <TooltipProvider>
