@@ -515,24 +515,6 @@ export default function DashboardPage() {
           </TabsContent>
           <TabsContent value="explore" className="py-4">
                <div className="grid grid-cols-1 gap-4 md:gap-8">
-                   <Card>
-                      <CardHeader>
-                          <CardTitle>Summary Statistics</CardTitle>
-                          <CardDescription>{descriptions.summary}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                          <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} metadata={data.metadata} />
-                      </CardContent>
-                  </Card>
-                   <Card>
-                      <CardHeader>
-                          <CardTitle>Missing Values</CardTitle>
-                          <CardDescription>Shows the percentage of missing values for each feature in the dataset.</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                          <MissingValuesChart dataset={data.dataset} metadata={data.metadata} />
-                      </CardContent>
-                  </Card>
                   <Card>
                       <CardHeader>
                           <CardTitle>Feature Distributions</CardTitle>
@@ -545,7 +527,7 @@ export default function DashboardPage() {
                           />
                       </CardContent>
                   </Card>
-                  <Card className="mb-8">
+                  <Card>
                       <CardHeader>
                           <CardTitle>Correlation Heatmap</CardTitle>
                           <CardDescription>{descriptions.correlation}</CardDescription>
@@ -561,6 +543,24 @@ export default function DashboardPage() {
                       </CardHeader>
                       <CardContent>
                           <PairPlot dataset={data.dataset} targetColumn={state.targetColumn} task={state.task} />
+                      </CardContent>
+                  </Card>
+                  <Card>
+                      <CardHeader>
+                          <CardTitle>Summary Statistics</CardTitle>
+                          <CardDescription>{descriptions.summary}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                          <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} metadata={data.metadata} />
+                      </CardContent>
+                  </Card>
+                   <Card className="mb-8">
+                      <CardHeader>
+                          <CardTitle>Missing Values</CardTitle>
+                          <CardDescription>Shows the percentage of missing values for each feature in the dataset.</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                          <MissingValuesChart dataset={data.dataset} metadata={data.metadata} />
                       </CardContent>
                   </Card>
                </div>
