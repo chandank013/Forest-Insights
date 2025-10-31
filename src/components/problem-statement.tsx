@@ -10,14 +10,15 @@ import { ChevronDown, BookOpen } from "lucide-react";
 import { DatasetMetadata } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { datasetImageMap } from "@/lib/placeholder-images";
 import { Card, CardContent } from "./ui/card";
 
 interface ProblemStatementProps {
     metadata: DatasetMetadata | null;
+    datasetName: string;
 }
 
-export function ProblemStatement({ metadata }: ProblemStatementProps) {
+export function ProblemStatement({ metadata, datasetName }: ProblemStatementProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     if (!metadata) {
@@ -25,7 +26,7 @@ export function ProblemStatement({ metadata }: ProblemStatementProps) {
     }
 
     const attributes = Object.entries(metadata.attributes);
-    const placeholderImage = PlaceHolderImages[0];
+    const placeholderImage = datasetImageMap[datasetName] || datasetImageMap['california-housing'];
 
     return (
         <Card className="mb-4 overflow-hidden">

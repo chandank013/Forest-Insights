@@ -354,7 +354,7 @@ export default function DashboardPage() {
     
     return (
       <TooltipProvider>
-        <ProblemStatement metadata={data.metadata} />
+        <ProblemStatement metadata={data.metadata} datasetName={state.datasetName} />
         <Tabs defaultValue="dashboard">
           <div className="flex items-center">
             <TabsList className="w-full justify-start">

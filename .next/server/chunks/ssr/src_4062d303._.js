@@ -9391,18 +9391,23 @@ const CollapsibleContent = __TURBOPACK__imported__module__$5b$project$5d2f$node_
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-__turbopack_context__.v(JSON.parse("{\"placeholderImages\":[{\"id\":\"1\",\"description\":\"Abstract data visualization\",\"imageUrl\":\"https://picsum.photos/seed/forest/1200/800\",\"imageHint\":\"data visualization\"}]}"));}}),
+__turbopack_context__.v(JSON.parse("{\"placeholderImages\":[{\"id\":\"california-housing\",\"description\":\"A modern house in California with a pool\",\"imageUrl\":\"https://picsum.photos/seed/housing/1200/800\",\"imageHint\":\"modern house\"},{\"id\":\"diabetes\",\"description\":\"A doctor checking a patient's blood sugar level\",\"imageUrl\":\"https://picsum.photos/seed/diabetes/1200/800\",\"imageHint\":\"medical checkup\"},{\"id\":\"linnerud\",\"description\":\"An athlete performing chin-ups in a gym\",\"imageUrl\":\"https://picsum.photos/seed/fitness/1200/800\",\"imageHint\":\"athlete training\"},{\"id\":\"wine-quality\",\"description\":\"A glass of red wine in a vineyard setting\",\"imageUrl\":\"https://picsum.photos/seed/wine/1200/800\",\"imageHint\":\"vineyard wine\"},{\"id\":\"breast-cancer\",\"description\":\"A microscope showing cell structures in a lab\",\"imageUrl\":\"https://picsum.photos/seed/microscope/1200/800\",\"imageHint\":\"medical lab\"},{\"id\":\"digits\",\"description\":\"A close-up of handwritten numbers on paper\",\"imageUrl\":\"https://picsum.photos/seed/handwriting/1200/800\",\"imageHint\":\"handwritten numbers\"}]}"));}}),
 "[project]/src/lib/placeholder-images.ts [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "PlaceHolderImages": (()=>PlaceHolderImages)
+    "PlaceHolderImages": (()=>PlaceHolderImages),
+    "datasetImageMap": (()=>datasetImageMap)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$placeholder$2d$images$2e$json__$28$json$29$__ = __turbopack_context__.i("[project]/src/lib/placeholder-images.json (json)");
 ;
 const PlaceHolderImages = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$placeholder$2d$images$2e$json__$28$json$29$__["default"].placeholderImages;
+const datasetImageMap = PlaceHolderImages.reduce((acc, img)=>{
+    acc[img.id] = img;
+    return acc;
+}, {});
 }}),
 "[project]/src/components/problem-statement.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -9434,13 +9439,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$c
 ;
 ;
 ;
-function ProblemStatement({ metadata }) {
+function ProblemStatement({ metadata, datasetName }) {
     const [isOpen, setIsOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     if (!metadata) {
         return null;
     }
     const attributes = Object.entries(metadata.attributes);
-    const placeholderImage = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$placeholder$2d$images$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PlaceHolderImages"][0];
+    const placeholderImage = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$placeholder$2d$images$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["datasetImageMap"][datasetName] || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$placeholder$2d$images$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["datasetImageMap"]['california-housing'];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
         className: "mb-4 overflow-hidden",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -9458,14 +9463,14 @@ function ProblemStatement({ metadata }) {
                                         className: "h-6 w-6"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                        lineNumber: 36,
+                                        lineNumber: 37,
                                         columnNumber: 29
                                     }, this),
                                     "Problem Statement"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/problem-statement.tsx",
-                                lineNumber: 35,
+                                lineNumber: 36,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -9473,7 +9478,7 @@ function ProblemStatement({ metadata }) {
                                 children: metadata.story
                             }, void 0, false, {
                                 fileName: "[project]/src/components/problem-statement.tsx",
-                                lineNumber: 39,
+                                lineNumber: 40,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$collapsible$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Collapsible"], {
@@ -9492,18 +9497,18 @@ function ProblemStatement({ metadata }) {
                                                     className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("ml-2 h-4 w-4 transition-transform", isOpen && "rotate-180")
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/problem-statement.tsx",
-                                                    lineNumber: 46,
+                                                    lineNumber: 47,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/problem-statement.tsx",
-                                            lineNumber: 44,
+                                            lineNumber: 45,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                        lineNumber: 43,
+                                        lineNumber: 44,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$collapsible$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CollapsibleContent"], {
@@ -9518,32 +9523,32 @@ function ProblemStatement({ metadata }) {
                                                                     children: "Attribute"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/problem-statement.tsx",
-                                                                    lineNumber: 54,
+                                                                    lineNumber: 55,
                                                                     columnNumber: 49
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                                     children: "Description"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/problem-statement.tsx",
-                                                                    lineNumber: 55,
+                                                                    lineNumber: 56,
                                                                     columnNumber: 49
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                                     children: "Type"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/problem-statement.tsx",
-                                                                    lineNumber: 56,
+                                                                    lineNumber: 57,
                                                                     columnNumber: 49
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/problem-statement.tsx",
-                                                            lineNumber: 53,
+                                                            lineNumber: 54,
                                                             columnNumber: 45
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                                        lineNumber: 52,
+                                                        lineNumber: 53,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableBody"], {
@@ -9554,60 +9559,60 @@ function ProblemStatement({ metadata }) {
                                                                         children: key
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                                                        lineNumber: 62,
+                                                                        lineNumber: 63,
                                                                         columnNumber: 53
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
                                                                         children: value.description
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                                                        lineNumber: 63,
+                                                                        lineNumber: 64,
                                                                         columnNumber: 53
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
                                                                         children: value.type
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                                                        lineNumber: 64,
+                                                                        lineNumber: 65,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 ]
                                                             }, key, true, {
                                                                 fileName: "[project]/src/components/problem-statement.tsx",
-                                                                lineNumber: 61,
+                                                                lineNumber: 62,
                                                                 columnNumber: 49
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                                        lineNumber: 59,
+                                                        lineNumber: 60,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/problem-statement.tsx",
-                                                lineNumber: 51,
+                                                lineNumber: 52,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/problem-statement.tsx",
-                                            lineNumber: 50,
+                                            lineNumber: 51,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/problem-statement.tsx",
-                                        lineNumber: 49,
+                                        lineNumber: 50,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/problem-statement.tsx",
-                                lineNumber: 42,
+                                lineNumber: 43,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/problem-statement.tsx",
-                        lineNumber: 34,
+                        lineNumber: 35,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9620,28 +9625,28 @@ function ProblemStatement({ metadata }) {
                             "data-ai-hint": placeholderImage.imageHint
                         }, void 0, false, {
                             fileName: "[project]/src/components/problem-statement.tsx",
-                            lineNumber: 74,
+                            lineNumber: 75,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/problem-statement.tsx",
-                        lineNumber: 73,
+                        lineNumber: 74,
                         columnNumber: 22
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/problem-statement.tsx",
-                lineNumber: 33,
+                lineNumber: 34,
                 columnNumber: 17
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/problem-statement.tsx",
-            lineNumber: 32,
+            lineNumber: 33,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/problem-statement.tsx",
-        lineNumber: 31,
+        lineNumber: 32,
         columnNumber: 9
     }, this);
 }
@@ -10172,7 +10177,8 @@ function DashboardPage() {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TooltipProvider"], {
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$problem$2d$statement$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ProblemStatement"], {
-                    metadata: data.metadata
+                    metadata: data.metadata,
+                    datasetName: state.datasetName
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/page.tsx",
                     lineNumber: 357,
