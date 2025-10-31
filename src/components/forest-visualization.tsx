@@ -126,7 +126,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
                 </CardHeader>
                 <CardContent>
                     <div className='flex justify-between items-center mb-4 gap-4'>
-                        <strong className="flex-1 text-sm font-semibold transition-transform hover:animate-bounce-subtle">Click the Trees</strong>
+                        <strong className="flex-1 text-sm font-semibold animate-bounce-subtle">Click the Trees</strong>
                         <div className="text-sm text-muted-foreground">
                             {simulationData.trees.length > 0 && `Showing ${currentPage * TREES_PER_PAGE + 1}-${Math.min((currentPage + 1) * TREES_PER_PAGE, simulationData.trees.length)} of ${simulationData.trees.length} trees`}
                         </div>

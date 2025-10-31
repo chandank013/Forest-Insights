@@ -1034,6 +1034,20 @@ body {
   animation: 1s linear infinite spin;
 }
 
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0)scale(1);
+  }
+
+  50% {
+    transform: translateY(-4px)scale(1.05);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: 1.5s ease-in-out infinite bounce-subtle;
+}
+
 .cursor-default {
   cursor: default;
 }
@@ -2022,16 +2036,6 @@ body {
 
 .focus-within\:z-20:focus-within {
   z-index: 20;
-}
-
-@keyframes bounce-subtle {
-  0%, 100% {
-    transform: translateY(0)scale(1);
-  }
-
-  50% {
-    transform: translateY(-4px)scale(1.05);
-  }
 }
 
 .hover\:animate-bounce-subtle:hover {
