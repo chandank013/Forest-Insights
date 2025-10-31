@@ -643,19 +643,10 @@ const useRandomForest = ()=>{
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (status === 'idle') return;
-        const baselineStateString = JSON.stringify({
-            hyperparameters: BASELINE_HYPERPARAMETERS,
-            targetColumn: state.targetColumn,
-            testSize: state.testSize,
-            datasetName: state.datasetName
-        });
-        const currentStateString = JSON.stringify({
-            hyperparameters: state.hyperparameters,
-            targetColumn: state.targetColumn,
-            testSize: state.testSize,
-            datasetName: state.datasetName
-        });
-        if (baselineStateString === currentStateString && data.metrics === data.baselineMetrics) return;
+        // This check is to prevent re-training when the baseline model is the one being trained
+        // and its params match the current state.
+        const isBaselineSameAsCurrent = JSON.stringify(state.hyperparameters) === JSON.stringify(BASELINE_HYPERPARAMETERS);
+        if (isBaselineSameAsCurrent && data.metrics === data.baselineMetrics) return;
         setIsDebouncing(true);
         const handler = setTimeout(()=>{
             setIsDebouncing(false);
@@ -666,7 +657,7 @@ const useRandomForest = ()=>{
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        state.hyperparameters,
+        JSON.stringify(state.hyperparameters),
         state.targetColumn,
         state.testSize,
         state.datasetName

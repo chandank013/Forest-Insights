@@ -563,20 +563,10 @@ pdpData: null,
   useEffect(() => {
     if (status === 'idle') return;
 
-    const baselineStateString = JSON.stringify({
-        hyperparameters: BASELINE_HYPERPARAMETERS,
-        targetColumn: state.targetColumn,
-        testSize: state.testSize,
-        datasetName: state.datasetName,
-    });
-    const currentStateString = JSON.stringify({
-        hyperparameters: state.hyperparameters,
-        targetColumn: state.targetColumn,
-        testSize: state.testSize,
-        datasetName: state.datasetName,
-    });
-
-    if (baselineStateString === currentStateString && data.metrics === data.baselineMetrics) return;
+    // This check is to prevent re-training when the baseline model is the one being trained
+    // and its params match the current state.
+    const isBaselineSameAsCurrent = JSON.stringify(state.hyperparameters) === JSON.stringify(BASELINE_HYPERPARAMETERS);
+    if (isBaselineSameAsCurrent && data.metrics === data.baselineMetrics) return;
 
     setIsDebouncing(true);
     const handler = setTimeout(() => {
@@ -588,7 +578,7 @@ pdpData: null,
       clearTimeout(handler);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.hyperparameters, state.targetColumn, state.testSize, state.datasetName]);
+  }, [JSON.stringify(state.hyperparameters), state.targetColumn, state.testSize, state.datasetName]);
 
   return { state, data, status, actions, availableDatasets: DATASETS[state.task] };
 };
