@@ -9,7 +9,7 @@ import {
 import { useMemo } from "react";
 import { DatasetMetadata } from '@/lib/types';
 import { HelpCircle } from 'lucide-react';
-import { Tooltip as UiTooltip, TooltipContent as UiTooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip as UiTooltip, TooltipContent as UiTooltipContent, TooltipProvider, TooltipTrigger as UiTooltipTrigger } from '@/components/ui/tooltip';
 
 interface MissingValuesChartProps {
     dataset: Record<string, any>[];
@@ -24,11 +24,11 @@ const CustomYAxisTick = (props: any) => {
     return (
         <g transform={`translate(${x},${y})`}>
              <UiTooltip>
-                <TooltipTrigger asChild>
+                <UiTooltipTrigger asChild>
                     <text x={0} y={0} dy={4} textAnchor="end" fill="hsl(var(--foreground))" className="text-xs cursor-help flex items-center">
                         {featureName.length > 15 ? `${featureName.substring(0, 13)}...` : featureName}
                     </text>
-                </TooltipTrigger>
+                </UiTooltipTrigger>
                 <UiTooltipContent side="right" className="max-w-xs">
                     <p className='font-bold'>{featureName}</p>
                     <p>{description || 'No description available.'}</p>
