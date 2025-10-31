@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -24,8 +24,7 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
   const [predictionResult, setPredictionResult] = useState<Prediction | null>(null);
   const [isPredicting, setIsPredicting] = useState(false);
 
-  // Re-create the form schema whenever features change
-  const formSchema = z.object(
+  const formSchema = useMemo(() => z.object(
     features.reduce((acc, feature) => {
       acc[feature] = z.string().refine(val => val.trim() !== '', {
         message: 'This field is required.',
@@ -34,28 +33,24 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
       }));
       return acc;
     }, {} as Record<string, z.ZodType<any, any, any>>)
-  );
+  ), [features]);
 
   type FormValues = z.infer<typeof formSchema>;
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: features.reduce((acc, feature) => {
+  const defaultValues = useMemo(() => features.reduce((acc, feature) => {
       acc[feature] = '';
       return acc;
-    }, {} as Record<string, any>),
+    }, {} as Record<string, any>), [features]);
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues,
   });
 
   useEffect(() => {
-    const newDefaultValues = features.reduce((acc, feature) => {
-      acc[feature] = '';
-      return acc;
-    }, {} as Record<string, any>);
-
-    form.reset(newDefaultValues);
+    form.reset(defaultValues);
     setPredictionResult(null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [features]);
+  }, [features, defaultValues, form]);
 
 
   const onSubmit = async (values: FormValues) => {
@@ -65,6 +60,8 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
     setPredictionResult(result);
     setIsPredicting(false);
   };
+
+  const formKey = useMemo(() => features.join('-'), [features]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -78,7 +75,7 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict }:
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form key={formKey} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 {features.map((feature) => (
                   <FormField
