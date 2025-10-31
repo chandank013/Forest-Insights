@@ -4,7 +4,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'rec
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import type { DatasetMetadata, FeatureImportance } from '@/lib/types';
 import { HelpCircle } from 'lucide-react';
-import { Tooltip as UiTooltip, TooltipContent as UiTooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip as UiTooltip, TooltipContent as UiTooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface FeatureImportanceChartProps {
   tunedData: FeatureImportance[];
@@ -19,23 +19,17 @@ const CustomYAxisTick = (props: any) => {
 
     return (
         <g transform={`translate(${x},${y})`}>
-            <foreignObject x={-90} y={-10} width="80" height="20">
-                <TooltipProvider>
-                    <UiTooltip>
-                        <TooltipTrigger asChild>
-                            <div className="flex items-center gap-1 cursor-help w-full">
-                                <span className="truncate text-xs text-right w-full">{featureName}</span>
-                                {description && <HelpCircle className="h-3 w-3 text-muted-foreground flex-shrink-0" />}
-                            </div>
-                        </TooltipTrigger>
-                        {description && (
-                            <UiTooltipContent side="right" className="max-w-xs">
-                                <p>{description}</p>
-                            </UiTooltipContent>
-                        )}
-                    </UiTooltip>
-                </TooltipProvider>
-            </foreignObject>
+            <UiTooltip>
+                <TooltipTrigger asChild>
+                     <text x={0} y={0} dy={4} textAnchor="end" fill="hsl(var(--foreground))" className="text-xs cursor-help">
+                        {featureName.length > 15 ? `${featureName.substring(0, 13)}...` : featureName}
+                    </text>
+                </TooltipTrigger>
+                <UiTooltipContent side="right" className="max-w-xs">
+                    <p className='font-bold'>{featureName}</p>
+                    <p>{description || 'No description available.'}</p>
+                </UiTooltipContent>
+            </UiTooltip>
         </g>
     );
 };
@@ -50,7 +44,7 @@ export function FeatureImportanceChart({ tunedData, baselineData, metadata }: Fe
       tuned: tunedItem.importance,
       baseline: baselineItem ? baselineItem.importance : 0,
     };
-  }).slice(0, 7).sort((a, b) => (a.tuned + a.baseline) / 2 - (b.tuned + b.baseline) / 2);
+  }).slice(0, 10).sort((a, b) => (a.tuned + a.baseline) - (b.tuned + b.baseline));
 
 
   return (
@@ -59,7 +53,7 @@ export function FeatureImportanceChart({ tunedData, baselineData, metadata }: Fe
         <BarChart
           data={combinedData}
           layout="vertical"
-          margin={{ left: 20, right: 30, top: 20, bottom: 20 }}
+          margin={{ left: 80, right: 30, top: 20, bottom: 20 }}
         >
           <CartesianGrid horizontal={false} strokeDasharray="3 3" />
           <XAxis type="number" />
@@ -69,7 +63,7 @@ export function FeatureImportanceChart({ tunedData, baselineData, metadata }: Fe
             tickLine={false}
             axisLine={false}
             tick={<CustomYAxisTick metadata={metadata} />}
-            width={80}
+            interval={0}
           />
           <Tooltip cursor={{ fill: 'hsl(var(--accent))' }} content={<ChartTooltipContent />} />
           <Legend />
