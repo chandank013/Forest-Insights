@@ -41,13 +41,13 @@ const domainSpecificText = {
   'california-housing': {
     forest: "A Random Forest is like a team of 'expert' appraisers (Decision Trees). Each one gives a price estimate for a house, and the final prediction is the average of all their estimates. Click each tree to see its logic.",
     featureImportance: "Shows which housing attributes (like median income or house age) are most influential in predicting a home's value.",
-    predictionPlot: "Compares the model's predicted home values against the actual sale prices.",
-    residualPlot: "Examines if the model's price prediction errors are random or if they follow a pattern (e.g., consistently overpricing cheaper homes).",
-    errorHistogram: "Shows the distribution of price prediction errors. Ideally, most errors should be close to zero.",
-    cumulativeError: "Shows what percentage of home price predictions fall within a certain dollar amount of the actual price.",
-    pdp: "Shows how changing a single factor, like the number of rooms, affects the predicted house price, holding all other factors constant.",
-    summary: "Provides an overview of the housing data, like average number of rooms and the range of house ages.",
-    correlation: "Reveals how different housing features relate to each other, like whether older houses tend to have fewer rooms.",
+    predictionPlot: "Compares the model's predicted home values against the actual sale prices. The closer the dots are to the straight line, the more accurate the model.",
+    residualPlot: "Examines the model's prediction errors. Ideally, the dots should be randomly scattered around the zero line, which means the model's mistakes are random and not biased.",
+    errorHistogram: "Shows the distribution of price prediction errors. A tall bar in the center means most predictions were very close to the real price.",
+    cumulativeError: "Tells you what percentage of predictions were 'close enough'. For example, it might show that 80% of predictions were within $20,000 of the actual price.",
+    pdp: "Shows how a single factor, like the number of rooms, affects the predicted house price, assuming all other factors stay the same.",
+    summary: "Provides a quick overview of your data, like the average number of rooms and the age range of the houses in the dataset.",
+    correlation: "Reveals how different housing features relate to each other. For example, do houses with more rooms tend to be newer?",
     aggregation: {
       finalPrediction: "The final prediction is the average of price predictions from all individual 'expert' trees in the forest.",
       predictionSpread: "Measures how much the price predictions vary from tree to tree. Low variance means the 'experts' agree.",
@@ -62,21 +62,21 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a house value prediction."
     },
     metrics: {
-        r2: "Explains how much of the variation in house prices the model can predict. A score of 0.8 means it explains 80% of the price variance.",
-        rmse: "The average dollar amount the model's price predictions are off by. A lower RMSE is better.",
-        mae: "Another measure of average prediction error in dollars. It's less sensitive to very large, one-off errors than RMSE."
+        r2: "Think of this as the model's confidence score. A score of 0.8 means the model is 80% confident it can predict house prices correctly based on the data.",
+        rmse: "This is the average dollar amount the model's price predictions are off by. A lower number is better because it means the model is more accurate.",
+        mae: "Similar to RMSE, this also shows the average prediction error in dollars. It's less sensitive to a few very wrong predictions."
     }
   },
   'diabetes': {
     forest: "The Random Forest acts like a panel of doctors. Each tree (doctor) provides a score for disease progression, and the final prediction is the average of all their scores. Click each tree to see its reasoning.",
     featureImportance: "Highlights which clinical measurements (like BMI or blood pressure) are most critical for predicting disease progression a year later.",
-    predictionPlot: "Compares the model's predicted disease progression score against the actual measured score.",
-    residualPlot: "Checks if the model's prediction errors are random or if they have a bias (e.g., underestimating progression in older patients).",
-    errorHistogram: "Visualizes the spread of prediction errors. A tight cluster around zero is ideal.",
-    cumulativeError: "Shows the percentage of predictions that are within a certain range of the true disease progression score.",
+    predictionPlot: "Compares the model's predicted disease progression score against the actual measured score. A tighter cluster of dots along the line means a better model.",
+    residualPlot: "Checks if the model's prediction errors are random. If the dots form a pattern, the model might have a hidden bias (e.g., always underestimating for older patients).",
+    errorHistogram: "Visualizes how far off the predictions are. Ideally, you want a big spike at zero, meaning most predictions were spot-on.",
+    cumulativeError: "Shows how many predictions were within a certain range of the true score. A steep curve is good, showing high accuracy for most cases.",
     pdp: "Isolates one factor, like BMI, to see its direct impact on the predicted disease progression, independent of other measurements.",
     summary: "Provides key statistics for each clinical measurement, such as the average BMI and blood pressure in the patient group.",
-    correlation: "Shows relationships between different clinical markers, like whether higher BMI is associated with higher blood pressure.",
+    correlation: "Shows relationships between different clinical markers. For instance, is higher BMI usually associated with higher blood pressure in this dataset?",
     aggregation: {
       finalPrediction: "The final prediction is the average of disease progression scores from all individual trees.",
       predictionSpread: "Measures the variance in predicted scores across all trees. Lower variance suggests higher confidence.",
@@ -91,21 +91,21 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a disease progression prediction."
     },
     metrics: {
-        r2: "How much of the variability in disease progression can be explained by the model's inputs. A higher score means a more predictive model.",
-        rmse: "The average error of the model's prediction for the disease progression score. A lower value indicates a more accurate model.",
-        mae: "Similar to RMSE, this shows the average absolute error in the prediction score. It gives a straightforward idea of the prediction error magnitude."
+        r2: "This is like a grade for the model, from 0 to 100%. It tells you how much of the change in disease progression the model can explain. Higher is better.",
+        rmse: "This is the average amount the model's prediction was 'off' by. A smaller number means the model's predictions are closer to the real-life outcomes.",
+        mae: "Similar to RMSE, this also shows the average error. It gives a straightforward idea of how far off the predictions are, on average."
     }
   },
   'linnerud': {
     forest: "Think of the Random Forest as a group of fitness coaches. Each tree (coach) predicts an athlete's weight based on their exercises. The final prediction is the average of all their predictions. Click a tree to view its analysis.",
-    featureImportance: "Shows which exercises (like Chinups or Situps) have the biggest impact on a person's physiological measurements (like Weight).",
-    predictionPlot: "Compares the model's predicted weight against the athlete's actual weight.",
-    residualPlot: "Analyzes if prediction errors for an athlete's weight have a pattern, or if they are random.",
-    errorHistogram: "Displays the distribution of weight prediction errors. Most errors should ideally be small.",
-    cumulativeError: "Shows how many weight predictions are within a certain number of pounds of the actual weight.",
-    pdp: "Shows how changing performance in one exercise, like situps, is predicted to affect an athlete's weight, keeping other exercises constant.",
-    summary: "Gives a statistical summary of the athletes' performance, including average number of chinups and situps.",
-    correlation: "Examines if performance in one exercise, like chinups, is related to performance in another, like situps.",
+    featureImportance: "Shows which exercises (like Chinups or Situps) have the biggest impact on predicting a person's weight.",
+    predictionPlot: "Compares the model's predicted weight against the athlete's actual weight. The closer the dots are to the line, the better the prediction.",
+    residualPlot: "Analyzes if prediction errors for an athlete's weight have a pattern. Randomly scattered dots are a good sign of an unbiased model.",
+    errorHistogram: "Displays how often the model is off by a certain amount. A large bar in the middle means the model is frequently accurate.",
+    cumulativeError: "Shows how many weight predictions are within a certain number of pounds of the actual weight. A steep curve means most predictions are very close.",
+    pdp: "Shows how improving in one exercise, like situps, is predicted to affect an athlete's weight, keeping other exercises the same.",
+    summary: "Gives a simple statistical summary of the athletes' performance, like the average number of chinups and situps.",
+    correlation: "Examines if doing well in one exercise is related to doing well in another. For example, do athletes who do more chinups also do more situps?",
     aggregation: {
       finalPrediction: "The final prediction is the average of weight predictions from all individual trees.",
       predictionSpread: "Shows the agreement among the trees' weight predictions. Less spread means more consensus.",
@@ -120,20 +120,20 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a weight prediction."
     },
     metrics: {
-        r2: "Measures how well the exercise data explains the variance in the athletes' weight. A high score means the exercises are good predictors of weight.",
-        rmse: "The average number of pounds by which the model's weight prediction is incorrect. A smaller RMSE means a more accurate model.",
-        mae: "The average absolute difference between the predicted and actual weight, in pounds. It provides a direct measure of the typical prediction error."
+        r2: "A score from 0 to 100% that shows how well the exercises can predict an athlete's weight. A higher score means the model is more effective.",
+        rmse: "This is the average number of pounds by which the model's weight prediction is typically wrong. A smaller number is better.",
+        mae: "This also shows the average error in pounds, giving you a clear and direct sense of the model's accuracy."
     }
   },
   'wine-quality': {
     forest: "A Random Forest is like a panel of wine tasters (Decision Trees). Each one votes on whether a wine is 'Good' or 'Bad', and the majority vote becomes the final prediction. Click each tree to see how it voted.",
-    featureImportance: "Reveals which chemical properties (like alcohol content or acidity) are the strongest predictors of wine quality.",
-    confusionMatrix: "Shows how well the model distinguishes between 'Good' and 'Bad' quality wines. It highlights where mistakes are made.",
-    rocCurve: "Measures the model's ability to correctly identify a 'Good' quality wine without incorrectly flagging a 'Bad' one.",
-    prCurve: "Shows the trade-off between being right about a 'Good' wine prediction (Precision) and finding all 'Good' wines (Recall).",
-    pdp: "Isolates a single ingredient, like 'sulphates', to see how its concentration level impacts the predicted quality of the wine.",
-    summary: "Provides an overview of the chemical properties, such as the average alcohol content and pH range across all wines.",
-    correlation: "Shows how different chemical properties are related, such as whether higher acidity is linked to lower pH.",
+    featureImportance: "Reveals which chemical properties (like alcohol content or acidity) are the strongest clues for guessing if a wine is 'Good' or 'Bad'.",
+    confusionMatrix: "This is a report card for the model. It shows how many times the model correctly identified 'Good' and 'Bad' wines, and where it got confused.",
+    rocCurve: "Measures the model's ability to be a good 'Good wine' detector. A curve that bows up and to the left means the model is excellent at telling the two qualities apart.",
+    prCurve: "This shows the balance between being right when predicting a 'Good' wine and not missing any of the actual 'Good' wines. Higher and to the right is better.",
+    pdp: "Isolates a single ingredient, like 'alcohol', to see how its concentration level alone impacts the chance of the wine being rated as 'Good'.",
+    summary: "Provides an overview of the chemical properties across all wines in the dataset, such as the average alcohol content and pH range.",
+    correlation: "Shows how different chemical properties are related. For example, does higher alcohol content often go with lower sugar?",
     aggregation: {
       finalPrediction: "The final quality rating is decided by a vote; each tree casts a vote for 'Good' or 'Bad' quality.",
       predictionSpread: "Shows the distribution of votes. A strong majority for one class indicates a high-confidence prediction.",
@@ -148,20 +148,20 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a wine quality prediction."
     },
      metrics: {
-        accuracy: "The overall percentage of wines the model correctly classifies as 'Good' or 'Bad' quality.",
-        precision: "Of all the wines the model labeled as 'Good', what percentage were actually 'Good'? A high precision means fewer false positives.",
-        recall: "Of all the wines that were actually 'Good', what percentage did the model correctly identify? A high recall means fewer missed 'Good' wines."
+        accuracy: "The percentage of wines the model correctly classified as 'Good' or 'Bad'. A higher percentage is better.",
+        precision: "Out of all the wines the model called 'Good', what percentage were actually good? High precision means the model makes few false alarms.",
+        recall: "Out of all the wines that were actually 'Good', what percentage did the model correctly find? High recall means the model misses very few good wines."
     }
   },
   'breast-cancer': {
     forest: "The Random Forest acts as a group of virtual pathologists. Each tree examines the tumor data and votes 'Malignant' or 'Benign'. The final diagnosis is based on the majority vote. Click a tree to see its individual analysis.",
-    featureImportance: "Pinpoints which tumor characteristics (like radius or texture) are the most significant indicators for a diagnosis.",
-    confusionMatrix: "Summarizes the model's diagnostic accuracy, showing correct vs. incorrect classifications for 'Malignant' and 'Benign' cases.",
-    rocCurve: "Evaluates how well the model can distinguish between 'Malignant' and 'Benign' tumors.",
-    prCurve: "Demonstrates the trade-off between the accuracy of a 'Malignant' prediction (Precision) and correctly identifying all malignant cases (Recall).",
-    pdp: "Shows how a single tumor measurement, like 'mean radius', influences the model's diagnosis, holding other factors constant.",
-    summary: "Gives a statistical overview of the tumor measurements, like the average radius and texture of the cells.",
-    correlation: "Reveals relationships between tumor characteristics, like whether a larger radius is correlated with higher compactness.",
+    featureImportance: "Pinpoints which tumor measurements (like its size or texture) are the most important clues for making a diagnosis.",
+    confusionMatrix: "This is a summary of the model's performance. It shows how many 'Malignant' and 'Benign' cases it correctly identified and where it made mistakes.",
+    rocCurve: "Evaluates how well the model can distinguish between 'Malignant' and 'Benign' tumors. A curve that goes high and to the left is a sign of a very accurate model.",
+    prCurve: "Shows the trade-off between being sure a tumor is 'Malignant' (Precision) and correctly finding all 'Malignant' tumors (Recall). For medical tests, both are critical.",
+    pdp: "Shows how a single tumor measurement, like 'mean radius', influences the model's diagnosis, assuming all other factors are kept constant.",
+    summary: "Gives a statistical overview of the tumor measurements, like the average radius and texture of the cells in the dataset.",
+    correlation: "Reveals relationships between tumor characteristics. For example, do larger tumors tend to have a rougher texture?",
     aggregation: {
       finalPrediction: "The final diagnosis ('Malignant' or 'Benign') is determined by a majority vote from all trees in the forest.",
       predictionSpread: "Shows how many trees voted for each diagnosis, indicating the model's confidence.",
@@ -176,20 +176,20 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a diagnosis prediction."
     },
     metrics: {
-        accuracy: "The overall percentage of correct diagnoses ('Malignant' or 'Benign') made by the model.",
-        precision: "When the model predicts a tumor is 'Malignant', how often is it correct? High precision is critical for avoiding unnecessary treatments.",
-        recall: "Of all the tumors that were actually 'Malignant', how many did the model successfully identify? High recall is crucial for not missing any cancers."
+        accuracy: "The overall percentage of correct diagnoses ('Malignant' or 'Benign') made by the model. Higher is better.",
+        precision: "When the model says a tumor is 'Malignant', how often is it right? This is critical for avoiding false alarms and unnecessary stress.",
+        recall: "Of all the tumors that were actually 'Malignant', how many did the model successfully find? This is critical for not missing any cancers."
     }
   },
   'digits': {
     forest: "The Random Forest works like a committee of handwriting experts. Each tree looks at the pixel image and votes on what digit it is (0-9). The digit with the most votes becomes the final prediction. Click any tree to see its logic.",
-    featureImportance: "Identifies which pixel areas are most important for the model to recognize a handwritten digit.",
-    confusionMatrix: "Shows a breakdown of which digits the model confuses. For example, does it often mistake a '3' for an '8'?",
-    rocCurve: "Measures the model's ability to distinguish one digit from another (e.g., telling a '7' from all other digits).",
-    prCurve: "For a specific digit, this shows the balance between making sure a prediction is correct (Precision) and not missing any instances of that digit (Recall).",
-    pdp: "Shows how the brightness of a single pixel region influences the model's decision on what digit it is.",
-    summary: "Provides statistics on pixel intensity values across the dataset of images.",
-    correlation: "Shows if the brightness of one pixel is related to the brightness of another, which can reveal stroke patterns.",
+    featureImportance: "Identifies which pixel areas are most important for the model to tell one number from another. It shows what parts of the image the model 'looks' at.",
+    confusionMatrix: "This is a chart showing the model's mistakes. It helps you see if it consistently confuses certain digits, like mistaking a '3' for an '8'.",
+    rocCurve: "Measures the model's ability to distinguish one specific digit from all the others. A high-arching curve means it's a good identifier.",
+    prCurve: "For any given digit, this shows the balance between being correct when you predict that digit (Precision) and finding all instances of it (Recall).",
+    pdp: "Shows how changing the brightness of a single pixel region influences the model's decision on what digit it is, showing which pixels are key.",
+    summary: "Provides simple statistics on pixel brightness values across the entire dataset of handwritten images.",
+    correlation: "Shows if the brightness of one pixel is related to the brightness of another. This can help reveal common stroke patterns in the handwriting.",
     aggregation: {
       finalPrediction: "The final recognized digit is based on a majority vote from all decision trees.",
       predictionSpread: "Illustrates the consensus among the trees, showing the vote count for each possible digit.",
@@ -204,24 +204,24 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a digit prediction."
     },
     metrics: {
-        accuracy: "What percentage of handwritten digits did the model correctly recognize?",
+        accuracy: "What percentage of handwritten digits did the model correctly guess? It's the model's overall score.",
         precision: "When the model predicts a digit is a '7', how often is it actually a '7'? High precision means the model is very sure of its predictions.",
-        recall: "Out of all the '7's in the dataset, how many did the model find? High recall means the model is good at not missing any digits."
+        recall: "Out of all the handwritten '7's in the dataset, how many did the model find? High recall means the model is good at not missing any."
     }
   },
   default: {
     forest: "A Random Forest is an ensemble of Decision Trees. The final prediction is obtained by aggregating the outputs of all trees (averaging for regression, voting for classification). Click each tree to see its structure.",
-    featureImportance: "Shows the relative importance of each feature in predicting the target variable.",
-    predictionPlot: "Compares the model's predictions against the actual values.",
-    confusionMatrix: "A visual breakdown of the model's prediction accuracy for each class.",
-    residualPlot: "This chart plots the model's prediction errors (residuals) against the predicted values. It helps to check for patterns in the errors, which can indicate if the model has a systematic bias.",
-    errorHistogram: "This histogram shows the distribution of prediction errors. An ideal histogram would be centered at zero, indicating that the model's errors are unbiased.",
-    cumulativeError: "This chart shows the percentage of predictions that fall within a certain error margin. A steep curve indicates that most predictions have small errors.",
-    rocCurve: "The Receiver Operating Characteristic (ROC) curve shows the model's ability to distinguish between classes. A curve that bows toward the top-left corner indicates a better-performing model.",
-    prCurve: "This curve demonstrates the trade-off between precision (the accuracy of positive predictions) and recall (the ability to find all positive samples). A curve that bows out toward the top-right indicates a better model.",
-    pdp: "Shows the marginal effect of a feature on the predicted outcome.",
-    summary: "Provides a summary of basic statistics for each numeric feature in the dataset.",
-    correlation: "Displays a heatmap showing the correlation between numeric features.",
+    featureImportance: "Shows which pieces of information (features) were most helpful to the model in making its predictions.",
+    predictionPlot: "Compares the model's predictions against the actual values. The closer the dots are to the straight line, the better the model.",
+    confusionMatrix: "A simple report card showing where the model was right and where it was wrong in its classifications.",
+    residualPlot: "This chart shows the model's prediction errors. If the dots are scattered randomly around the middle line, it means the model isn't making any systematic mistakes.",
+    errorHistogram: "This bar chart shows how big the prediction errors are. A tall bar in the middle is good—it means most errors are small.",
+    cumulativeError: "Tells you what percentage of predictions were 'close enough'. A steep curve means most predictions were very accurate.",
+    rocCurve: "This shows how good the model is at telling two different classes apart. A curve that is high and to the left means the model is very effective.",
+    prCurve: "This curve shows the trade-off between making a correct positive prediction and finding all the positive cases. A curve that is high and to the right is better.",
+    pdp: "Shows how changing just one factor affects the final prediction, which helps you understand what the model thinks is important.",
+    summary: "Provides a basic statistical overview of your data, like averages and value ranges, in a simple table.",
+    correlation: "This colorful grid shows you which of your data features are related to each other. For example, do two things tend to increase together or does one go up when the other goes down?",
     aggregation: {
       finalPrediction: "The final prediction is the result of aggregating the outputs of all individual trees.",
       predictionSpread: "Measures the variance or vote distribution of predictions across all trees.",
@@ -236,12 +236,12 @@ const domainSpecificText = {
         idleText: "Submit feature values to see a prediction."
     },
     metrics: {
-        r2: "R-squared is a statistical measure of how close the data are to the fitted regression line.",
-        rmse: "Root Mean Square Error is the standard deviation of the residuals (prediction errors).",
-        mae: "Mean Absolute Error is the average of the absolute errors.",
-        accuracy: "The proportion of correct predictions among the total number of cases processed.",
-        precision: "The proportion of positive cases that were correctly identified.",
-        recall: "The proportion of actual positive cases which are correctly identified."
+        r2: "A score from 0 to 100% that shows how well the model can predict outcomes. Higher is better.",
+        rmse: "The average amount the model's prediction was 'off' by. A smaller number is better.",
+        mae: "Similar to RMSE, this also shows the average error, giving a straightforward idea of the typical error size.",
+        accuracy: "The percentage of correct predictions the model made. Higher is better.",
+        precision: "When the model makes a positive prediction, how often is it right? High precision means fewer false alarms.",
+        recall: "Of all the actual positive cases, how many did the model find? High recall means the model doesn't miss much."
     }
   }
 };
@@ -525,7 +525,7 @@ export default function DashboardPage() {
                   <Card>
                       <CardHeader>
                           <CardTitle>Feature Distributions</CardTitle>
-                          <CardDescription>Visualizes the distribution of values for a selected feature.</CardDescription>
+                          <CardDescription>This chart shows how the values of a single feature are spread out. It helps you spot common values, outliers, and the overall range.</CardDescription>
                       </CardHeader>
                        <CardContent>
                           <FeatureDistributionChart 
@@ -546,7 +546,7 @@ export default function DashboardPage() {
                    <Card>
                       <CardHeader>
                           <CardTitle>Pair Plot</CardTitle>
-                          <CardDescription>Presents scatter plots for pairs of features to visualize their relationships.</CardDescription>
+                          <CardDescription>This grid of charts lets you compare every feature against every other feature. It's a powerful way to see relationships between pairs of data.</CardDescription>
                       </CardHeader>
                       <CardContent>
                           <PairPlot dataset={data.dataset} targetColumn={state.targetColumn} task={state.task} />
@@ -564,7 +564,7 @@ export default function DashboardPage() {
                    <Card className="mb-8">
                       <CardHeader>
                           <CardTitle>Missing Values</CardTitle>
-                          <CardDescription>Shows the percentage of missing values for each feature in the dataset.</CardDescription>
+                          <CardDescription>This chart quickly shows you if any data is missing from your dataset. A long bar means a lot of data is missing for that feature.</CardDescription>
                       </CardHeader>
                       <CardContent>
                           <MissingValuesChart dataset={data.dataset} metadata={data.metadata} />
