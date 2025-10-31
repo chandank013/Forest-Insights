@@ -1,7 +1,7 @@
 
 {
     "california-housing": {
-        "story": "You are a data scientist at a real estate firm in California. Your task is to build a model that can accurately predict median house values in various districts. This will help agents price homes correctly and provide clients with reliable market insights. You'll use a Random Forest model to uncover how different factors influence house prices.",
+        "story": "Imagine you're trying to figure out how much a house in California is worth. Your job is to build a smart system that predicts house prices based on things like the neighborhood's income, the age of the house, and how many rooms it has. This helps real estate agents set fair prices.",
         "attributes": {
             "MedInc": { "description": "Median income for households in the block group (in tens of thousands of US Dollars).", "type": "Numeric" },
             "HouseAge": { "description": "Median age of a house within a block group.", "type": "Numeric" },
@@ -15,7 +15,7 @@
         }
     },
     "diabetes": {
-        "story": "As a researcher in a medical lab, you are tasked with investigating the progression of diabetes. Using a dataset of patient clinical measurements, your goal is to build a model that can predict the quantitative measure of disease progression one year after baseline. This model will help identify which factors are most critical in predicting the severity of the disease.",
+        "story": "You are a medical researcher trying to understand diabetes better. Your task is to create a model that can predict how much the disease will progress in a patient over a year. By looking at things like age, BMI, and blood pressure, the model helps identify which health markers are most important.",
         "attributes": {
             "age": { "description": "Age in years.", "type": "Numeric" },
             "sex": { "description": "Patient's sex.", "type": "Numeric" },
@@ -31,7 +31,7 @@
         }
     },
     "linnerud": {
-        "story": "You're a sports scientist analyzing data from a group of athletes at a fitness center. The dataset contains their performance on three exercises (Chinups, Situps, Jumps) and three physiological measurements (Weight, Waist, Pulse). Your objective is to build a model that predicts an athlete's weight based on their exercise performance, helping to create personalized training programs.",
+        "story": "You're a sports scientist studying athletes. Your goal is to build a model that predicts an athlete's weight based on how many chinups, situps, and jumps they can do. This can help in creating personalized fitness plans.",
         "attributes": {
             "Chins": { "description": "Number of chinups.", "type": "Numeric" },
             "Situps": { "description": "Number of situps.", "type": "Numeric" },
@@ -42,7 +42,7 @@
         }
     },
     "wine-quality": {
-        "story": "You are a quality analyst for a vineyard, and you've been given a dataset of chemical properties for a batch of red wines. Your goal is to build a classification model to determine whether a wine is of 'Good' or 'Bad' quality. This will help streamline the quality control process and ensure only the best wines reach the market.",
+        "story": "You work for a vineyard and need to quickly tell if a wine is 'Good' or 'Bad' quality. Your task is to build a model that can predict wine quality based on chemical properties like acidity and alcohol content. This helps ensure only the best wines are sold.",
         "attributes": {
             "fixed_acidity": { "description": "The amount of non-volatile acids in the wine.", "type": "Numeric" },
             "volatile_acidity": { "description": "The amount of acetic acid in wine, which at high levels can lead to an unpleasant, vinegary taste.", "type": "Numeric" },
@@ -59,7 +59,7 @@
         }
     },
     "breast-cancer": {
-        "story": "Working in a medical research lab, you are tasked with developing a reliable diagnostic tool for breast cancer. Using a dataset of tumor measurements, your mission is to build a classification model that can accurately distinguish between malignant (cancerous) and benign (non-cancerous) tumors. This could be a vital tool in early cancer detection.",
+        "story": "You are helping doctors diagnose breast cancer. Your goal is to create a model that can look at measurements of a tumor and determine if it is 'Malignant' (cancerous) or 'Benign' (not cancerous). This can help with early and accurate detection.",
         "attributes": {
             "mean radius": { "description": "Mean of distances from center to points on the perimeter of the tumor.", "type": "Numeric" },
             "mean texture": { "description": "Standard deviation of gray-scale values in the tumor image.", "type": "Numeric" },
@@ -71,7 +71,7 @@
         }
     },
     "digits": {
-        "story": "You're an engineer working on an optical character recognition (OCR) system. Your current task is to build a model that can recognize handwritten digits from 8x8 pixel images. You will train a Random Forest classifier to identify the correct digit (0-9) based on the pixel intensity values provided in the dataset.",
+        "story": "Your task is to build a system that can read handwritten numbers. Using a dataset of pixel images, you will train a model to correctly identify which digit (from 0 to 9) is written in each image. This is a classic step in learning how computers 'see'.",
         "attributes": {
             "pixel_2_2": { "description": "Intensity of the pixel at row 2, column 2.", "type": "Numeric (0-16)" },
             "pixel_2_3": { "description": "Intensity of the pixel at row 2, column 3.", "type": "Numeric (0-16)" },
