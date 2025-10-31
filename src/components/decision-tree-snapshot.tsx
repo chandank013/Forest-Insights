@@ -159,7 +159,7 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     }
     
     return (
-        <div className="relative w-full h-full font-sans">
+        <div className="relative w-full h-full font-sans flex flex-col">
              <TooltipProvider>
                 <div className='w-full h-full overflow-auto'>
                     <div
@@ -196,5 +196,3 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
         </div>
     );
 }
-
-    
