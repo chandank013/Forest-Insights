@@ -50,7 +50,7 @@ export function ProblemStatement({ metadata, datasetName }: ProblemStatementProp
                                 </Button>
                             </CollapsibleTrigger>
                         </div>
-                         <div className="relative min-h-[200px] md:min-h-0">
+                         <div className="relative min-h-[200px] md:min-h-0 overflow-hidden md:rounded-lg">
                             <Image 
                                 src={placeholderImage.imageUrl}
                                 alt={placeholderImage.description}

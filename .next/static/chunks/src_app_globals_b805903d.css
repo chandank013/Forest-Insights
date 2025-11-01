@@ -2946,6 +2946,10 @@ body {
     margin-bottom: calc(2rem * var(--tw-space-y-reverse));
   }
 
+  .md\:rounded-lg {
+    border-radius: var(--radius);
+  }
+
   .md\:rounded-bl-lg {
     border-bottom-left-radius: var(--radius);
   }
