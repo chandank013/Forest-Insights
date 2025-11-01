@@ -242,7 +242,7 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict, d
                                 ))}
                             </div>
                             
-                            {trees.length > 3 && (
+                            {trees.length >= 3 && (
                                 <div className="mt-8">
                                     <h3 className="text-lg font-semibold mb-2">Individual Tree Contributions</h3>
                                      <PredictionContributionChart
@@ -265,5 +265,6 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict, d
     </TooltipProvider>
   );
 }
+
 
 
