@@ -196,10 +196,10 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict, d
                         <CardDescription>Generating decision trees based on your input...</CardDescription>
                      ) : trees && trees.length > 0 ? (
                         <CardDescription>
-                             {trees.length <= 3 
-                                ? `Showing all ${trees.length} trees used in the prediction.`
-                                : `Showing a summary of the ${trees.length} trees used in the prediction.`
-                             }
+                           {trees.length > 3
+                            ? `Showing Tree ${selectedTreeIndex + 1} of ${trees.length}. Use the slider to browse trees.`
+                            : `Showing all ${trees.length} trees used in the prediction.`
+                           }
                         </CardDescription>
                      ) : (
                         <CardDescription>
@@ -215,25 +215,42 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict, d
                     )}
                     {!isPredicting && trees && trees.length > 0 && (
                         <>
-                            {trees.length <= 3 ? (
-                                <div className={`grid grid-cols-1 md:grid-cols-${trees.length} gap-4`}>
-                                    {trees.map((tree, index) => (
-                                        <Card key={index} className="flex flex-col">
-                                            <CardHeader>
-                                                <CardTitle className="text-base">Tree {tree.id}</CardTitle>
-                                            </CardHeader>
-                                            <CardContent className="flex-1 border rounded-lg p-2 h-[400px] overflow-auto">
-                                                <DecisionTreeSnapshot tree={tree.tree} taskType={taskType} />
-                                            </CardContent>
-                                        </Card>
-                                    ))}
+                           {trees.length > 3 && (
+                                <div className="mb-4">
+                                    <Slider
+                                        value={[selectedTreeIndex]}
+                                        onValueChange={(value) => setSelectedTreeIndex(value[0])}
+                                        min={0}
+                                        max={trees.length - 1}
+                                        step={1}
+                                    />
                                 </div>
-                            ) : (
-                                <PredictionContributionChart
-                                    prediction={predictionResult}
-                                    taskType={taskType}
-                                    datasetName={datasetName}
-                                />
+                            )}
+
+                           <div className={`grid grid-cols-1 ${trees.length <= 3 ? `md:grid-cols-${trees.length}` : ''} gap-4`}>
+                                {(trees.length <= 3 ? trees : [currentTree]).map((tree, index) => (
+                                    tree && (
+                                      <Card key={index} className="flex flex-col">
+                                          <CardHeader>
+                                              <CardTitle className="text-base">Tree {tree.id}</CardTitle>
+                                          </CardHeader>
+                                          <CardContent className="flex-1 border rounded-lg p-2 h-[400px] overflow-auto">
+                                              <DecisionTreeSnapshot tree={tree.tree} taskType={taskType} />
+                                          </CardContent>
+                                      </Card>
+                                    )
+                                ))}
+                            </div>
+                            
+                            {trees.length > 3 && (
+                                <div className="mt-8">
+                                    <h3 className="text-lg font-semibold mb-2">Individual Tree Contributions</h3>
+                                     <PredictionContributionChart
+                                        prediction={predictionResult}
+                                        taskType={taskType}
+                                        datasetName={datasetName}
+                                    />
+                                </div>
                             )}
                         </>
                     )}
@@ -248,4 +265,5 @@ export function RealTimePrediction({ features, taskType, isLoading, onPredict, d
     </TooltipProvider>
   );
 }
+
 
