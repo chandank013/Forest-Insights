@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import type { TaskType, ForestSimulation, TreeSimulation, DecisionTree } from '@/lib/types';
 import { Skeleton } from './ui/skeleton';
 import { DecisionTreeSnapshot } from './decision-tree-snapshot';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 
 interface ForestVisualizationProps {
   simulationData: ForestSimulation | null;
@@ -156,22 +157,16 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
             </Card>
 
              {selectedTree && (
-                <Card>
-                    <CardHeader>
-                        <div className='flex justify-between items-center'>
-                            <CardTitle>Decision Tree Snapshot (Tree ID: {selectedTreeId})</CardTitle>
-                            <Button variant="ghost" size="icon" onClick={() => setSelectedTreeId(null)}>
-                                <X className='w-4 h-4' />
-                            </Button>
+                 <Dialog open={selectedTreeId !== null} onOpenChange={(isOpen) => !isOpen && setSelectedTreeId(null)}>
+                    <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+                        <DialogHeader>
+                            <DialogTitle>Decision Tree Snapshot (Tree ID: {selectedTreeId})</DialogTitle>
+                        </DialogHeader>
+                        <div className="flex-1 h-full overflow-auto">
+                            <DecisionTreeSnapshot tree={selectedTree} taskType={taskType} />
                         </div>
-                        <CardDescription>
-                            This is the structure of the selected decision tree. You can scroll to explore it.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="h-[500px]">
-                         <DecisionTreeSnapshot tree={selectedTree} taskType={taskType} />
-                    </CardContent>
-                </Card>
+                    </DialogContent>
+                 </Dialog>
             )}
         </div>
     </>
