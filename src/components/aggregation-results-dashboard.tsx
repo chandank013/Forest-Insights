@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, ReferenceLine, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend, LabelList } from 'recharts';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from './ui/skeleton';
@@ -136,10 +136,11 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                                     contentStyle={{ 
                                       backgroundColor: 'hsl(var(--background))', 
                                       border: '1px solid hsl(var(--border))',
-                                      borderRadius: 'calc(var(--radius) - 4px)'
+                                      borderRadius: 'var(--radius)'
                                     }}
                                 />
                                 <Bar dataKey="votes" fill="hsl(var(--primary))">
+                                    <LabelList dataKey="votes" position="top" />
                                     {voteData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
@@ -228,12 +229,14 @@ export function AggregationResultsDashboard({ simulationData, taskType, isLoadin
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--background))', 
                         border: '1px solid hsl(var(--border))',
-                        borderRadius: 'calc(var(--radius) - 4px)'
+                        borderRadius: 'var(--radius)'
                       }}
                       formatter={(value: number, name, props) => [`${value.toFixed(3) ?? ''}`, `Tree ${props.payload.id}`]}
                       cursor={{ fill: 'hsl(var(--accent))' }}
                   />
-                  <Bar dataKey="prediction" fill="hsl(var(--primary))" />
+                  <Bar dataKey="prediction" fill="hsl(var(--primary))">
+                    <LabelList dataKey="prediction" position="top" formatter={(value: number) => value.toFixed(2)} />
+                  </Bar>
                   <ReferenceLine y={average} stroke="hsl(var(--destructive))" strokeDasharray="3 3" label={{ value: 'Avg', position: 'right' }} />
               </BarChart>
             </ResponsiveContainer>

@@ -38,19 +38,21 @@ export function PredictionContributionChart({ prediction, taskType, datasetName 
         return (
             <div className="h-[200px] w-full">
                 <ResponsiveContainer>
-                    <BarChart data={chartData} margin={{ top: 5, right: 30, left: -10, bottom: 5 }}>
-                        <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+                    <BarChart data={chartData} margin={{ top: 20, right: 30, left: -10, bottom: 5 }}>
+                        <XAxis dataKey="name" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
                         <YAxis tick={{ fontSize: 10 }} />
                         <RechartsTooltip
                             cursor={{ fill: 'hsl(var(--accent))' }}
                             contentStyle={{ 
                               backgroundColor: 'hsl(var(--background))', 
                               border: '1px solid hsl(var(--border))',
-                              borderRadius: 'calc(var(--radius) - 4px)'
+                              borderRadius: 'var(--radius)'
                             }}
                             formatter={(value: number) => [value.toFixed(3), 'Prediction']}
                         />
-                        <Bar dataKey="prediction" fill="hsl(var(--primary))" />
+                        <Bar dataKey="prediction" fill="hsl(var(--primary))">
+                           <LabelList dataKey="prediction" position="top" formatter={(value: number) => value.toFixed(2)} />
+                        </Bar>
                         <ReferenceLine y={prediction.prediction} stroke="hsl(var(--destructive))" strokeDasharray="3 3" label={{ value: 'Avg', position: 'right', fontSize: 12 }} />
                     </BarChart>
                 </ResponsiveContainer>
@@ -86,7 +88,7 @@ export function PredictionContributionChart({ prediction, taskType, datasetName 
                         contentStyle={{ 
                           backgroundColor: 'hsl(var(--background))', 
                           border: '1px solid hsl(var(--border))',
-                          borderRadius: 'calc(var(--radius) - 4px)'
+                          borderRadius: 'var(--radius)'
                         }}
                     />
                     <Bar dataKey="votes" fill="hsl(var(--primary))" name="Tree Votes">
