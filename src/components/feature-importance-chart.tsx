@@ -5,6 +5,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Responsive
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import type { DatasetMetadata, FeatureImportance } from '@/lib/types';
 import { Tooltip as UiTooltip, TooltipContent as UiTooltipContent, TooltipProvider, TooltipTrigger as UiTooltipTrigger } from '@/components/ui/tooltip';
+import { HelpCircle } from 'lucide-react';
 
 interface FeatureImportanceChartProps {
   tunedData: FeatureImportance[];
@@ -21,8 +22,8 @@ const CustomYAxisTick = (props: any) => {
         <g transform={`translate(${x},${y})`}>
             <UiTooltip delayDuration={100}>
                 <UiTooltipTrigger asChild>
-                     <text x={-10} y={4} textAnchor="end" fill="hsl(var(--foreground))" className="text-xs cursor-pointer">
-                        {featureName.length > 15 ? `${featureName.substring(0, 13)}...` : featureName}
+                     <text x={-25} y={4} textAnchor="end" fill="hsl(var(--foreground))" className="text-xs cursor-pointer flex items-center">
+                        {featureName}
                     </text>
                 </UiTooltipTrigger>
                  {description && (
@@ -32,6 +33,11 @@ const CustomYAxisTick = (props: any) => {
                     </UiTooltipContent>
                  )}
             </UiTooltip>
+             {description && (
+                <foreignObject x={-20} y={-5} width={16} height={16}>
+                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                </foreignObject>
+            )}
         </g>
     );
 };
@@ -57,7 +63,7 @@ export function FeatureImportanceChart({ tunedData, baselineData, metadata }: Fe
           <BarChart
             data={combinedData}
             layout="vertical"
-            margin={{ left: 80, right: 30, top: 20, bottom: 20 }}
+            margin={{ left: 120, right: 30, top: 20, bottom: 20 }}
           >
             <CartesianGrid horizontal={false} strokeDasharray="3 3" />
             <XAxis type="number" />
