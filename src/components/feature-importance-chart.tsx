@@ -4,7 +4,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import type { DatasetMetadata, FeatureImportance } from '@/lib/types';
-import { HelpCircle } from 'lucide-react';
 import { Tooltip as UiTooltip, TooltipContent as UiTooltipContent, TooltipProvider, TooltipTrigger as UiTooltipTrigger } from '@/components/ui/tooltip';
 
 interface FeatureImportanceChartProps {
@@ -22,17 +21,16 @@ const CustomYAxisTick = (props: any) => {
         <g transform={`translate(${x},${y})`}>
             <UiTooltip delayDuration={100}>
                 <UiTooltipTrigger asChild>
-                    <foreignObject x={-110} y={-8} width={120} height={20}>
-                        <div className="flex items-center justify-end gap-1 w-full text-xs cursor-help text-right pr-2">
-                             {description && <HelpCircle className="h-3 w-3 shrink-0" />}
-                            <span className="truncate">{featureName}</span>
-                        </div>
-                    </foreignObject>
+                     <text x={-10} y={4} textAnchor="end" fill="hsl(var(--foreground))" className="text-xs cursor-pointer">
+                        {featureName.length > 15 ? `${featureName.substring(0, 13)}...` : featureName}
+                    </text>
                 </UiTooltipTrigger>
-                <UiTooltipContent side="right" className="max-w-xs">
-                    <p className='font-bold'>{featureName}</p>
-                    <p>{description || 'No description available.'}</p>
-                </UiTooltipContent>
+                 {description && (
+                    <UiTooltipContent side="right" className="max-w-xs">
+                        <p className='font-bold'>{featureName}</p>
+                        <p>{description}</p>
+                    </UiTooltipContent>
+                 )}
             </UiTooltip>
         </g>
     );
