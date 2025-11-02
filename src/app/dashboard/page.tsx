@@ -364,11 +364,39 @@ export default function DashboardPage() {
         <ProblemStatement metadata={data.metadata} datasetName={state.datasetName} />
         <Tabs defaultValue="dashboard">
           <div className="flex items-center">
-            <TabsList className="w-full justify-start">
-              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-              <TabsTrigger value="explore">Explore</TabsTrigger>
-              <TabsTrigger value="insights">Insights</TabsTrigger>
-              <TabsTrigger value="prediction">Prediction</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Get a high-level overview of model performance and key metrics.</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <TabsTrigger value="explore">Explore</TabsTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Dive deep into the dataset with exploratory data analysis tools.</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <TabsTrigger value="insights">Insights</TabsTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Understand how the Random Forest model works and makes its predictions.</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <TabsTrigger value="prediction">Prediction</TabsTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Use the trained model to make real-time predictions on new data.</p>
+                </TooltipContent>
+              </Tooltip>
             </TabsList>
           </div>
           <TabsContent value="dashboard" className="py-4 space-y-4 md:space-y-8">
