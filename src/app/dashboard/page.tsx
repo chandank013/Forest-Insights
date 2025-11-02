@@ -365,38 +365,50 @@ export default function DashboardPage() {
         <Tabs defaultValue="dashboard">
           <div className="flex items-center">
             <TabsList className="grid w-full grid-cols-4">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Get a high-level overview of model performance and key metrics.</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <TabsTrigger value="explore">Explore</TabsTrigger>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Dive deep into the dataset with exploratory data analysis tools.</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <TabsTrigger value="insights">Insights</TabsTrigger>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Understand how the Random Forest model works and makes its predictions.</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <TabsTrigger value="prediction">Prediction</TabsTrigger>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Use the trained model to make real-time predictions on new data.</p>
-                </TooltipContent>
-              </Tooltip>
+              <TabsTrigger value="dashboard">
+                <span className="mr-2">Dashboard</span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Get a high-level overview of model performance and key metrics.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TabsTrigger>
+              <TabsTrigger value="explore">
+                <span className="mr-2">Explore</span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Dive deep into the dataset with exploratory data analysis tools.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TabsTrigger>
+              <TabsTrigger value="insights">
+                <span className="mr-2">Insights</span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Understand how the Random Forest model works and makes its predictions.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TabsTrigger>
+              <TabsTrigger value="prediction">
+                <span className="mr-2">Prediction</span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Use the trained model to make real-time predictions on new data.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="dashboard" className="py-4 space-y-4 md:space-y-8">
