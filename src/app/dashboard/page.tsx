@@ -561,15 +561,6 @@ export default function DashboardPage() {
                           <SummaryStatistics dataset={data.dataset} task={state.task} targetColumn={state.targetColumn} metadata={data.metadata} />
                       </CardContent>
                   </Card>
-                   <Card className="mb-8">
-                      <CardHeader>
-                          <CardTitle>Missing Values</CardTitle>
-                          <CardDescription>This chart quickly shows you if any data is missing from your dataset. A long bar means a lot of data is missing for that feature.</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                          <MissingValuesChart dataset={data.dataset} metadata={data.metadata} />
-                      </CardContent>
-                  </Card>
                </div>
           </TabsContent>
           <TabsContent value="insights" className="py-4 space-y-4 md:space-y-8">
