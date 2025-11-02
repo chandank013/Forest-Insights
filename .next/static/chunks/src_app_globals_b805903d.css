@@ -738,6 +738,10 @@ body {
   height: 120px;
 }
 
+.h-40 {
+  height: 10rem;
+}
+
 .max-h-60 {
   max-height: 15rem;
 }
@@ -876,6 +880,18 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[110px\] {
+  width: 110px;
+}
+
+.w-\[150px\] {
+  width: 150px;
+}
+
+.w-40 {
+  width: 10rem;
 }
 
 .min-w-0 {
@@ -1234,12 +1250,22 @@ body {
   overflow: hidden;
 }
 
+.overflow-visible {
+  overflow: visible;
+}
+
 .overflow-x-auto {
   overflow-x: auto;
 }
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.truncate {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .whitespace-nowrap {
@@ -2786,6 +2812,14 @@ body {
 
   .sm\:flex {
     display: flex;
+  }
+
+  .sm\:grid {
+    display: grid;
+  }
+
+  .sm\:hidden {
+    display: none;
   }
 
   .sm\:h-auto {

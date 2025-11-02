@@ -36,6 +36,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { ForestVisualization } from '@/components/forest-visualization';
 import { AggregationResultsDashboard } from '@/components/aggregation-results-dashboard';
 import { ProblemStatement } from '@/components/problem-statement';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useState } from 'react';
 
 const domainSpecificText = {
   'california-housing': {
@@ -250,6 +252,7 @@ const domainSpecificText = {
 export default function DashboardPage() {
   const { state, data, status, actions, availableDatasets } = useRandomForest();
   const isLoading = status === 'loading';
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const descriptions = domainSpecificText[state.datasetName as keyof typeof domainSpecificText] || domainSpecificText.default;
   const metricDescriptions = descriptions.metrics;
@@ -362,9 +365,22 @@ export default function DashboardPage() {
     return (
       <TooltipProvider>
         <ProblemStatement metadata={data.metadata} datasetName={state.datasetName} />
-        <Tabs defaultValue="dashboard">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <div className="flex items-center">
-            <TabsList className="grid w-full grid-cols-4">
+            <div className="sm:hidden w-full">
+                <Select value={activeTab} onValueChange={setActiveTab}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select a view" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="dashboard">Dashboard</SelectItem>
+                        <SelectItem value="explore">Explore</SelectItem>
+                        <SelectItem value="insights">Insights</SelectItem>
+                        <SelectItem value="prediction">Prediction</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+            <TabsList className="hidden sm:grid w-full grid-cols-4">
               <TabsTrigger value="dashboard">
                 <span className="mr-2">Dashboard</span>
                 <Tooltip>
@@ -686,3 +702,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
+    
