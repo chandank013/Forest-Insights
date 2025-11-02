@@ -161,7 +161,7 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     
     return (
         <div className="relative w-full h-full font-sans overflow-auto p-4">
-             <div className="absolute top-2 right-2 z-10 flex gap-2">
+             <div className="absolute bottom-4 right-4 z-10 flex gap-2">
                 <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.max(0.2, z - 0.1))}>
                     <ZoomOut className="h-4 w-4" />
                 </Button>

@@ -158,7 +158,7 @@ export function ForestVisualization({ simulationData, taskType, isLoading, onRet
 
              {selectedTree && (
                  <Dialog open={selectedTreeId !== null} onOpenChange={(isOpen) => !isOpen && setSelectedTreeId(null)}>
-                    <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+                    <DialogContent className="max-w-6xl h-[90vh] flex flex-col">
                         <DialogHeader>
                             <DialogTitle>Decision Tree Snapshot (Tree ID: {selectedTreeId})</DialogTitle>
                         </DialogHeader>
