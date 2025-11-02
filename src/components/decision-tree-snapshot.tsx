@@ -2,9 +2,11 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { DecisionTree, DecisionNode, LeafNode, TaskType } from '@/lib/types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from './ui/button';
+import { ZoomIn, ZoomOut } from 'lucide-react';
 
 interface NodeDisplayProps {
     node: DecisionNode | LeafNode;
@@ -147,6 +149,7 @@ const TreeBranch: React.FC<TreeBranchProps> = ({ node, taskType }) => {
 };
 
 export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | null, taskType: TaskType }) {
+     const [zoom, setZoom] = useState(1);
 
      if (!tree) {
         return (
@@ -158,8 +161,19 @@ export function DecisionTreeSnapshot({ tree, taskType }: { tree: DecisionTree | 
     
     return (
         <div className="relative w-full h-full font-sans overflow-auto p-4">
+             <div className="absolute top-2 right-2 z-10 flex gap-2">
+                <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.max(0.2, z - 0.1))}>
+                    <ZoomOut className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={() => setZoom(z => Math.min(2, z + 0.1))}>
+                    <ZoomIn className="h-4 w-4" />
+                </Button>
+            </div>
             <TooltipProvider>
-                <div className="flex justify-center w-fit min-w-full mx-auto">
+                <div 
+                    className="flex justify-center w-fit min-w-full mx-auto transition-transform duration-300"
+                    style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}
+                >
                     <TreeBranch node={tree} taskType={taskType} />
                 </div>
             </TooltipProvider>
