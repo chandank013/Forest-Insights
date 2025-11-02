@@ -371,7 +371,7 @@ export default function DashboardPage() {
                   <TooltipTrigger asChild>
                     <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="max-w-xs">
                     <p>Get a high-level overview of model performance and key metrics.</p>
                   </TooltipContent>
                 </Tooltip>
@@ -382,7 +382,7 @@ export default function DashboardPage() {
                   <TooltipTrigger asChild>
                     <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="max-w-xs">
                     <p>Dive deep into the dataset with exploratory data analysis tools.</p>
                   </TooltipContent>
                 </Tooltip>
@@ -393,7 +393,7 @@ export default function DashboardPage() {
                   <TooltipTrigger asChild>
                     <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="max-w-xs">
                     <p>Understand how the Random Forest model works and makes its predictions.</p>
                   </TooltipContent>
                 </Tooltip>
@@ -404,7 +404,7 @@ export default function DashboardPage() {
                   <TooltipTrigger asChild>
                     <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="max-w-xs">
                     <p>Use the trained model to make real-time predictions on new data.</p>
                   </TooltipContent>
                 </Tooltip>
