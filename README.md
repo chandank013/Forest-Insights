@@ -5,7 +5,36 @@ An interactive and beginner-friendly web app to **learn Random Forest** — one 
 🎯 **Live Demo:**  
 👉 [https://forest-insights-git-main-chandan-kumars-projects-dc82feb1.vercel.app](https://forest-insights-git-main-chandan-kumars-projects-dc82feb1.vercel.app)
 
+---
+
+## 🖼️ Project Preview
+
+<p align="center">
+  <img src="public/website-preview1.png" alt="Forest Explorer Screenshot" width="800"/>
+</p>
+<p align="center">
+  <img src="public/website-preview2.png" alt="Forest Explorer Screenshot" width="800"/>
+</p>
+
+*(Replace `public/website-preview.png` with your actual image path — e.g. `/public/images/app-screenshot.png`.)*
+
+---
+
 Built using **Next.js**, **Tailwind CSS**, and **TypeScript**, this project turns complex Random Forest concepts into **intuitive visual explanations**. 🧠📊  
+
+---
+
+## 🧑‍💻 Team Members
+
+| Name | Roll_No | Role |
+|------|------|------|
+| **Chandan Kumar (24BDS013)**| Worked on version 1 of the project and gave the direction and ignition. Also, shaped the way further for 2nd version and gave inputs over frontend and performed GitHub domain tasks in both the versions. Also, framed the idea to summarise training in view dataset page of all 3 roles in version 2.|
+
+| **Nitish Naveen (24BDS050)**| Built the functional 2nd version of the application using the ideas given by Anchal. Implemented Rithika's idea of tracing the decision tree. Also, debugged the application while working in coordination with Rithika. |
+
+| **Anchal Jaiswal (24BDS003)**| Construction and framing of the idea of the simpler User Interface of version 2 including 3 roles making, story telling and whole "Prediction and explanation" page for all 3 roles. |
+
+| **Rithika S (24BDS067)**| Gave the idea to track how the decision tree works and gives the results for better visualization. Validated the functionality and scanned the bugs in the 2nd version. |
 
 ---
 
@@ -99,12 +128,11 @@ You can view the live deployed app here:
 
 
 💡 Author
-Chandan Kumar
+Team Forest-Insights
 Built with ❤️ using Next.js, TypeScript, and Tailwind CSS.
 
 ---
 
-Would you like me to make it look even more polished with:  
-- ✅ A **Vercel Deploy Button**  
-- ✅ A **“Live Demo” badge**  
-- ✅ A **GitHub stars/forks badge section** at the top (for better presentation on GitHub)?
+[![Live Demo](https://img.shields.io/badge/Demo-Live-green?style=for-the-badge&logo=vercel)](https://forest-insights-git-main-chandan-kumars-projects-dc82feb1.vercel.app)
+[![GitHub Stars](https://img.shields.io/github/stars/chandank013/random-forest-visualization?style=for-the-badge)](https://github.com/chandank013/random-forest-visualization/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/chandank013/random-forest-visualization?style=for-the-badge)](https://github.com/chandank013/random-forest-visualization/network/members)
