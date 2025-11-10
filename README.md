@@ -9,14 +9,11 @@ An interactive and beginner-friendly web app to **learn Random Forest** — one 
 
 ## 🖼️ Project Preview
 
-<p align="center">
-  <img src="public/website-preview1.png" alt="Forest Explorer Screenshot" width="800"/>
-</p>
-<p align="center">
-  <img src="public/website-preview2.png" alt="Forest Explorer Screenshot" width="800"/>
-</p>
+<div align="center" style="display: flex; justify-content: center; gap: 10px;">
+  <img src="public/website-preview1.png" alt="Forest Explorer Screenshot 1" width="400"/>
+  <img src="public/website-preview2.png" alt="Forest Explorer Screenshot 2" width="400"/>
+</div>
 
-*(Replace `public/website-preview.png` with your actual image path — e.g. `/public/images/app-screenshot.png`.)*
 
 ---
 
@@ -26,17 +23,15 @@ Built using **Next.js**, **Tailwind CSS**, and **TypeScript**, this project turn
 
 ## 🧑‍💻 Team Members
 
-| Name | Roll_No | Role |
-|------|------|------|
-| **Chandan Kumar (24BDS013)**| Worked on version 1 of the project and gave the direction and ignition. Also, shaped the way further for 2nd version and gave inputs over frontend and performed GitHub domain tasks in both the versions. Also, framed the idea to summarise training in view dataset page of all 3 roles in version 2.|
-
-| **Nitish Naveen (24BDS050)**| Built the functional 2nd version of the application using the ideas given by Anchal. Implemented Rithika's idea of tracing the decision tree. Also, debugged the application while working in coordination with Rithika. |
-
-| **Anchal Jaiswal (24BDS003)**| Construction and framing of the idea of the simpler User Interface of version 2 including 3 roles making, story telling and whole "Prediction and explanation" page for all 3 roles. |
-
-| **Rithika S (24BDS067)**| Gave the idea to track how the decision tree works and gives the results for better visualization. Validated the functionality and scanned the bugs in the 2nd version. |
+| Name | Roll No. | Contributions |
+|------|-----------|----------------|
+| **Chandan Kumar** | 24BDS013 | Worked on version 1 of the project and gave the direction and ignition. Shaped the foundation for version 2 and contributed inputs to the frontend. Managed GitHub domain tasks in both versions. Framed the idea to summarize training in the view dataset page for all three roles in version 2. |
+| **Nitish Naveen** | 24BDS050 | Built the functional second version of the application using the ideas given by Anchal. Implemented Rithika’s idea of tracing the decision tree. Debugged the application while coordinating with Rithika. |
+| **Anchal Jaiswal** | 24BDS003 | Conceived and designed the simpler user interface of version 2, including the creation of three roles, storytelling flow, and the complete “Prediction and Explanation” page for all three roles. |
+| **Rithika S** | 24BDS067 | Proposed the idea to visualize the decision tree’s working for better understanding. Validated functionality and tested for bugs in the second version. |
 
 ---
+
 
 ## 🧰 Tech Stack
 
