@@ -98,6 +98,7 @@ Forest-Insights/
 ├── tailwind.config.ts       # Tailwind CSS configuration
 └── tsconfig.json            # TypeScript configuration
 
+---
 
 ⚙️ Installation & Setup
 Clone the repository
@@ -106,6 +107,7 @@ git clone https://github.com/chandank013/random-forest-visualization.git
 cd Forest-Insight
 Install dependencies
 
+---
 
 npm install
 Run the development server
@@ -115,11 +117,13 @@ npm run dev
 Open in browser
 http://localhost:9002
 
+---
 
 🌐 Live Deployment
 You can view the live deployed app here:
 🔗 https://forest-insights-git-main-chandan-kumars-projects-dc82feb1.vercel.app
 
+---
 
 💡 Author
 Team Forest-Insights
