@@ -68,7 +68,6 @@ By exploring this project, you’ll:
 
 ## 🧩 Project Structure
 
-```bash
 Forest-Insights/
 │
 ├── .git/                    # Git version control data
@@ -99,6 +98,7 @@ Forest-Insights/
 ├── tailwind.config.ts       # Tailwind CSS configuration
 └── tsconfig.json            # TypeScript configuration
 
+---
 
 ⚙️ Installation & Setup
 Clone the repository
