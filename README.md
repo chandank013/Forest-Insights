@@ -98,7 +98,6 @@ Forest-Insights/
 ├── tailwind.config.ts       # Tailwind CSS configuration
 └── tsconfig.json            # TypeScript configuration
 
----
 
 ⚙️ Installation & Setup
 Clone the repository
