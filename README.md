@@ -70,63 +70,73 @@ By exploring this project, you’ll:
 
 Forest-Insights/
 │
-├── .git/                    # Git version control data
-├── .idx/                    # Internal build/indexing folder
-├── .next/                   # Next.js build output (ignored in .gitignore)
-├── docs/                    # Documentation or related resources
-├── node_modules/            # Installed dependencies (ignored in .gitignore)
+├── .git/                    # Git version control data  
+├── .idx/                    # Internal build/indexing folder  
+├── .next/                   # Next.js build output (ignored in .gitignore)  
+├── docs/                    # Documentation or related resources  
+├── node_modules/            # Installed dependencies (ignored in .gitignore)  
 │
-├── public/                  # Static assets (images, icons, etc.)
-├── src/                     # Main application source code
+├── public/                  # Static assets (images, icons, etc.)  
+├── src/                     # Main application source code  
 │
-├── .env                     # Environment variables (ignored in .gitignore)
-├── .gitignore               # Files and folders ignored by Git
-├── .modified                # Custom project marker/config file
-├── apphosting.yaml          # Hosting configuration (Firebase / App Hosting)
-├── components.json          # Component configuration file
+├── .env                     # Environment variables (ignored in .gitignore)  
+├── .gitignore               # Files and folders ignored by Git  
+├── .modified                # Custom project marker/config file  
+├── apphosting.yaml          # Hosting configuration (Firebase / App Hosting)  
+├── components.json          # Component configuration file  
 │
-├── next-env.d.ts            # Next.js TypeScript environment definitions
-├── next.config.ts           # Next.js configuration
+├── next-env.d.ts            # Next.js TypeScript environment definitions  
+├── next.config.ts           # Next.js configuration  
 │
-├── package.json             # Project dependencies and scripts
-├── package-lock.json        # Locked dependency versions
-├── postcss.config.mjs       # PostCSS configuration
+├── package.json             # Project dependencies and scripts  
+├── package-lock.json        # Locked dependency versions  
+├── postcss.config.mjs       # PostCSS configuration  
 │
-├── README.md                # Project documentation (this file)
-├── sample.env               # Example environment variables file
+├── README.md                # Project documentation (this file)  
+├── sample.env               # Example environment variables file  
 │
-├── tailwind.config.ts       # Tailwind CSS configuration
-└── tsconfig.json            # TypeScript configuration
+├── tailwind.config.ts       # Tailwind CSS configuration  
+└── tsconfig.json            # TypeScript configuration  
 
 ---
 
 ⚙️ Installation & Setup
+
 Clone the repository
 
 git clone https://github.com/chandank013/random-forest-visualization.git
+
 cd Forest-Insight
+
 Install dependencies
 
 ---
 
 npm install
+
 Run the development server
 
 
 npm run dev
+
 Open in browser
+
 http://localhost:9002
 
 ---
 
 🌐 Live Deployment
+
 You can view the live deployed app here:
+
 🔗 https://forest-insights-git-main-chandan-kumars-projects-dc82feb1.vercel.app
 
 ---
 
 💡 Author
+
 Team Forest-Insights
+
 Built with ❤️ using Next.js, TypeScript, and Tailwind CSS.
 
 ---
